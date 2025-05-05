@@ -81,7 +81,7 @@ const VideoAnimation = () => {
       ScrollTrigger.getAll().forEach((t) => t.kill())
 
       // Adjust settings based on device
-      const scrubValue = isMobile ? 0.5 : 0.1
+      const scrubValue = isMobile ? 0.1 : 0.1
       const endValue = isMobile ? "+=300%" : "+=250%"
 
       // Safari-specific adjustments
@@ -256,40 +256,37 @@ const VideoAnimation = () => {
 
   return (
     <div
-      ref={sectionRef}
-      className="video-section w-full md:h-screen flex flex-col md:flex-row md:space-y-0 space-y-5 justify-between items-center"
-    >
-      <div className="w-full md:w-full h-full flex justify-center items-center relative">
-        {/* Loading indicator for Safari */}
-        {!videoLoaded && isSafari && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 rounded-lg z-10">
-            <div className="text-white">Loading video...</div>
-          </div>
-        )}
-
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          webkit-playsinline="true"
-          preload="auto"
-          className="w-full h-full object-cover rounded-lg"
-          style={{
-            willChange: "contents",
-            transform: "translate3d(0, 0, 0)",
-            WebkitTransform: "translate3d(0, 0, 0)",
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-          }}
-        >
-          {/* <source src="https://videos.pexels.com/video-files/6594072/6594072-hd_1080_1920_30fps.mp4" type="video/mp4" /> */}
-          {/* <source src="/vd.mp4" type="video/mp4" /> */}
-          <source src="/capped-1080p.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+  ref={sectionRef}
+  className="video-section w-full min-h-[90vh] md:min-h-screen flex flex-col justify-center items-center"
+>
+  <div className="w-full h-full max-w-[1920px] mx-auto aspect-video flex justify-center items-center relative">
+    {/* Loading indicator for Safari */}
+    {!videoLoaded && isSafari && (
+      <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 rounded-lg z-10">
+        <div className="text-white">Loading video...</div>
       </div>
+    )}
 
-    </div>
+    <video
+      ref={videoRef}
+      muted
+      playsInline
+      webkit-playsinline="true"
+      preload="auto"
+      className="w-full h-full object-cover"
+      style={{
+        willChange: "contents",
+        transform: "translate3d(0, 0, 0)",
+        WebkitTransform: "translate3d(0, 0, 0)",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+      }}
+    >
+      <source src="https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p.mp4?updatedAt=1746462851332" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
   )
 }
 
