@@ -8,7 +8,15 @@ type LenisScrollProviderProps = {
 };
 const LenisScrollProvider: FC<LenisScrollProviderProps> = ({ children }) => {
   const lenisRef = useRef(null);
-  return <ReactLenis ref={lenisRef} root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>{children}</ReactLenis>;
+  return (
+    <ReactLenis 
+      ref={lenisRef} 
+      root 
+      options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}
+    >
+      {children as any} {/* Temporary type assertion */}
+    </ReactLenis>
+  );
 };
 
 export default LenisScrollProvider;
