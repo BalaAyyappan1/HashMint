@@ -282,7 +282,7 @@ const VideoAnimation = () => {
         WebkitBackfaceVisibility: "hidden",
       }}
     >
-      <source src="https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p.mp4?updatedAt=1746462851332" type="video/mp4" />
+      <source src="https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p%20(1).mp4?updatedAt=1746466239559" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   </div>
