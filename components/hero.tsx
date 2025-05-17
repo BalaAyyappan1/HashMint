@@ -22,16 +22,16 @@ const Hero: React.FC = () => {
     if (typeof window !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
     }
-    
     // Check connection type for preloading strategy
-    if (typeof navigator !== 'undefined' && navigator.connection) {
-      const conn = navigator.connection as any;
+    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
+      const conn = navigator.connection as { saveData: boolean; effectiveType?: string };
       const shouldPreload = !conn.saveData && 
         (conn.effectiveType === '4g' || !conn.effectiveType);
       setPreload(shouldPreload ? 'metadata' : 'none');
     } else {
       setPreload('metadata');
     }
+ 
     
     return () => {
       if (frameRef.current) {
