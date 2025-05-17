@@ -218,6 +218,8 @@ const Hero: React.FC = () => {
           preload={preload}
           muted
           playsInline
+          webkit-playsinline="true" 
+          x-webkit-airplay="allow" 
           className="absolute top-0 left-0 w-full h-full object-cover"
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
