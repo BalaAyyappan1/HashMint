@@ -9,10 +9,17 @@ type LenisScrollProviderProps = {
 const LenisScrollProvider: FC<LenisScrollProviderProps> = ({ children }) => {
   const lenisRef = useRef(null);
   return (
-    <ReactLenis 
-      ref={lenisRef} 
-      root 
-      options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}
+    <ReactLenis
+      ref={lenisRef}
+      root
+      options={{
+        lerp: 0.1, // applies to all scroll (wheel + touch)
+        duration: 1.5, // fallback, mostly for scrollTo()
+        smoothWheel: true, // for desktop mouse scroll
+        syncTouch: true, // for mobile touch
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+      }}
     >
       {children as any} {/* Temporary type assertion */}
     </ReactLenis>
