@@ -19,6 +19,105 @@
   }
 }
 
+
+html{
+  font-family: var(--font-poppins);
+}
+
 body {
 overflow: hidden;
+font-family: var(--font-poppins);
 }
+
+
+@layer utilities {
+  .dotted-border-long {
+    border-top: 1px dashed transparent;
+    border-image: repeating-linear-gradient(90deg, black, black 4px, transparent 2px, transparent 5px) 2;
+  }
+}
+
+
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+@layer utilities {
+  .fade-mask {
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      mask-size: cover;
+      -webkit-mask-size: cover;
+  }
+  
+
+  .fade-mask-left {
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 100%);
+    mask-size: cover;
+    -webkit-mask-size: cover;
+  }
+  
+}
+
+
+
+.disable-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.disable-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+
+
+.font-light {
+  font-family: var(--font-poppins);
+  font-weight: 300;
+}
+
+.font-regular {
+  font-family: var(--font-poppins);
+  font-weight: 400;
+}
+
+.font-semi-bold {
+  font-family: var(--font-poppins);
+  font-weight: 600;
+}
+
+.font-bold {
+  font-family: var(--font-poppins);
+  font-weight: 700;
+}
+
+.font-medium {
+  font-family: var(--font-poppins);
+  font-weight: 500;
+}
+
+.font-extra-bold {
+  font-family: var(--font-poppins);
+  font-weight: 800;
+}
+
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

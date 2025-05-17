@@ -1,279 +1,182 @@
 "use client";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
-import React, {useEffect, useRef, useState, } from 'react'
-import gsap from "gsap"
-import ScrollTrigger from "gsap/ScrollTrigger"
+const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [speed] = useState(175); // Fixed lower speed value
+  const [isReady, setIsReady] = useState(false);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const frameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(-1);
+  const lastScrollRef = useRef<number>(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  
+  // Check if we should load video based on connection
+  const [preload, setPreload] = useState('none');
+  
+  // Register GSAP plugins only once at component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    
+    // Check connection type for preloading strategy
+    if (typeof navigator !== 'undefined' && navigator.connection) {
+      const conn = navigator.connection as any;
+      const shouldPreload = !conn.saveData && 
+        (conn.effectiveType === '4g' || !conn.effectiveType);
+      setPreload(shouldPreload ? 'metadata' : 'none');
+    } else {
+      setPreload('metadata');
+    }
+    
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+    };
+  }, []);
 
+  // Optimized function to update video time with debouncing
+  const updateVideoTime = useCallback((newTime: number) => {
+    if (!videoRef.current || Math.abs(lastTimeRef.current - newTime) < 0.05) return;
+    
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current);
+    }
+    
+    frameRef.current = requestAnimationFrame(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = newTime;
+        lastTimeRef.current = newTime;
+      }
+    });
+  }, []);
 
-const hero = () => {
-    const videoRef = useRef<HTMLVideoElement>(null)
-    const sectionRef = useRef<HTMLDivElement>(null)
-    const contentRef = useRef<HTMLDivElement>(null)
-    const [isMobile, setIsMobile] = useState(false)
-    const [isSafari, setIsSafari] = useState(false)
-    const [videoLoaded, setVideoLoaded] = useState(false)
-  
-    useEffect(() => {
-      // Check if we're on mobile
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768)
+  // Initialize scroll trigger once video is ready
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isReady || !videoLoaded) return;
+    
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container || !video.duration) return;
+    
+    // Set container height based on video duration
+    container.style.height = `${video.duration * speed}px`;
+    
+    // Throttled scroll handler for better performance
+    const handleScroll = () => {
+      if (Date.now() - lastScrollRef.current < 16) return; // ~60fps limit
+      lastScrollRef.current = Date.now();
+      
+      const scrollPos = window.scrollY;
+      const containerTop = container.offsetTop;
+      const containerHeight = container.offsetHeight;
+      
+      if (scrollPos >= containerTop && scrollPos <= containerTop + containerHeight) {
+        const progress = (scrollPos - containerTop) / containerHeight;
+        const newTime = Math.min(progress * video.duration, video.duration - 0.01);
+        updateVideoTime(newTime);
       }
-  
-      // Check if we're on Safari
-      const checkSafari = () => {
-        const ua = navigator.userAgent.toLowerCase()
-        return ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1
+    };
+    
+    // Use ScrollTrigger for improved performance
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: container,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.3, // Smoother scrubbing
+      pin: true,
+      anticipatePin: 1,
+      markers: false,
+      onUpdate: (self) => {
+        if (!video.duration) return;
+        const newTime = Math.min(self.progress * video.duration, video.duration - 0.01);
+        updateVideoTime(newTime);
       }
-  
-      // Initial checks
-      checkMobile()
-      setIsSafari(checkSafari())
-  
-      // Listen for resize events
-      window.addEventListener("resize", checkMobile)
-  
-      return () => {
-        window.removeEventListener("resize", checkMobile)
+    });
+    
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
       }
-    }, [])
-  
-    useEffect(() => {
-      // Register GSAP plugins
-      gsap.registerPlugin(ScrollTrigger)
-  
-      // Get references to DOM elements
-      const video = videoRef.current
-      const videoSection = sectionRef.current
-  
-      if (!video || !videoSection) return
-  
-      // Force better performance with these settings
-      video.pause()
-      video.muted = true
-      video.playsInline = true
-      video.preload = "auto"
-      video.setAttribute("playsinline", "")
-      video.setAttribute("webkit-playsinline", "")
-  
-      // Safari-specific optimizations
-      if (isSafari) {
-        video.controls = false
-        video.autoplay = false
-      }
-  
-      video.currentTime = 0
-  
-      video.style.transform = "translate3d(0, 0, 0)"
-      video.style.webkitTransform = "translate3d(0, 0, 0)"
-  
-      // Safari-specific styles
-      if (isSafari) {
-        video.style.webkitBackfaceVisibility = "hidden"
-        video.style.webkitPerspective = "1000"
-      } else {
-        video.style.backfaceVisibility = "hidden"
-      }
-  
-      // Make sure video is fully loaded before setting up ScrollTrigger
-      const setupScrollTrigger = () => {
-        // Clear any existing ScrollTriggers to prevent conflicts
-        ScrollTrigger.getAll().forEach((t) => t.kill())
-  
-        // Adjust settings based on device
-        const scrubValue = isMobile ? 0.5 : 0.1
-        const endValue = isMobile ? "+=300%" : "+=250%"
-  
-        // Safari-specific adjustments
-        const safariScrubValue = isSafari ? 1 : scrubValue
-  
-        // Create the main scroll trigger for the video
-        const videoScrubber = ScrollTrigger.create({
-          trigger: videoSection,
-          start: "top top", // Start exactly at the top of the viewport
-          end: endValue,
-          pin: true,
-          pinSpacing: true,
-          scrub: safariScrubValue,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            if (video) {
-              // Calculate video time based on scroll progress
-              const progress = Math.max(0, Math.min(self.progress, 1))
-              const targetTime = progress * video.duration
-  
-              // Safari-specific time update handling
-              if (isSafari) {
-                try {
-                  requestAnimationFrame(() => {
-                    video.currentTime = targetTime
-                  })
-                } catch (e) {
-                  console.error("Safari video time update error:", e)
-                }
-              } else {
-                // Direct time setting for other browsers
-                video.currentTime = targetTime
-              }
-            }
-          },
-          onEnter: () => {
-            // Reset to beginning when entering the section
-            if (video) {
-              try {
-                video.currentTime = 0
-              } catch (e) {
-                console.error("Video time reset error:", e)
-              }
-            }
-            document.body.classList.remove("video-completed")
-          },
-          onLeave: () => {
-            // When scrolling past the section, ensure video is at the end
-            if (video) {
-              try {
-                video.currentTime = video.duration
-              } catch (e) {
-                console.error("Video time set error:", e)
-              }
-            }
-            document.body.classList.add("video-completed")
-          },
-          onEnterBack: () => {
-            // When scrolling back up into the section
-            document.body.classList.remove("video-completed")
-          },
-          onLeaveBack: () => {
-            // When scrolling back above the section
-            if (video) {
-              try {
-                video.currentTime = 0
-              } catch (e) {
-                console.error("Video time reset error:", e)
-              }
-            }
-          },
-        })
-  
-        // Create a second ScrollTrigger to handle the transition to the next section
-        ScrollTrigger.create({
-          trigger: videoSection,
-          start: "bottom top", 
-          pin: false,
-          onEnter: () => {
-            // Ensure video is at the end when scrolling down past it
-            if (video) {
-              try {
-                video.currentTime = video.duration
-              } catch (e) {
-                console.error("Video time set error:", e)
-              }
-            }
-            document.body.classList.add("video-completed")
-          },
-          onLeaveBack: () => {
-            // When scrolling back up into the video section
-            document.body.classList.remove("video-completed")
-          },
-        })
-      }
-  
-      // Initialize when video is ready - with Safari-specific handling
-      const loadVideo = () => {
-        return new Promise<void>((resolve) => {
-          // For Safari, we need to handle video loading differently
-          if (isSafari) {
-            // Safari needs a play attempt to properly load the video
-            const attemptPlay = () => {
-              video
-                .play()
-                .then(() => {
-                  video.pause()
-                  video.currentTime = 0
-                  setVideoLoaded(true)
-                  resolve()
-                })
-                .catch((e) => {
-                  console.log("Safari video play attempt failed, retrying...")
-                  // For Safari, we'll just resolve anyway after a timeout
-                  setTimeout(() => {
-                    video.currentTime = 0
-                    setVideoLoaded(true)
-                    resolve()
-                  }, 500)
-                })
-            }
-  
-            if (video.readyState >= 2) {
-              attemptPlay()
-            } else {
-              video.addEventListener("loadeddata", attemptPlay, { once: true })
-              // Force load
-              video.load()
-            }
-          } else {
-            // Standard approach for other browsers
-            if (video.readyState >= 3) {
-              setVideoLoaded(true)
-              resolve()
-            } else {
-              const handleLoaded = () => {
-                video.removeEventListener("canplaythrough", handleLoaded)
-                setVideoLoaded(true)
-                resolve()
-              }
-              video.addEventListener("canplaythrough", handleLoaded)
-              video.load()
-            }
-          }
-        })
-      }
-  
-      loadVideo().then(() => {
-        // Reset to beginning before setting up scroll trigger
-        try {
-          video.currentTime = 0
-        } catch (e) {
-          console.error("Video time reset error:", e)
-        }
-        setupScrollTrigger()
-      })
-  
-      // Add resize handler to maintain smooth experience on window resize
-      const handleResize = () => {
-        // Refresh ScrollTrigger on resize
-        ScrollTrigger.refresh(true)
-      }
-  
-      window.addEventListener("resize", handleResize)
-  
-      // Cleanup on component unmount
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-        window.removeEventListener("resize", handleResize)
-      }
-    }, [isMobile, isSafari])
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [speed, isReady, updateVideoTime, videoLoaded]);
+
+  // Video loading optimization
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const handleMetadataLoaded = () => {
+      setIsReady(true);
+    };
+    
+    const handleVideoLoaded = () => {
+      setVideoLoaded(true);
+    };
+    
+    // Check if metadata is already loaded
+    if (video.readyState >= 2) {
+      handleMetadataLoaded();
+    }
+    
+    // Check if video is fully loaded
+    if (video.readyState >= 4) {
+      handleVideoLoaded();
+    }
+    
+    video.addEventListener('loadedmetadata', handleMetadataLoaded);
+    video.addEventListener('canplaythrough', handleVideoLoaded);
+    
+    // Performance optimizations for video element
+    video.playbackRate = 0;
+    video.defaultPlaybackRate = 0;
+    video.disablePictureInPicture = true;
+    video.autoplay = false;
+    video.loop = false;
+    
+    return () => {
+      video.removeEventListener('loadedmetadata', handleMetadataLoaded);
+      video.removeEventListener('canplaythrough', handleVideoLoaded);
+    };
+  }, []);
+
   return (
-    <div>
-      <video
+    <div ref={containerRef} className="relative will-change-transform">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        <video
           ref={videoRef}
+          preload={preload}
           muted
           playsInline
-          webkit-playsinline="true"
-          preload="auto"
-          className="w-full h-full object-cover rounded-lg"
-          style={{
-            willChange: "contents",
-            transform: "translate3d(0, 0, 0)",
-            WebkitTransform: "translate3d(0, 0, 0)",
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-          }}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          style={{ transform: 'translateZ(0)', willChange: 'transform' }} // Hardware acceleration hint
         >
-          <source src="/capped-1080p.mp4" type="video/mp4" />
+          {/* Prioritize WebM for better performance */}
+          <source src="/bg_onscroll.webm" type="video/webm" />
+          <source src="/bg_optimized.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        
+        {/* Loading state with minimal DOM */}
+        {!videoLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black text-white">
+            <div className="text-lg font-medium">Loading video...</div>
+          </div>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default hero
+export default Hero;

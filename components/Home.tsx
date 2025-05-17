@@ -4,13 +4,9 @@ import TopNav from './TopNav';
 
 const Home = () => {
   return (
-   <>
-  <div className='heroSection '>
-
-</div>
-   
-   
-   </>
+    <>
+      
+    </>
   );
 }
 

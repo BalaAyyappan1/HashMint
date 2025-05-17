@@ -81,7 +81,7 @@ const VideoAnimation = () => {
       ScrollTrigger.getAll().forEach((t) => t.kill())
 
       // Adjust settings based on device
-      const scrubValue = isMobile ? 0.1 : 0.1
+      const scrubValue = isMobile ? 0.5 : 0.1
       const endValue = isMobile ? "+=300%" : "+=250%"
 
       // Safari-specific adjustments
@@ -90,7 +90,7 @@ const VideoAnimation = () => {
       // Create the main scroll trigger for the video
       const videoScrubber = ScrollTrigger.create({
         trigger: videoSection,
-        start: "top top", // Start exactly at the top of the viewport
+        start: "center center", // Start exactly at the top of the viewport
         end: endValue,
         pin: true,
         pinSpacing: true,
@@ -158,7 +158,7 @@ const VideoAnimation = () => {
       // Create a second ScrollTrigger to handle the transition to the next section
       ScrollTrigger.create({
         trigger: videoSection,
-        start: "top top", 
+        start: "bottom top", 
         pin: false,
         onEnter: () => {
           // Ensure video is at the end when scrolling down past it
@@ -256,38 +256,44 @@ const VideoAnimation = () => {
 
   return (
     <div
-  ref={sectionRef}
-  className="video-section w-full min-h-[90vh] md:min-h-screen flex flex-col justify-center items-center"
->
-  <div className="w-full h-full max-w-[1920px] mx-auto aspect-video flex justify-center items-center relative">
-    {/* Loading indicator for Safari */}
-    {!videoLoaded && isSafari && (
-      <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 rounded-lg z-10">
-        <div className="text-white">Loading video...</div>
-      </div>
-    )}
-
-    <video
-      ref={videoRef}
-      muted
-      playsInline
-      webkit-playsinline="true"
-      preload="auto"
-      className="w-full h-full object-cover"
-      style={{
-        willChange: "contents",
-        transform: "translate3d(0, 0, 0)",
-        WebkitTransform: "translate3d(0, 0, 0)",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-      }}
+      ref={sectionRef}
+      className="video-section w-full md:h-screen flex flex-col md:flex-row md:space-y-0 space-y-5 justify-between items-center"
     >
-      <source src="https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p%20(1).mp4?updatedAt=1746466239559" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</div>
-  )
+      <div className="w-full md:w-[60%] h-full flex justify-center items-center relative">
+        {/* Loading indicator for Safari */}
+        {!videoLoaded && isSafari && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 rounded-lg z-10">
+            <div className="text-white">Loading video...</div>
+          </div>
+        )}
+
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          webkit-playsinline="true"
+          preload="auto"
+          className="w-full h-[500px] object-cover rounded-lg"
+          style={{
+            willChange: "contents",
+            transform: "translate3d(0, 0, 0)",
+            WebkitTransform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+          }}
+        >
+          {/* <source src="https://videos.pexels.com/video-files/6594072/6594072-hd_1080_1920_30fps.mp4" type="video/mp4" /> */}
+          {/* <source src="/vd.mp4" type="video/mp4" /> */}
+          <source src="/bg_optimized.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div
+        ref={contentRef}
+        className="w-full md:w-[40%] md:mt-0 mt-5 mb-[100px] flex flex-col space-x-5 justify-center items-center md:items-start space-y-5 md:space-y-10 px-10"
+      ></div>
+    </div>
+  );
 }
 
 export default VideoAnimation;

@@ -1,10 +1,10 @@
 
-import VideoAnimation2 from "@/components/VideoAnimation2";
+import Hero from '@/components/hero'
 
 export default function Home() {
   return (
-    <div className="p-5 overflow-x-hidden">
-      <VideoAnimation2 />
+    <div className="overflow-x-hidden">
+      <Hero />
     
     </div>
   );
