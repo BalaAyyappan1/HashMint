@@ -6,32 +6,38 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [speed] = useState(175); // Fixed lower speed value
+  const [speed] = useState(225); // Slightly higher speed for mobile
   const [isReady, setIsReady] = useState(false);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(-1);
-  const lastScrollRef = useRef<number>(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Check if we should load video based on connection
   const [preload, setPreload] = useState('none');
   
-  // Register GSAP plugins only once at component mount
+  // Mobile detection
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        const ua = navigator.userAgent;
+        setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua));
+      };
+      
+      checkMobile();
       gsap.registerPlugin(ScrollTrigger);
+      
+      // Connection check for preloading strategy
+      if ('connection' in navigator) {
+        const conn = navigator.connection as { saveData: boolean; effectiveType?: string };
+        const shouldPreload = !conn.saveData && 
+          (conn.effectiveType === '4g' || !conn.effectiveType);
+        setPreload(shouldPreload ? 'metadata' : 'none');
+      } else {
+        setPreload('metadata');
+      }
     }
-    // Check connection type for preloading strategy
-    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
-      const conn = navigator.connection as { saveData: boolean; effectiveType?: string };
-      const shouldPreload = !conn.saveData && 
-        (conn.effectiveType === '4g' || !conn.effectiveType);
-      setPreload(shouldPreload ? 'metadata' : 'none');
-    } else {
-      setPreload('metadata');
-    }
- 
     
     return () => {
       if (frameRef.current) {
@@ -67,48 +73,67 @@ const Hero: React.FC = () => {
     const container = containerRef.current;
     if (!video || !container || !video.duration) return;
     
-    // Set container height based on video duration
-    container.style.height = `${video.duration * speed}px`;
+    // Set container height based on video duration and device
+    const durationMultiplier = isMobile ? 0.8 : 1; // Shorter scroll distance on mobile
+    container.style.height = `${video.duration * speed * durationMultiplier}px`;
     
-    // Throttled scroll handler for better performance
-    const handleScroll = () => {
-      if (Date.now() - lastScrollRef.current < 16) return; // ~60fps limit
-      lastScrollRef.current = Date.now();
-      
-      const scrollPos = window.scrollY;
-      const containerTop = container.offsetTop;
-      const containerHeight = container.offsetHeight;
-      
-      if (scrollPos >= containerTop && scrollPos <= containerTop + containerHeight) {
-        const progress = (scrollPos - containerTop) / containerHeight;
-        const newTime = Math.min(progress * video.duration, video.duration - 0.01);
-        updateVideoTime(newTime);
-      }
-    };
-    
-    // Use ScrollTrigger for improved performance
+    // Use ScrollTrigger with mobile optimizations
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: "top top",
       end: "bottom bottom",
-      scrub: 0.3, // Smoother scrubbing
+      scrub: isMobile ? 1 : 0.3, // Smoother scrubbing with higher value on mobile
       pin: true,
       anticipatePin: 1,
       markers: false,
+      preventOverlaps: true,  // Prevents conflicts with other ScrollTriggers
+      fastScrollEnd: true,    // Optimizes for fast scrolling
+      invalidateOnRefresh: true, // Recalculates on resize
       onUpdate: (self) => {
         if (!video.duration) return;
-        const newTime = Math.min(self.progress * video.duration, video.duration - 0.01);
+        
+        // Apply different sensitivity for mobile
+        const progress = isMobile ? 
+          Math.max(0, Math.min(1, self.progress)) : // Ensure bounds for mobile
+          self.progress;
+          
+        const newTime = Math.min(progress * video.duration, video.duration - 0.01);
         updateVideoTime(newTime);
+      },
+      onRefresh: () => {
+        // Fix for scenarios where scroll position might be inconsistent
+        if (video.duration) {
+          const progress = ScrollTrigger.getById(scrollTriggerRef.current?.vars.id || '')?.progress || 0;
+          updateVideoTime(progress * video.duration);
+        }
       }
     });
+
+    // Add touch-specific optimizations for mobile
+    if (isMobile) {
+      // Create a lightweight touch handler for iOS momentum scrolling issues
+      const touchHandler = () => {
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.refresh();
+        }
+      };
+      
+      document.addEventListener('touchend', touchHandler, { passive: true });
+      
+      return () => {
+        document.removeEventListener('touchend', touchHandler);
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill();
+        }
+      };
+    }
     
     return () => {
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
-      window.removeEventListener('scroll', handleScroll);
     };
-  }, [speed, isReady, updateVideoTime, videoLoaded]);
+  }, [speed, isReady, updateVideoTime, videoLoaded, isMobile]);
 
   // Video loading optimization
   useEffect(() => {
@@ -142,12 +167,48 @@ const Hero: React.FC = () => {
     video.disablePictureInPicture = true;
     video.autoplay = false;
     video.loop = false;
+    video.muted = true;
+    
+    // For iOS, need to specifically handle playback
+    if (isMobile) {
+      video.setAttribute('webkit-playsinline', 'true');
+      video.setAttribute('playsinline', 'true');
+      
+      // iOS Safari often needs this to properly load the video
+      // Handle video loading - HTMLMediaElement.load() doesn't return a promise
+      // but we'll ensure it's called for iOS
+      try {
+        video.load();
+      } catch (e) {
+        // Silently catch any errors that might occur
+        console.error("Video loading error:", e);
+      }
+    }
     
     return () => {
       video.removeEventListener('loadedmetadata', handleMetadataLoaded);
       video.removeEventListener('canplaythrough', handleVideoLoaded);
     };
-  }, []);
+  }, [isMobile]);
+
+  // For mobile devices, provide a lower quality video option
+  const getVideoSources = () => {
+    if (isMobile) {
+      return (
+        <>
+          <source src="/bg_mobile.webm" type="video/webm" />
+          <source src="/bg_mobile.mp4" type="video/mp4" />
+        </>
+      );
+    }
+    
+    return (
+      <>
+        <source src="/bg_onscroll.webm" type="video/webm" />
+        <source src="/bg_optimized.mp4" type="video/mp4" />
+      </>
+    );
+  };
 
   return (
     <div ref={containerRef} className="relative will-change-transform">
@@ -160,11 +221,14 @@ const Hero: React.FC = () => {
           className="absolute top-0 left-0 w-full h-full object-cover"
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
-          style={{ transform: 'translateZ(0)', willChange: 'transform' }} // Hardware acceleration hint
+          style={{ 
+            transform: 'translateZ(0)', 
+            willChange: 'transform',
+            // Lower quality for mobile to improve performance
+            objectFit: isMobile ? 'cover' : 'cover',
+          }}
         >
-          {/* Prioritize WebM for better performance */}
-          <source src="/bg_onscroll.webm" type="video/webm" />
-          <source src="/bg_optimized.mp4" type="video/mp4" />
+          {getVideoSources()}
           Your browser does not support the video tag.
         </video>
         
