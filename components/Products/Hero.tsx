@@ -1,6 +1,7 @@
 'use client';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image';
@@ -9,12 +10,11 @@ import TopNav from '../TopNav';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Hero = () => {
-    const swiperRef = useRef(null);
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
+    const swiperRef = useRef<SwiperType | null>(null);
+    const prevRef = useRef<HTMLButtonElement>(null);
+    const nextRef = useRef<HTMLButtonElement>(null);
     const [open, setOpen] = useState(false);
     const [openOrder, setOpenOrder] = useState(false);
-
 
     const images = [
         { src: "/DC-1.avif", name: "Image 1" },
@@ -25,8 +25,7 @@ const Hero = () => {
     const orderDetails = [
         { title: '30-Day Guarantee', Description: 'Return your DC-1 within 30 days for a full refund.', img: '/60fps.png' },
         { title: 'Shipping Estimate', Description: 'New orders are expected to ship by June 2025.', img: '/60fps.png' }
-
-    ]
+    ];
 
     const media = [
         { type: 'image', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/daylight.avif?updatedAt=1746725477420' },
@@ -62,20 +61,6 @@ const Hero = () => {
         },
     ];
 
-
-    useEffect(() => {
-        if (
-            swiperRef.current &&
-            swiperRef.current.params &&
-            swiperRef.current.params.navigation
-        ) {
-            swiperRef.current.params.navigation.prevEl = prevRef.current;
-            swiperRef.current.params.navigation.nextEl = nextRef.current;
-            swiperRef.current.navigation.init();
-            swiperRef.current.navigation.update();
-        }
-    }, []);
-
     return (
         <div>
             <div className="fixed w-full z-20">
@@ -101,8 +86,20 @@ const Hero = () => {
                     </button>
 
                     <Swiper
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        onSwiper={(swiper) => {
+                            swiperRef.current = swiper;
+                        }}
                         modules={[Navigation]}
+                        navigation={{
+                            prevEl: prevRef.current,
+                            nextEl: nextRef.current,
+                        }}
+                        onBeforeInit={(swiper) => {
+                            // @ts-ignore - This is a valid way to customize Swiper navigation
+                            swiper.params.navigation.prevEl = prevRef.current;
+                            // @ts-ignore
+                            swiper.params.navigation.nextEl = nextRef.current;
+                        }}
                         className="mySwiper"
                     >
                         {media.map((item, index) => (
@@ -163,7 +160,7 @@ const Hero = () => {
 
                 {/* Content Section */}
                 <div className="w-[30%] h-screen mt-40 p-5">
-                    <h1 className="text-4xl">Hashmint Dc-1</h1>
+                    <h1 className="text-4xl">Hashmint DC-1</h1>
                     <p>
                         The world's first human-friendly computer that your brain and eyes
                         will actually love.
@@ -251,31 +248,30 @@ const Hero = () => {
                             Order Details
                         </button>
                         {openOrder && (
-                            <div className="mt-4 w-full flex flex-row justify-center items-start gap-4 bg-white  border-gray-200 rounded-lg shadow-lg p-4">
-                                {orderDetails.map((img, index) => (
+                            <div className="mt-4 w-full flex flex-row justify-center items-start gap-4 bg-white border-gray-200 rounded-lg shadow-lg p-4">
+                                {orderDetails.map((item, index) => (
                                     <div
                                         key={index}
-                                        className="w-full  border-gray-200 p-3  transition"
+                                        className="w-full border-gray-200 p-3 transition"
                                     >
                                         {/* Logo + Title row */}
                                         <div className="flex items-center space-x-2 mb-2">
                                             <Image
-                                                src={img.img}
-                                                alt={img.title}
+                                                src={item.img}
+                                                alt={item.title}
                                                 width={30}
                                                 height={30}
                                                 className="object-cover rounded"
                                             />
-                                            <h1 className="text-sm font-semibold">{img.title}</h1>
+                                            <h1 className="text-sm font-semibold">{item.title}</h1>
                                         </div>
 
                                         {/* Description below */}
-                                        <p className="text-xs text-gray-600 text-left">{img.Description}</p>
+                                        <p className="text-xs text-gray-600 text-left">{item.Description}</p>
                                     </div>
                                 ))}
                             </div>
                         )}
-
                     </div>
                 </div>
             </div>
@@ -283,4 +279,4 @@ const Hero = () => {
     );
 };
 
-export default Hero
+export default Hero;
