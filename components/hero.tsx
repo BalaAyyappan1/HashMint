@@ -8,7 +8,7 @@ import VideoHoverPlayer from './VideoHoverPlayer';
 const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [speed] = useState(225); // Slightly higher speed for mobile
+  const [speed] = useState(255);
   const [isReady, setIsReady] = useState(false);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const frameRef = useRef<number | null>(null);
@@ -220,7 +220,7 @@ const Hero: React.FC = () => {
       </div>
       <div
         ref={containerRef}
-        className="relative h-screen will-change-transform p-5 "
+        className="relative h-[70vh] will-change-transform p-5 "
       >
         <div className="absolute z-90 top-37 left-37">
           <h1 className="text-white text-4xl font-bold leading-tight ">
@@ -231,7 +231,7 @@ const Hero: React.FC = () => {
           </p>
         </div>
 
-        <div className="sticky top-0 h-[96vh]  w-full overflow-hidden">
+        <section className="sticky top-0 h-[96vh]  w-full overflow-hidden">
           <video
             ref={videoRef}
             preload={preload}
@@ -245,7 +245,6 @@ const Hero: React.FC = () => {
             style={{
               transform: "translateZ(0)",
               willChange: "transform",
-              // Lower quality for mobile to improve performance
               objectFit: isMobile ? "cover" : "cover",
             }}
           >
@@ -267,13 +266,18 @@ const Hero: React.FC = () => {
             <VideoHoverPlayer />
           </div>
 
-          {/* Loading state with minimal DOM */}
           {!videoLoaded && (
             <div className="absolute inset-0 flex items-center justify-center bg-black text-white">
               <div className="text-lg font-medium">Loading video...</div>
             </div>
           )}
-        </div>
+
+
+         
+        </section>
+        <div className='bg-white h-screen'>
+            Hello
+          </div>
       </div>
     </>
   );
