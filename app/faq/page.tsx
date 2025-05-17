@@ -9,7 +9,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>
+    <div className='bg-[#FAF5F2]'>
       <Hero />
       <Faq />
   <New />

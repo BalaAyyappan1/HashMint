@@ -6,19 +6,19 @@ const Hero = () => {
     const contents = [
         {
             name: 'Order',
-            image: '/order.avif'
+            image: '/order1.svg'
         },
         {
             name: 'Device',
-            image: '/order.avif'
+            image: '/device.svg'
         },
         {
             name: 'Software',
-            image: '/order.avif'
+            image: '/software.svg'
         },
         {
             name: 'Comapny',
-            image: '/order.avif'
+            image: '/company.svg'
         },
 
 
@@ -27,7 +27,7 @@ const Hero = () => {
 
     return (
       <div>
-        <div className="fixed w-full z-20">
+        <div className="fixed w-full z-20 ">
           <TopNav />
         </div>
 
@@ -51,11 +51,12 @@ const Hero = () => {
                   className="flex flex-col pt-7 items-center w-60 h-70   bg-[#E7DDD6] rounded-2xl"
                   key={index}
                 >
-                  <div className="text-xl text-center mb-10">{item.name}</div>
+                  <div className="text-2xl text-center mb-10">{item.name}</div>
                   <Image
                     src={item.image}
                     alt="hero"
-                    className="w-30 h-30"
+                    className="w-30 h-30 opacity-35 transition-all duration-300 hover:text-red-500 hover:grayscale hover:brightness-55 hover:opacity-50"
+
                     width={100}
                     height={100}
                   />
