@@ -196,16 +196,16 @@ const Hero: React.FC = () => {
     if (isMobile) {
       return (
         <>
-          <source src="/bg_mobile.webm" type="video/webm" />
-          <source src="/bg_mobile.mp4" type="video/mp4" />
+          <source src="/hashmintBanner.webm" type="video/webm" />
+          <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
         </>
       );
     }
     
     return (
       <>
-        <source src="/bg_onscroll.webm" type="video/webm" />
-        <source src="/bg_optimized.mp4" type="video/mp4" />
+         <source src="/hashmintBanner.webm" type="video/webm" />
+         <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
       </>
     );
   };
