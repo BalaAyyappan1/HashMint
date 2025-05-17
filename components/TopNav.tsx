@@ -14,11 +14,11 @@ const TopNav = () => {
 
       {/* Desktop NAV */}
       <div className="hidden md:block">
-        <div className="flex flex-row justify-between items-center w-full bg-white border border-[#d8d4d1] rounded-lg pl-5 pr-1 py-1 space-x-5">
-          <Link href={'/'} className="cursor-pointer text-md">Home</Link>
-          <Link href={'/products'} className="cursor-pointer text-md">Product</Link>
-          <Link href={'/faq'} className="cursor-pointer text-md">FAQ</Link>
-          <button className="px-5 py-3 rounded-lg bg-[#f9c63b]">
+        <div className="flex flex-row justify-between items-center w-full bg-[#E2DDDC] border border-[#d8d4d1] rounded-lg pl-5 pr-1 py-1 space-x-5">
+          <Link href={'/'} className="cursor-pointer text-sm">Home</Link>
+          <Link href={'/products'} className="cursor-pointer text-sm">Product</Link>
+          <Link href={'/faq'} className="cursor-pointer text-sm">FAQ</Link>
+          <button className="px-5 py-3 rounded-lg bg-[#f9c63b] text-sm">
             Book a call
           </button>
         </div>

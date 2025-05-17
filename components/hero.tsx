@@ -2,213 +2,280 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import TopNav from './TopNav';
+import VideoHoverPlayer from './VideoHoverPlayer';
 
 const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [speed] = useState(150); // Lower speed for better mobile performance
+  const [speed] = useState(225); // Slightly higher speed for mobile
   const [isReady, setIsReady] = useState(false);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(-1);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [useFallback, setUseFallback] = useState(false);
-  
-  // Mobile detection and setup
+
+  // Check if we should load video based on connection
+  const [preload, setPreload] = useState('none');
+
+  // Mobile detection
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        const ua = navigator.userAgent;
+        setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua));
+      };
 
-    const checkMobile = () => {
-      // More reliable mobile detection
-      const ua = navigator.userAgent;
-      const isIOS = /iPad|iPhone|iPod/.test(ua);
-      const isAndroid = /Android/.test(ua);
-      const isMobile = isIOS || isAndroid || window.innerWidth < 768;
-      setIsMobile(isMobile);
-
-      // Fallback for low-performance devices
-      const isLowPerfDevice = isMobile && 
-        (/iPhone OS 12_|iPhone OS 13_|Android 9|Android 10/.test(ua) || 
-        window.devicePixelRatio > 2);
-      setUseFallback(isLowPerfDevice);
-    };
-
-    checkMobile();
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Handle orientation changes
-    const handleResize = () => {
       checkMobile();
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Connection check for preloading strategy
+      if ('connection' in navigator) {
+        const conn = navigator.connection as { saveData: boolean; effectiveType?: string };
+        const shouldPreload = !conn.saveData &&
+          (conn.effectiveType === '4g' || !conn.effectiveType);
+        setPreload(shouldPreload ? 'metadata' : 'none');
+      } else {
+        setPreload('metadata');
+      }
+    }
+
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
       if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.refresh();
+        scrollTriggerRef.current.kill();
       }
     };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Throttled video time update
+  // Optimized function to update video time with debouncing
   const updateVideoTime = useCallback((newTime: number) => {
     if (!videoRef.current || Math.abs(lastTimeRef.current - newTime) < 0.05) return;
-    
+
     if (frameRef.current) {
       cancelAnimationFrame(frameRef.current);
     }
-    
+
     frameRef.current = requestAnimationFrame(() => {
       if (videoRef.current) {
-        // iOS needs this slight delay for smooth playback
-        if (isMobile) {
-          videoRef.current.currentTime = newTime + 0.001;
-        } else {
-          videoRef.current.currentTime = newTime;
-        }
+        videoRef.current.currentTime = newTime;
         lastTimeRef.current = newTime;
       }
     });
-  }, [isMobile]);
+  }, []);
 
-  // Initialize scroll trigger
+  // Initialize scroll trigger once video is ready
   useEffect(() => {
-    if (!isReady || !videoLoaded || !videoRef.current || !containerRef.current) return;
+    if (typeof window === 'undefined' || !isReady || !videoLoaded) return;
 
     const video = videoRef.current;
     const container = containerRef.current;
+    if (!video || !container || !video.duration) return;
 
-    // Adjust for mobile and fallback
-    const durationMultiplier = isMobile ? 0.6 : 1;
-    const containerHeight = video.duration * speed * durationMultiplier;
-    container.style.height = `${containerHeight}px`;
+    // Set container height based on video duration and device
+    const durationMultiplier = isMobile ? 0.8 : 1; // Shorter scroll distance on mobile
+    container.style.height = `${video.duration * speed * durationMultiplier}px`;
 
-    // For low-performance devices, use a simplified approach
-    if (useFallback) {
-      const handleScroll = () => {
-        const scrollY = window.scrollY;
-        const maxScroll = containerHeight - window.innerHeight;
-        const progress = Math.min(scrollY / maxScroll, 1);
-        updateVideoTime(progress * video.duration);
-      };
-
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-
-    // Standard GSAP ScrollTrigger setup
+    // Use ScrollTrigger with mobile optimizations
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: "top top",
       end: "bottom bottom",
-      scrub: isMobile ? 0.8 : 0.3, // Smoother scrubbing on mobile
+      scrub: isMobile ? 1 : 0.3, // Smoother scrubbing with higher value on mobile
       pin: true,
       anticipatePin: 1,
       markers: false,
+      preventOverlaps: true,  // Prevents conflicts with other ScrollTriggers
+      fastScrollEnd: true,    // Optimizes for fast scrolling
+      invalidateOnRefresh: true, // Recalculates on resize
       onUpdate: (self) => {
         if (!video.duration) return;
-        const progress = Math.max(0, Math.min(1, self.progress));
-        const newTime = progress * video.duration;
+
+        // Apply different sensitivity for mobile
+        const progress = isMobile ?
+          Math.max(0, Math.min(1, self.progress)) : // Ensure bounds for mobile
+          self.progress;
+
+        const newTime = Math.min(progress * video.duration, video.duration - 0.01);
         updateVideoTime(newTime);
+      },
+      onRefresh: () => {
+        // Fix for scenarios where scroll position might be inconsistent
+        if (video.duration) {
+          const progress = ScrollTrigger.getById(scrollTriggerRef.current?.vars.id || '')?.progress || 0;
+          updateVideoTime(progress * video.duration);
+        }
       }
     });
+
+    // Add touch-specific optimizations for mobile
+    if (isMobile) {
+      // Create a lightweight touch handler for iOS momentum scrolling issues
+      const touchHandler = () => {
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.refresh();
+        }
+      };
+
+      document.addEventListener('touchend', touchHandler, { passive: true });
+
+      return () => {
+        document.removeEventListener('touchend', touchHandler);
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill();
+        }
+      };
+    }
 
     return () => {
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
     };
-  }, [speed, isReady, videoLoaded, isMobile, useFallback, updateVideoTime]);
+  }, [speed, isReady, updateVideoTime, videoLoaded, isMobile]);
 
-  // Video loading and optimization
+  // Video loading optimization
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleCanPlay = () => {
+    const handleMetadataLoaded = () => {
       setIsReady(true);
+    };
+
+    const handleVideoLoaded = () => {
       setVideoLoaded(true);
     };
 
-    // Optimized loading strategy
-    video.preload = isMobile ? 'metadata' : 'auto';
-    video.muted = true;
-    video.playsInline = true;
-    video.setAttribute('webkit-playsinline', '');
-    video.setAttribute('playsinline', '');
-    video.disablePictureInPicture = true;
-    video.controls = false;
-
-    // For iOS, we need to trigger loading differently
-    if (isMobile) {
-      video.load();
-      // iOS often needs this to properly load the video
-      setTimeout(() => {
-        if (video.readyState < 3) video.load();
-      }, 300);
+    // Check if metadata is already loaded
+    if (video.readyState >= 2) {
+      handleMetadataLoaded();
     }
 
-    video.addEventListener('canplay', handleCanPlay, { once: true });
-    video.addEventListener('error', () => setUseFallback(true));
+    // Check if video is fully loaded
+    if (video.readyState >= 4) {
+      handleVideoLoaded();
+    }
+
+    video.addEventListener('loadedmetadata', handleMetadataLoaded);
+    video.addEventListener('canplaythrough', handleVideoLoaded);
+
+    // Performance optimizations for video element
+    video.playbackRate = 0;
+    video.defaultPlaybackRate = 0;
+    video.disablePictureInPicture = true;
+    video.autoplay = false;
+    video.loop = false;
+    video.muted = true;
+
+    // For iOS, need to specifically handle playback
+    if (isMobile) {
+      video.setAttribute('webkit-playsinline', 'true');
+      video.setAttribute('playsinline', 'true');
+
+      // iOS Safari often needs this to properly load the video
+      // Handle video loading - HTMLMediaElement.load() doesn't return a promise
+      // but we'll ensure it's called for iOS
+      try {
+        video.load();
+      } catch (e) {
+        // Silently catch any errors that might occur
+        console.error("Video loading error:", e);
+      }
+    }
 
     return () => {
-      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('loadedmetadata', handleMetadataLoaded);
+      video.removeEventListener('canplaythrough', handleVideoLoaded);
     };
   }, [isMobile]);
 
-  // Get appropriate video sources
+  // For mobile devices, provide a lower quality video option
   const getVideoSources = () => {
-    if (useFallback) {
+    if (isMobile) {
       return (
         <>
-          <source src="/hashmintBanner-low.webm" type="video/webm" />
-          <source src="/hashmintBanner-low.mp4" type="video/mp4" />
+          <source src="/hashmintBanner.webm" type="video/webm" />
+          <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
         </>
       );
     }
+
     return (
       <>
         <source src="/hashmintBanner.webm" type="video/webm" />
-        <source src="/hashmintBanner.mp4" type="video/mp4" />
+        <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
       </>
     );
   };
 
   return (
-    <div ref={containerRef} className="relative">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {!useFallback ? (
+    <>
+      {" "}
+      <div className="fixed top-0 left-0 w-full z-20 px-5 pt-5">
+        <TopNav />
+      </div>
+      <div
+        ref={containerRef}
+        className="relative h-screen will-change-transform p-5 "
+      >
+        <div className="absolute z-90 top-37 left-37">
+          <h1 className="text-white text-4xl font-bold leading-tight ">
+            The Focus, Re-Imagined.
+          </h1>
+          <p className="text-white text-xl mt-8 leading-tight mt-4">
+            Meet Leaf 1 - designed for deep focus, <br /> not distractions.
+          </p>
+        </div>
+
+        <div className="sticky top-0 h-[96vh]  w-full overflow-hidden">
           <video
             ref={videoRef}
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            preload={preload}
+            muted
+            playsInline
+            webkit-playsinline="true"
+            x-webkit-airplay="allow"
+            className="absolute top-0 left-0 w-full h-full object-cover rounded-3xl"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
             style={{
-              transform: 'translateZ(0)',
-              backfaceVisibility: 'hidden',
-              willChange: 'transform'
+              transform: "translateZ(0)",
+              willChange: "transform",
+              // Lower quality for mobile to improve performance
+              objectFit: isMobile ? "cover" : "cover",
             }}
           >
             {getVideoSources()}
             Your browser does not support the video tag.
           </video>
-        ) : (
-          // Fallback - use poster image or lower quality video
-          <video
-            ref={videoRef}
-            className="absolute top-0 left-0 w-full h-full object-cover"
-            poster="/hashmint-poster.jpg"
-            preload="metadata"
-          >
-            {getVideoSources()}
-            Your browser does not support the video tag.
-          </video>
-        )}
 
-        {!videoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black">
-            <div className="text-white text-lg">Loading...</div>
+          <div className="absolute bottom-8 right-8 z-10">
+            <button
+              className="px-30 py-5.5 text-[15px] rounded-xl bg-[#f9c63b] font-semibold 
+                  hover:shadow-[0_0_15px_1px_rgba(249,198,59,0.7)] 
+                  transition-all duration-300 ease-in-out"
+            >
+              ORDER NOW
+            </button>
           </div>
-        )}
+
+          <div className="absolute bottom-1 left-12 z-10">
+            <VideoHoverPlayer />
+          </div>
+
+          {/* Loading state with minimal DOM */}
+          {!videoLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black text-white">
+              <div className="text-lg font-medium">Loading video...</div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
