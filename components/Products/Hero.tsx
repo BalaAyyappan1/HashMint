@@ -199,7 +199,7 @@ const Hero = () => {
                         style={{
                             borderImage:
                                 "repeating-linear-gradient(90deg, black, black 3px, transparent 3px, transparent 8px) 1",
-                            height: "1px", // Adjust thickness of the line
+                            height: "1px", 
                         }}
                     />
                     <div className="relative inline-block text-left w-full">

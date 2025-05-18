@@ -6,6 +6,7 @@ import React from 'react'
 import ImageCarousel from '@/components/Products/ImageCarousel'
 import Clientele from '@/components/Products/Clientele'
 import Specs from '@/components/Products/Specs'
+import AnimationSection from '@/components/AnimationSection'
 
 
 const page = () => {
