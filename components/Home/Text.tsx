@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { contents, images, KnowImages, NewSectionContent, section6Contents, TestimonialContents } from "./contents";
+import { contents, Glance, images, KnowImages, NewSectionContent, section6Contents, TestimonialContents } from "./contents";
 import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -324,7 +324,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
     // Initial title animation
     tl.from([people1Ref.current, people2Ref.current], {
-      opacity: 0,
+      opacity: 1,
       y: 50,
       duration: 1,
       stagger: 0.2,
@@ -651,7 +651,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                 className="absolute w-full font-semibold px-4 whitespace-pre-wrap w-10 z-20 text-4xl"
               >
                 {splitText(
-                  "Lights off, amber on - for a softer night time experience. "
+                  "Lights off, amber on - for a\n softer night time experience. "
                 )}
               </div>
 
@@ -701,7 +701,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               {NewSectionContent.map((item, index) => (
                 <div
                   key={index}
-                  className="new-section-item flex flex-col items-center"
+                  className="new-section-item flex flex-col items-center cursor-pointer hover group"
                 >
                   <div className="bg-[#303027] p-2 rounded-t-md">
                     <Image
@@ -709,11 +709,11 @@ const HorizontalScrollAnimation: React.FC = () => {
                       alt={item.title}
                       width={150}
                       height={150}
-                      className="new-section-image max-w-full h-auto rounded"
+                      className="new-section-image max-w-full h-auto rounded group-hover:scale-105"
                     />
                   </div>
-                  <h3 className=" bg-[#45453d] px-3 py-2 font-medium rounded-b-md w-full text-white text-center">
-                    {item.title}
+                  <h3 className="bg-[#45453d] px-3 py-2 font-medium rounded-b-md w-full text-white text-center transition-colors duration-300 ">
+                    {item.title} →
                   </h3>
                 </div>
               ))}
@@ -727,10 +727,16 @@ const HorizontalScrollAnimation: React.FC = () => {
         >
           {/* Title section */}
           <div className="flex w-full flex-col items-start justify-between md:flex-row">
-            <h1 ref={people1Ref} className="text-6xl font-bold text-white md:text-8xl lg:text-9xl">
+            <h1
+              ref={people1Ref}
+              className="text-6xl font-bold text-white md:text-8xl lg:text-9xl"
+            >
               What People
             </h1>
-            <h1 ref={people2Ref} className="mt-10 text-6xl font-bold text-white md:mt-30 md:text-8xl lg:text-9xl">
+            <h1
+              ref={people2Ref}
+              className="mt-10 text-6xl font-bold text-white md:mt-30 md:text-8xl lg:text-9xl"
+            >
               are saying
             </h1>
           </div>
@@ -739,7 +745,6 @@ const HorizontalScrollAnimation: React.FC = () => {
           <div
             ref={testimonialRef}
             className="absolute left-1/2  top-150 w-full max-w-2xl -translate-x-1/2 space-y-8"
-
           >
             {TestimonialContents.map((item, index) => (
               <div
@@ -753,7 +758,9 @@ const HorizontalScrollAnimation: React.FC = () => {
                     className="h-16 w-16 rounded-full object-cover"
                   />
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{item.name}</h3>
+                    <h3 className="text-lg font-semibold text-white">
+                      {item.name}
+                    </h3>
                     <p className="text-white opacity-80">{item.role}</p>
                   </div>
                 </div>
@@ -764,45 +771,65 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             ))}
           </div>
-
-
         </section>
-        <div className='flex flex-col gap-10 text-center justify-center text-white text-lg mt-10'>
+        <div className="flex flex-col gap-10 text-center justify-center text-white text-lg mt-10">
           Know more about us:
-          <div className='flex flex-row gap-10 items-center justify-center'>
-
+          <div className="flex flex-row gap-10 items-center justify-center">
             {KnowImages.map((image, index) => (
               <Image
                 key={index}
                 src={image.image}
                 alt={image.image || `Knowledge Image ${index + 1}`}
-                width={190}  // Default width if not specified
+                width={190} // Default width if not specified
                 height={200} // Default height if not specified
                 className="knowledge-image"
               />
             ))}
           </div>
         </div>
-        <section className='bg-[#18190F] h-[80vh] max-w-4xl gap-10 flex flex-row justify-between mx-auto items-start mt-50'>
-          <Image src='/sun.avif' alt='sun' width={1000} height={800} className='sun-image' />
-          <div className='flex flex-col gap-10 text-3xl '>
-            <h1 className='text-7xl text-white'>
-            About Us
-            </h1>
-            <p className='text-[#4b4a4a] '>
-            We have been students most of our lives surrounded by notebooks, books, paper bundles and know the problem first hand. Notebooks with traditional note taking processes are critical in a student's life but they are not at all optimized for the current day needs with the current day tech. We want to solve this problem, build a beautiful and innovative product, and cater to millions of students.
+        <section className="bg-[#18190F] h-[80vh] max-w-4xl gap-10 flex flex-row justify-between mx-auto items-start mt-50">
+          <Image
+            src="/sun.avif"
+            alt="sun"
+            width={1000}
+            height={800}
+            className="sun-image"
+          />
+          <div className="flex flex-col gap-10 text-3xl ">
+            <h1 className="text-7xl text-white">About Us</h1>
+            <p className="text-[#4b4a4a] ">
+              We have been students most of our lives surrounded by notebooks,
+              books, paper bundles and know the problem first hand. Notebooks
+              with traditional note taking processes are critical in a student's
+              life but they are not at all optimized for the current day needs
+              with the current day tech. We want to solve this problem, build a
+              beautiful and innovative product, and cater to millions of
+              students.
             </p>
-            <p className='text-xl text-[#4b4a4a]'>
-            Arvind Mohan,<br /> Yaswanth Rayapati Founders
+            <p className="text-xl text-[#4b4a4a]">
+              Arvind Mohan,
+              <br /> Yaswanth Rayapati Founders
             </p>
           </div>
-            
         </section>
+        <div className="flex flex-col gap-10 text-center justify-center  text-lg mt-10 pb-50">
+          <div className="flex flex-row gap-2 items-center justify-center">
+            <h1 className='bg-white rounded-md text-black font-medium px-2 '>DC-1</h1>
+            <h1 className='text-white text-2xl'>At A GLANCE</h1>
+          </div>
 
+<div className='flex flex-row justify-center items-center gap-7'>
+{Glance.map((item, index) => (
+  <div key={index} className="flex flex-col items-center">
+    <img src={item.image} alt={item.title} className="max-w-full h-auto " />
+    <h3 className="mt-2 text-center text-[#B7B7B4]">{item.title}</h3>
+  </div>
+))}
 
-
-
-        
+</div>
+       
+          
+        </div>
       </section>
     </>
   );

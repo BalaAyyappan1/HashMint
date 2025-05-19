@@ -1,6 +1,7 @@
 // section 1
 
 import { image } from "framer-motion/client"
+import { title } from "process"
 
 
 export const contents = [
@@ -85,6 +86,19 @@ export const KnowImages = [
     {image:'/fireball.avif'},
     {image:'/techradar.svg'},
     {image:'/wired.svg'},
+
+
+]
+
+
+
+
+export const Glance = [
+    {image:'60fps.png', title:'Fast, paper-like display'},
+    {image:'60fps.png', title:'Read, write, take notes'},
+    {image:'60fps.png', title:'Use all your apps'},
+    {image:'60fps.png', title:'Sunlight readable'},
+    {image:'60fps.png', title:'Blue-light free backlight'},
 
 
 ]
