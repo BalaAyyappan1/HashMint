@@ -51,6 +51,16 @@ const HorizontalScrollAnimation: React.FC = () => {
     gsap.set(text2Ref.current, { opacity: 0 });
     gsap.set(text3Spans, { opacity: 0, y: 20 });
     gsap.set(text3Ref.current, { opacity: 0 });
+    
+    // Set initial state for the image - fullscreen size
+    gsap.set(imageRef.current, {
+      opacity: 0,
+      scale: 3.5,  // Start with a large scale for fullscreen effect
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    });
 
     gsap.set(horizontalContainerRef.current, {
       x: '100vw',
@@ -166,9 +176,9 @@ const HorizontalScrollAnimation: React.FC = () => {
       duration: 25, // Control the speed of horizontal scrolling
     });
 
-
+    // First, make the image visible at full screen size
     mainTl.to(
-      text3Ref.current,
+      imageRef.current,
       {
         opacity: 1,
         duration: 1,
@@ -176,51 +186,39 @@ const HorizontalScrollAnimation: React.FC = () => {
       },
       '-=3' // Start this animation while horizontal scrolling is finishing
     );
+    
+    // Then bring in the text on top of the fullscreen image
+    mainTl.to(
+      text3Ref.current,
+      {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out',
+      },
+      '-=2.5'
+    );
 
-    // FIXED: Now animate the spans within text3
+    // Animate the text spans
     mainTl.to(text3Spans, {
       opacity: 1,
       y: 0,
       stagger: 0.05,
       duration: 2,
       ease: 'power2.out',
-    }, '-=2.5');
+    }, '-=2');
 
-
+    // As the user continues to scroll, scale the image down to normal size
     mainTl.to(
       imageRef.current,
       {
-        opacity: 0,
-        scale:3.3,
-        duration: 1,
-        ease: 'power2.out',
+        scale: 1, // Scale down to actual size
+        duration: 3,
+        ease: 'power2.inOut',
       },
-      '-=2.5'
+      '-=1'
     );
 
-    mainTl.to(
-      imageRef.current,
-      {
-        opacity: 0.5,
-        scale:2.2,
-        duration: 1,
-        ease: 'power2.out',
-      },
-      '-=2.5'
-    );
-
-    mainTl.to(
-      imageRef.current,
-      {
-        opacity: 1,
-  
-        duration: 1,
-        ease: 'power2.out',
-      },
-      '-=2.5'
-    );
-
-
+    // After the image scales down, fade out the text
     mainTl.to(
       text3Spans,
       {
@@ -230,9 +228,8 @@ const HorizontalScrollAnimation: React.FC = () => {
         duration: 1.5,
         ease: 'power2.in',
       },
-      '+=1'
+      '-=0.5' // Start slightly before the image scaling finishes
     );
-
 
     // This is the key part - we're adding a "lock" at the end of the animation
     // by essentially creating a dummy section that keeps the pin active
@@ -327,7 +324,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               </video>
 
               <div className="absolute bottom-8 right-3 z-10">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-3">
                   {contents.map((item, index) => (
                     <div
                       key={index}
@@ -373,7 +370,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                     quality={100}
                   />
 
-                  <div className="flex flex-row space-x-2 w-full  items-center justify-between text-center px-6">
+                  <div className="flex flex-row space-x-2 w-full  items-center justify-between text-center px-1">
                     <p className="text-sm text-gray-700">{feature.title}</p>
                     <p className="text-sm text-gray-700 w-80 text-start">
                       {feature.description}
@@ -483,18 +480,18 @@ const HorizontalScrollAnimation: React.FC = () => {
           <section className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-transparent relative">
             <div
               ref={text3Ref}
-              className="absolute w-full font-semibold px-4 whitespace-pre-wrap"
+              className="absolute w-full font-semibold px-4 whitespace-pre-wrap z-20"
             >
               {splitText("We choose calm over chaos, clarity over distraction")}
             </div>
 
-            <div ref={imageRef} className="absolute  justify-center z-10 text-white text-start px-4">
+            <div ref={imageRef} className="absolute inset-0 flex items-center justify-center z-10">
               <Image
                 src="/DSC04014.png"
                 alt="Lume Paper Display"
                 width={1000}
                 height={1000}
-                className=''
+                className="object-cover"
               />
             </div>
           </section>
