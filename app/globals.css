@@ -111,6 +111,10 @@ font-family: var(--font-poppins);
 }
 
 
+body {
+  font-family: 'sans', sans-serif;
+}
+
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

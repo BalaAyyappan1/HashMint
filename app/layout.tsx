@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
+import localFont from "next/font/local";
 import "./globals.css";
 import LenisScrollProvider from "@/providers/lenisProvider";
 
-
-import "./globals.css";
-
 const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['300','400','500','600','700','800'],
   subsets: ['latin'],
   variable: '--font-poppins',
+});
+
+const sans = localFont({
+  src: [
+    { path: "../fonts/sans2.woff", weight: "400", style: "normal" },
+    { path: "../fonts/sans2.woff", weight: "500", style: "normal" },
+    { path: "../fonts/sans2.woff", weight: "700", style: "normal" },
+  ],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -19,17 +26,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
- 
+}) {
   return (
     <html lang="en">
       <body
-       className={`${poppins.variable} antialiased`}
+        className={`
+          ${poppins.variable}   
+          ${sans.variable}      
+          antialiased
+        `}
       >
- <LenisScrollProvider>{children}</LenisScrollProvider>
-        
+        <LenisScrollProvider>
+          {children}
+        </LenisScrollProvider>
       </body>
     </html>
   );

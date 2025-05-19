@@ -1,7 +1,7 @@
 // section 1
 
 import { image } from "framer-motion/client"
-import { title } from "process"
+
 
 export const contents = [
     {
@@ -50,4 +50,41 @@ export const section6Contents = [
     {image:'/60fps.png',title:'Gentle on the eyes',description:'Flicker Free display designed for long, comfortable reading sessions'},
     {image:'/60fps.png',title:'Long Lasting Battery',description:'Enjoy extended use with a battery that keeps up one charge, many days. '},
     {image:'/60fps.png',title:'Focus Mode',description:'Read with complete focus, no distractions. '}
+]
+
+
+
+
+
+
+export const NewSectionContent = [
+    {image:'/router-product.avif', title:'PRODUCT'},
+    {image:'/specs.avif', title:'SPECS'},
+    {image:'/faq.avif', title:'FAQ'},
+    {image:'/router-support.avif', title:'SUPPORT'},
+
+]
+
+
+
+export const TestimonialContents = [
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
+    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'}
+
+]
+
+
+
+
+export const KnowImages = [
+    {image:'/verge.svg'},
+    {image:'/fireball.avif'},
+    {image:'/techradar.svg'},
+    {image:'/wired.svg'},
+
+
 ]

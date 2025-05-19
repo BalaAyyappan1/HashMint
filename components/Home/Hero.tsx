@@ -245,10 +245,10 @@ const Hero: React.FC = () => {
         className="relative will-change-transform p-5 "
       >
         <div className="absolute z-90 top-37 left-37 p-5">
-          <h1 className="text-white text-4xl font-bold leading-tight">
+          <h1 className="text-white text-6xl  leading-tight ">
             The Focus, Re-Imagined.
           </h1>
-          <p className="text-white text-xl mt-8 leading-tight mt-4">
+          <p className="text-white text-2xl mt-5 leading-tight mt-4 font-regular">
             Meet Leaf 1 - designed for deep focus, <br /> not distractions.
           </p>
         </div>
@@ -277,7 +277,7 @@ const Hero: React.FC = () => {
 
           <div className="absolute bottom-8 right-8 z-10">
             <button
-              className="px-8 py-3 text-[15px] rounded-xl bg-[#f9c63b] font-semibold 
+              className="px-28 py-5 text-[15px] rounded-xl bg-[#f9c63b] font-medium 
                   hover:shadow-[0_0_15px_1px_rgba(249,198,59,0.7)] 
                   transition-all duration-300 ease-in-out"
             >
