@@ -15,9 +15,9 @@ const Footer = () => {
 
 
   const Logos = [
-    { name: 'Twitter', src: "/Footer/twitter.png" },
-    { name: 'TikTok', src: "/Footer/tik.png" },
-    { name: 'Instagram', src: "/Footer/insta.png" },
+    { name: 'Twitter', src: "/Footer/twitter.svgv" },
+    { name: 'TikTok', src: "/Footer/tik.svg" },
+    { name: 'Instagram', src: "/Footer/insta.svg" },
   ];
 
 

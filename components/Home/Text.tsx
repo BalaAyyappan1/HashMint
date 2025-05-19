@@ -13,6 +13,8 @@ const HorizontalScrollAnimation: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const text1Ref = useRef<HTMLDivElement | null>(null);
   const text2Ref = useRef<HTMLDivElement | null>(null);
+  const text3Ref = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
   const horizontalContainerRef = useRef<HTMLDivElement | null>(null);
   const horizontalContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -21,6 +23,8 @@ const HorizontalScrollAnimation: React.FC = () => {
       !containerRef.current ||
       !text1Ref.current ||
       !text2Ref.current ||
+      !text3Ref.current ||
+      !imageRef.current ||
       !horizontalContainerRef.current ||
       !horizontalContentRef.current
     ) {
@@ -29,9 +33,11 @@ const HorizontalScrollAnimation: React.FC = () => {
 
     const text1Spans = text1Ref.current.querySelectorAll('span');
     const text2Spans = text2Ref.current.querySelectorAll('span');
+    const text3Spans = text3Ref.current.querySelectorAll('span');
+
 
     // Set initial styles
-    gsap.set([text1Ref.current, text2Ref.current], {
+    gsap.set([text1Ref.current, text2Ref.current, text3Ref.current], {
       position: 'absolute',
       top: '50%',
       left: '50%',
@@ -43,6 +49,8 @@ const HorizontalScrollAnimation: React.FC = () => {
     gsap.set(text1Spans, { opacity: 0, y: 20 });
     gsap.set(text2Spans, { opacity: 0, y: 20 });
     gsap.set(text2Ref.current, { opacity: 0 });
+    gsap.set(text3Spans, { opacity: 0, y: 20 });
+    gsap.set(text3Ref.current, { opacity: 0 });
 
     gsap.set(horizontalContainerRef.current, {
       x: '100vw',
@@ -158,6 +166,74 @@ const HorizontalScrollAnimation: React.FC = () => {
       duration: 25, // Control the speed of horizontal scrolling
     });
 
+
+    mainTl.to(
+      text3Ref.current,
+      {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out',
+      },
+      '-=3' // Start this animation while horizontal scrolling is finishing
+    );
+
+    // FIXED: Now animate the spans within text3
+    mainTl.to(text3Spans, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.05,
+      duration: 2,
+      ease: 'power2.out',
+    }, '-=2.5');
+
+
+    mainTl.to(
+      imageRef.current,
+      {
+        opacity: 0,
+        scale:3.3,
+        duration: 1,
+        ease: 'power2.out',
+      },
+      '-=2.5'
+    );
+
+    mainTl.to(
+      imageRef.current,
+      {
+        opacity: 0.5,
+        scale:2.2,
+        duration: 1,
+        ease: 'power2.out',
+      },
+      '-=2.5'
+    );
+
+    mainTl.to(
+      imageRef.current,
+      {
+        opacity: 1,
+  
+        duration: 1,
+        ease: 'power2.out',
+      },
+      '-=2.5'
+    );
+
+
+    mainTl.to(
+      text3Spans,
+      {
+        opacity: 0,
+        y: -20,
+        stagger: 0.05,
+        duration: 1.5,
+        ease: 'power2.in',
+      },
+      '+=1'
+    );
+
+
     // This is the key part - we're adding a "lock" at the end of the animation
     // by essentially creating a dummy section that keeps the pin active
     mainTl.to({}, { duration: 0.5 });
@@ -250,8 +326,8 @@ const HorizontalScrollAnimation: React.FC = () => {
                 Your browser does not support the video tag.
               </video>
 
-              <div className="absolute bottom-8 right-8 z-10">
-                <div className="flex flex-row gap-5">
+              <div className="absolute bottom-8 right-3 z-10">
+                <div className="flex flex-row gap-2">
                   {contents.map((item, index) => (
                     <div
                       key={index}
@@ -274,7 +350,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
 
               <div className="absolute bottom-15 left-12 z-10">
-                <h1 className="text-5xl font-bold text-start text-white leading-14">
+                <h1 className="text-4xl font-bold text-start text-white leading-14">
                   Experience the first paper-like <br />
                   display with real-time speed.
                 </h1>
@@ -375,11 +451,11 @@ const HorizontalScrollAnimation: React.FC = () => {
                 alt="Lume Paper Display"
                 width={1000}
                 height={1000}
-                className=" w-[900px] h-[800px] object-cover"
+                className=" w-[900px] h-[700px] object-cover"
               />
 
               <div>
-                <div className="flex flex-row gap-5 items-center justify-center mt-20 ml-20">
+                <div className="flex flex-row gap-5 items-center justify-center mt-20 ml-30">
                   {section6Contents.map((item, index) => (
                     <div
                       key={index}
@@ -405,9 +481,23 @@ const HorizontalScrollAnimation: React.FC = () => {
             </div>
           </section>
           <section className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-transparent relative">
-      
-</section>
+            <div
+              ref={text3Ref}
+              className="absolute w-full font-semibold px-4 whitespace-pre-wrap"
+            >
+              {splitText("We choose calm over chaos, clarity over distraction")}
+            </div>
 
+            <div ref={imageRef} className="absolute  justify-center z-10 text-white text-start px-4">
+              <Image
+                src="/DSC04014.png"
+                alt="Lume Paper Display"
+                width={1000}
+                height={1000}
+                className=''
+              />
+            </div>
+          </section>
         </div>
       </div>
     </section>
