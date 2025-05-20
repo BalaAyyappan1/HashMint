@@ -16,7 +16,7 @@ export const contents = [
         description:'A calm experience that keeps you connected to yourself and the world around you. '
     },
     {
-        image:'/fps-light.avif',
+        image:'/public/heart-light.avif',
         title:'For your well-being',
         description:'No more eye strain, designed for both daylight and night time.'
     }
@@ -68,8 +68,8 @@ export const NewSectionContent = [
 
 
 export const RightSectionContents = [
-    {image:'fps-light.avif', title:'Better sleep', description:'In sync with your circadium rhythm '},
-    {image:'60fps.png', title:'Flicker-free', description:'PWM-free display means no eye strain'},
+    {image:'/fps-light.avif', title:'Better sleep', description:'In sync with your circadium rhythm '},
+    {image:'/60fps.png', title:'Flicker-free', description:'PWM-free display means no eye strain'},
     {image:'/campfire-light.', title:'Pure amber', description:'Campfire spectrum with zero blue light'},
 
 
@@ -103,7 +103,7 @@ export const KnowImages = [
 
 
 export const Glance = [
-    {image:'/60fps.png', title:'Fast, paper-like display'},
+    {image:'/fps-light.avif', title:'Fast, paper-like display'},
     {image:'/pen-light.avif', title:'Read, write, take notes'},
     {image:'/apps-light.avif', title:'Use all your apps'},
     {image:'/sun-light.avif', title:'Sunlight readable'},
