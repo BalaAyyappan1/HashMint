@@ -9,31 +9,22 @@ const Specs = () => {
     {
       title: "Live Paper Display",
       description: "a new kind of screen that feels like paper but runs at 60fps",
-      image: "/daylight.avif",
+      image: "/Products/specs/tab.png",
     },
     {
       title: "Long Lasting Battery Life",
       description: "Enough Battery Life to have you not charge for days!",
-      image: "/daylight.avif",
+      image: "/Products/specs/dots.png",
     },
     {
       title: "Your Sleek Stylus",
       description: "Lightweight Stylus compatible with Wacom EMR pens",
-      image: "/daylight.avif",
+      image: "/Products/specs/pen.png",
     },
   ];
 
   const productSpecs = [
-    {
-      title: "Display",
-      contents: [
-        "10.95” FHD",
-        "1920*1200 Incell",
-        "TP Bazel",
-        "Camera – Back 13MP; Front - 5 MP",
-
-      ],
-    },
+   
     {
       title: "Performance",
       contents: [
@@ -46,11 +37,12 @@ const Specs = () => {
       ],
     },
     {
-      title: "Connectivity",
+      title: "Display",
       contents: [
-        "Wi-Fi: 5",
-        "Bluetooth: 5.0",
-        "USB: Type-C",
+        "10.95” FHD",
+        "1920*1200 Incell",
+        "TP Bazel",
+        "Camera – Back 13MP; Front - 5 MP",
 
       ],
     },
@@ -65,6 +57,16 @@ const Specs = () => {
       ],
     },
     {
+      title: "Connectivity",
+      contents: [
+        "Wi-Fi: 5",
+        "Bluetooth: 5.0",
+        "USB: Type-C",
+
+      ],
+    },
+   
+    {
       title: "Software",
       contents: [
         "OS: HashOS",
@@ -78,7 +80,7 @@ const Specs = () => {
   return (
     <div className='bg-[#E7DED8] py-20'>
       {/* Header */}
-      <div className='bg-black py-6 max-w-7xl mx-auto rounded-2xl px-5'>
+      <div className='bg-black py-6 max-w-7xl mx-auto rounded-xl px-5'>
         <h1 className='text-white text-5xl text-left'>Product Specs</h1>
       </div>
 
@@ -91,21 +93,22 @@ const Specs = () => {
               whileTap={{ scale: 0.97 }}
               className="w-full"
             >
-              <div className="border border-gray-300 h-full p-2 rounded-xl bg-white shadow-md">
+              <div className=" h-full p-2 rounded-xl bg-[#EFE7E2] ">
                 <div className="relative w-full h-60">
                   <Image
                     src={src.image}
                     alt={`carousel-${index}`}
-                    fill
-                    className="object-cover rounded-xl"
+                    width={1000}
+                    height ={1000}
+                    className="rounded-xl w-[500px] h-[200px]"
                   />
                 </div>
 
                 <div className="p-4 text-start">
-                  <h1 className="text-lg font-semibold text-gray-800">
+                  <h1 className="text-lg font-medium text-gray-800">
                     {src.title}
                   </h1>
-                  <p className="text-sm text-gray-600 mt-1">{src.description}</p>
+                  <p className="text-sm text-gray-600 mt-1 font-regular">{src.description}</p>
                 </div>
               </div>
             </motion.div>
@@ -124,10 +127,10 @@ const Specs = () => {
             className={` p-6 rounded-xl ${index >= 3 ? 'lg:col-span-1 md:col-span-1' : ''
               }`}
           >
-            <h2 className="text-4xl font-bold mb-4 text-gray-800">
+            <h2 className="text-5xl  mb-4 text-gray-800">
               {section.title}
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-4">
               {section.contents.map((content, idx) => (
                 <div key={idx}>
                   <p className="text-gray-700 text-xl">{content}</p>

@@ -1,21 +1,40 @@
+"use client";
+
 import Image from 'next/image';
 import React from 'react';
 import NewImage from '@/public/Hashmint_Logomark_Black_png.png';
 import HamburgerToggle from './hamBurgerToggle';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const TopNav = () => {
+  const pathname = usePathname();
+
+  // Helper function to determine if a link is active
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
+
   return (
+<<<<<<< HEAD
     <div className="flex flex-row justify-between relative z-50 items-center w-full bg-transparent mt-2 pl-8 pr-10">
       {/* lOGO */}
       <Link href="/">
         <div className="bg-gray-50 rounded-xl border-[#d8d4d1] border px-1  ">
           <Image src={NewImage} alt="logo" width={30} height={30} />
+=======
+    <div className="flex flex-row justify-between relative z-50 items-center w-full px-5 bg-transparent mt-5">
+      {/* LOGO */}
+      <Link href="/">
+        <div className="bg-[#FAF5F2] rounded-xl  px-1">
+          <Image src={NewImage} alt="logo" width={50} height={50} />
+>>>>>>> 0376372f8067beb61c30d27fbc8f55ed69bea93b
         </div>
       </Link>
 
       {/* Desktop NAV */}
       <div className="hidden md:block">
+<<<<<<< HEAD
         <div className="flex flex-row justify-between items-center w-full bg-gray-50 border border-[#d8d4d1] rounded-lg  space-x-5 p-1">
           <div className=' flex flex-row justify-between items-center gap-4 pl-2'>
 
@@ -39,6 +58,34 @@ const TopNav = () => {
             </Link>
           </div>
           <button className="px-4 py-2 rounded-lg bg-[#f9c63b] hover:bg-[#f9c63bf2] text-xs uppercase font-semibold cursor-pointer">
+=======
+        <div className="flex flex-row justify-between items-center w-full bg-[#FAF5F2] border border-[#d8d4d1] rounded-lg pl-5  pr-1 py-1 space-x-5">
+          <Link
+            href={"/"}
+            className={`cursor-pointer text-sm font-regular hover:text-black ${
+              isActive('/') ? 'text-black' : 'text-[#343333]'
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            href={"/products"}
+            className={`cursor-pointer text-sm font-regular hover:text-black ${
+              isActive('/products') ? 'text-black' : 'text-[#333333]'
+            }`}
+          >
+            Products
+          </Link>
+          <Link
+            href={"/faq"}
+            className={`cursor-pointer text-sm font-regular hover:text-black ${
+              isActive('/faq') ? 'text-black' : 'text-[#333333]'
+            }`}
+          >
+            FAQ
+          </Link>
+          <button className="px-5 py-3 rounded-lg bg-[#f9c63b] hover:bg-[#f9c63bf2] text-sm cursor-pointer font-regular">
+>>>>>>> 0376372f8067beb61c30d27fbc8f55ed69bea93b
             Book a call
           </button>
         </div>

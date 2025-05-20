@@ -1,20 +1,22 @@
 import Footer from '@/components/Footer'
 import Hero from '@/components/Products/Hero'
-
-import TopNav from '@/components/TopNav'
 import React from 'react'
 import ImageCarousel from '@/components/Products/ImageCarousel'
-import Clientele from '@/components/Products/Clientele'
+
 import Specs from '@/components/Products/Specs'
-import AnimationSection from '@/components/AnimationSection'
+
 
 
 const page = () => {
     return (
         <div>
             <Hero />
+            <div className='mt-20 mb-30'>
             <ImageCarousel />
-            <Clientele />
+
+            </div>
+
+            {/* <Clientele /> */}
           <Specs />
   <Footer />
         </div>
