@@ -16,49 +16,78 @@ const images: ImageItem[] = [
   {
     title: "Read, write and export your PDFs",
     description: "You can gently read, annotate and export your PDFs.",
-    video: "/vd1.mp4",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/1%20(1).mp4?updatedAt=1747750461431",
   },
   {
     title: "Unlimited Notes",
     description: "You can write, draw and highlight your notes, just like a paper - without any limits.",
-    video: "/video2.mp4",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/2%20(1).mp4?updatedAt=1747750673737",
   },
   {
     title: "Interact with your PDFs",
     description: "You can interact with your PDFs by summarizing or asking questions, using MintPDF - our AI based PDF interactor. ",
-    image: "/daylight.avif",
-    video: "/video3.mp4",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/3%20(2).mov/ik-video.mp4?updatedAt=1747751139201",
   },
   {
     title: "Convert your handwritten notes into text",
     description: "You can easily convert your handwritten notes to text in multiple regional languages. ",
-    image: "/daylight.avif",
-    video: "/video4.mp4",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/H2TConversion.mov/ik-video.mp4?updatedAt=1747751227465",
   },
   {
-    title: "Get solutions to your mathematical problems",
-    description: "You can just highlight your mathematical equation and you will have the problem solved. ",
-    image: "/daylight.avif",
-    video: "/video5.mp4",
+    title: "Turn Drawings into Stickers ",
+    description: "Instantly transform your sketches and doodles into stickers.",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/5%20(2).mp4?updatedAt=1747751592593",
+  },
+//   {
+//     title: "Get solutions to your mathematical problems",
+//     description: "You can just highlight your mathematical equation and you will have the problem solved. ",
+//     image: "/daylight.avif",
+//     video: "/video5.mp4",
+//   },
+  {
+    title: "Seamlessly Share Your Notebook ",
+    description: "Send your notes wherever they need to go — instantly. everything you write can be exported via email with just a tap. ",
+
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/ExportMode%20(1).mp4?updatedAt=1747751737265",
+  },
+  {
+    title: "Import PDFs Directly from Cloud into Notes",
+    description: "Keep PDFs and notes together, making study and review smoother than ever.",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/AttachPDF%20(1).mp4?updatedAt=1747751820110",
+  },
+  {
+    title: "Capture and Insert Images Instantly",
+    description: "Snap photos with your leaf’s camera and add them directly into your notebook.",
+
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/Attach%20Image%20(1).mp4?updatedAt=1747751927781",
+  },
+  {
+    title: "Amber Mode",
+    description: "Soothe your eyes and elevate your nighttime writing or reading experience.",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/AmberPDF%20(1).mp4?updatedAt=1747752045417",
   },
   {
     title: "The lasso tool",
     description: "Select and move, rotate, or reposition handwritten or typed content effortlessly.",
-    image: "/daylight.avif",
-    video: "/LassoMode.mp4",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/LassoMode%20(1).mp4?updatedAt=1747751662861",
   },
   {
-    title: "Transcribe and Translate your Audio",
-    description: "You can have your recorded audio transcribed as text and also get it converted in your favorite language",
-    image: "/daylight.avif",
-    video: "/video6.mp4",
+    title: "Home Screen",
+    description: "Your personal command center—pin favorite notes and PDFs, effortlessly search, filter, and sort.",
+    video: "https://ik.imagekit.io/80lxmumju/hashmint/HomeScreen%20(1).mp4?updatedAt=1747752173947",
   },
-  {
-    title: "Live Shapes",
-    description: "You can automatically convert your free hand drawings into shapes",
-    image: "/daylight.avif",
-    video: "/video7.mp4",
-  },
+//   {
+//     title: "Transcribe and Translate your Audio",
+//     description: "You can have your recorded audio transcribed as text and also get it converted in your favorite language",
+//     image: "/daylight.avif",
+//     video: "/video6.mp4",
+//   },
+//   {
+//     title: "Live Shapes",
+//     description: "You can automatically convert your free hand drawings into shapes",
+//     image: "/daylight.avif",
+//     video: "/video7.mp4",
+//   },
 ];
 
 const ImageCarousel: React.FC = () => {
@@ -114,7 +143,7 @@ const ImageCarousel: React.FC = () => {
               className="md:w-[500px] w-[360px] md:h-[430px] h-[330px] flex-shrink-0"
               whileTap={{ scale: 0.95 }}
             >
-              <div className="border border-gray-300 h-full p-2 rounded-xl overflow-hidden bg-[#F1E9E5] shadow-md">
+              <div className=" h-full p-4 rounded-xl overflow-hidden bg-[#F1E9E5] ">
                 {/* Image on top with video */}
                 <div className="relative w-full md:h-80 h-50">
                   <video 
