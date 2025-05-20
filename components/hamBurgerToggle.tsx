@@ -91,7 +91,7 @@ const HamburgerToggle = () => {
             <a href="/" className="flex items-center gap-2 text-5xl">
               {isActive("/") && <span className="text-2xl">•</span>} Home
             </a>
-            <a href="/product" className="flex items-center gap-2 text-5xl">
+            <a href="/products" className="flex items-center gap-2 text-5xl">
               {isActive("/products") && <span className="2xl">•</span>} Products
             </a>
             <a href="/faq" className="flex items-center gap-2 text-5xl">
