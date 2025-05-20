@@ -98,8 +98,8 @@ const Specs = () => {
                   <Image
                     src={src.image}
                     alt={`carousel-${index}`}
-                    width={500}
-                    height ={500}
+                    width={1000}
+                    height ={1000}
                     className="rounded-xl w-[500px] h-[200px]"
                   />
                 </div>

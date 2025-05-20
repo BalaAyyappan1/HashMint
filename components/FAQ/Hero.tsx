@@ -75,11 +75,11 @@ const Hero = () => {
             }}
           />
 
-          <div className="flex md:flex-row flex-col justify-between space-y-5  items-start md:mt-10 md:mb-10 ">
+          <div className="flex md:flex-row flex-col justify-between space-y-5  md:items-start items-center md:mt-10 md:mb-10 ">
             <div className="text-2xl md:w-[700px] w-full md:px-0 px-4 md:text-start text-center  ">
               We genuinely appreciate your feedback! Whether you have a great idea or need help with something, we’re all ears and happy to hear from you.
             </div>
-            <div className="flex flex-col  md:text-start text-center">
+            <div className="flex flex-col  md:text-start text-center justify-center ">
               <p className="text-xl text-[#535450] font-regular">Feel free to contact us:</p>
               <p className="text-xl text-[#535450] font-regular">Email: <span className='underline'>jimmy@hashmint.tech               </span></p>
               <p className="text-xl text-[#535450] font-regular">Text: <span className='underline'>+91 98715 47671</span></p>

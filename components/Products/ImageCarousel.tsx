@@ -92,7 +92,7 @@ const images: ImageItem[] = [
 
 const ImageCarousel: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const scrollAmount = 800; // pixels to scroll
+  const scrollAmount = 380; // pixels to scroll
 
   const scrollLeft = () => {
     if (scrollRef.current) {
