@@ -1,13 +1,14 @@
 
 import Footer from '@/components/Footer';
 import Hero from '@/components/Home/Hero';
-import Text from '@/components/Home/Text';
+import HorizontalScrollAnimation from '@/components/Home/Text';
 
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
       <Hero />
-      <Text />
+      {/* <Text /> */}
+      <HorizontalScrollAnimation />
       <Footer />
     </div>
   );

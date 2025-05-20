@@ -2,6 +2,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import { IoClose } from "react-icons/io5";
+import { HiMenuAlt2 as Menu } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 
 const HamburgerToggle = () => {
@@ -15,7 +16,7 @@ const HamburgerToggle = () => {
   return (
     <>
       {/* Hamburger and Book a call button */}
-      <div className="flex items-center gap-5 relative border border-[#d8d4d1] rounded-lg p-1">
+      <div className="flex items-center gap-3 relative border bg-gray-50 border-[#d8d4d1] rounded-lg p-1">
         {/* Book a call button with smooth animation */}
         <div
           className={classNames(
@@ -26,7 +27,7 @@ const HamburgerToggle = () => {
             }
           )}
         >
-          <button className="px-4 py-2 rounded-lg bg-[#f9c63b]">
+          <button className="px-3 py-1 rounded-lg bg-[#f9c63b]">
             Book a call
           </button>
         </div>
@@ -48,9 +49,7 @@ const HamburgerToggle = () => {
             )}
           >
             <div className="flex flex-col space-y-1 group hover:cursor-pointer">
-              <span className="block h-1 bg-black w-5 transition-all duration-300 ease-in-out group-hover:w-6"></span>
-              <span className="block h-1 bg-black w-6 transition-all duration-300 ease-in-out"></span>
-              <span className="block h-1 bg-black w-4 transition-all duration-300 ease-in-out group-hover:w-6"></span>
+              <Menu className="hover:text-gray-300 w-6 h-6" />
             </div>
           </div>
 

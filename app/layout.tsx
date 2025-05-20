@@ -10,13 +10,13 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-const sans = localFont({
+const horizona = localFont({
   src: [
-    { path: "../fonts/sans2.woff", weight: "400", style: "normal" },
-    { path: "../fonts/sans2.woff", weight: "500", style: "normal" },
-    { path: "../fonts/sans2.woff", weight: "700", style: "normal" },
+    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "500", style: "normal" },
+    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "700", style: "normal" },
   ],
-  variable: "--font-sans",
+  variable: "--font-horizona",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default function RootLayout({
       <body
         className={`
           ${poppins.variable}   
-          ${sans.variable}      
+          ${horizona.variable}      
           antialiased
         `}
       >

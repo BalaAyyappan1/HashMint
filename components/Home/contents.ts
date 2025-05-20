@@ -1,22 +1,19 @@
 // section 1
 
-import { image } from "framer-motion/client"
-import { title } from "process"
-
 
 export const contents = [
     {
         image:'/fps-light.avif',
         title:'Seamless Interaction',
-        description:'Scroll and navigate pages, all with zero lag'
+        description:'Scroll and navigate pages, all with zero lag.'
     },
     {
         image:'/smile-light.avif',
         title:'Stay Centered',
-        description:'A calm experience that keeps you connected to yourself and the world around you. '
+        description:'A calm experience that keeps you connected to yourself.'
     },
     {
-        image:'/fps-light.avif',
+        image:'/heart-light.avif',
         title:'For your well-being',
         description:'No more eye strain, designed for both daylight and night time.'
     }
@@ -68,9 +65,9 @@ export const NewSectionContent = [
 
 
 export const RightSectionContents = [
-    {image:'fps-light.avif', title:'Better sleep', description:'In sync with your circadium rhythm '},
-    {image:'60fps.png', title:'Flicker-free', description:'PWM-free display means no eye strain'},
-    {image:'/campfire-light.', title:'Pure amber', description:'Campfire spectrum with zero blue light'},
+    {image:'/fps-light.avif', title:'Better sleep', description:'In sync with your circadium rhythm '},
+    {image:'/60fps.png', title:'Flicker-free', description:'PWM-free display means no eye strain'},
+    {image:'/campfire-light.avif', title:'Pure amber', description:'Campfire spectrum with zero blue light'},
 
 
 ]
@@ -103,10 +100,9 @@ export const KnowImages = [
 
 
 export const Glance = [
-    {image:'/60fps.png', title:'Fast, paper-like display'},
+    {image:'/fps-light.avif', title:'Fast, paper-like display'},
     {image:'/pen-light.avif', title:'Read, write, take notes'},
     {image:'/apps-light.avif', title:'Use all your apps'},
     {image:'/sun-light.avif', title:'Sunlight readable'},
     {image:'/campfire-light.avif', title:'Blue-light free backlight'},
-
 ]

@@ -22,9 +22,9 @@ const VideoHoverPlayer = () => {
     return (
         <Link href="https://www.youtube.com/watch?v=OPXRrCrkbc0" target="_blank" rel="noopener noreferrer">
 
-            <div className="relative group max-w-[250px] mx-auto my-8 overflow-hidden rounded-xl border-3 border-[#f9c63b] font-semibold 
+            <div className="relative group max-w-44 md:max-w-60 mx-auto my-2 md:my-8 overflow-hidden rounded-xl border-3 border-[#f9c63b] font-semibold 
     shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_1px_rgba(249,198,59,0.7)] 
-                  transition-all duration-300 ease-in-out">
+                   ease-in-out">
                 <video
                     ref={videoRef}
                     muted

@@ -17,6 +17,7 @@ const Hero: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
 
+  
   // Check if we should load video based on connection
   const [preload, setPreload] = useState('none');
 
@@ -237,18 +238,18 @@ const Hero: React.FC = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-20 px-5 pt-5">
+      <div className="fixed top-0 left-0 w-full z-50  pt-5">
         <TopNav />
       </div>
       <div
         ref={containerRef}
         className="relative will-change-transform p-5 "
       >
-        <div className="absolute z-90 top-37 left-37 p-5">
-          <h1 className="text-white text-6xl  leading-tight ">
+        <div className="absolute z-90 top-[6%] left-[4%] p-5">
+          <h1 className="text-white text-3xl md:text-6xl tracking-tighter leading-tight font-horizona ">
             The Focus, Re-Imagined.
           </h1>
-          <p className="text-white text-2xl mt-5 leading-tight mt-4 font-regular">
+          <p className="text-white text-lg md:text-2xl mt-5 leading-tight tracking-tighter  font-regular">
             Meet Leaf 1 - designed for deep focus, <br /> not distractions.
           </p>
         </div>
@@ -261,7 +262,7 @@ const Hero: React.FC = () => {
             playsInline
             webkit-playsinline="true"
             x-webkit-airplay="allow"
-            className="absolute top-0 left-0 w-full h-full object-cover rounded-3xl"
+            className="absolute top-0 left-0 w-full h-full object-cover rounded-2xl"
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
             style={{
@@ -275,9 +276,9 @@ const Hero: React.FC = () => {
             Your browser does not support the video tag.
           </video>
 
-          <div className="absolute bottom-8 right-8 z-10">
+          <div className="hidden md:block absolute bottom-8 right-8 z-10">
             <button
-              className="px-28 py-5 text-[15px] rounded-xl bg-[#f9c63b] font-medium 
+              className="px-20 py-4 text-sm rounded-xl bg-[#f9c63b] font-medium 
                   hover:shadow-[0_0_15px_1px_rgba(249,198,59,0.7)] 
                   transition-all duration-300 ease-in-out"
             >
@@ -285,7 +286,7 @@ const Hero: React.FC = () => {
             </button>
           </div>
 
-          <div className="absolute bottom-1 left-12 z-10">
+          <div className="absolute bottom-0 left-2 md:left-12 z-10">
             <VideoHoverPlayer />
           </div>
 
@@ -295,11 +296,6 @@ const Hero: React.FC = () => {
             </div>
           )}
         </section>
-
-
-{/* center behind the image  */}
-   
-
 
       </div>
     </>

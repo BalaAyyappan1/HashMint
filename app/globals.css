@@ -1,15 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f8f5f3;
   --foreground: #171717;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,13 +18,10 @@
 }
 
 
-html{
-  font-family: var(--font-poppins);
-}
 
 body {
-overflow: hidden;
-font-family: var(--font-poppins);
+  overflow: hidden;
+  font-family: var(--font-poppins);
 }
 
 
@@ -43,6 +38,7 @@ font-family: var(--font-poppins);
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -51,12 +47,12 @@ font-family: var(--font-poppins);
 
 @layer utilities {
   .fade-mask {
-      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-      mask-size: cover;
-      -webkit-mask-size: cover;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-size: cover;
+    -webkit-mask-size: cover;
   }
-  
+
 
   .fade-mask-left {
     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 100%);
@@ -64,7 +60,7 @@ font-family: var(--font-poppins);
     mask-size: cover;
     -webkit-mask-size: cover;
   }
-  
+
 }
 
 
@@ -72,11 +68,15 @@ font-family: var(--font-poppins);
 .disable-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .disable-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
+.font-horizona {
+  font-family: var(--font-horizona);
+}
 
 
 
@@ -111,11 +111,6 @@ font-family: var(--font-poppins);
 }
 
 
-body {
-  font-family: 'sans', sans-serif;
-}
-
-
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -129,4 +124,26 @@ body {
 
 .new-section-item:hover h3 {
   background-color: #f9c63b;
+}
+
+
+.window-shadow-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 50;
+}
+
+.window-shadow-overlay__content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }

@@ -1,7 +1,7 @@
 import Faq from '@/components/FAQ/Faq'
 
 import Hero from '@/components/FAQ/Hero'
-import New from '@/components/FAQ/Faq2'
+import New from '@/components/FAQ/Faq'
 
 
 import Footer from '@/components/Footer'
