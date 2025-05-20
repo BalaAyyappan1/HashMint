@@ -31,10 +31,13 @@ const Hero = () => {
     ];
 
     const media = [
-        { type: 'image', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/daylight.avif?updatedAt=1746725477420' },
-        { type: 'video', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p%20(1).mp4?updatedAt=1746466239559' },
-        { type: 'image', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/daylight.avif?updatedAt=1746725477420' },
-        { type: 'video', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p%20(1).mp4?updatedAt=1746466239559' },
+        { type: 'image', src: '/Products/Hero/image2.JPG' },
+        { type: 'image', src: '/Products/Hero/image1.JPG' },
+        { type: 'image', src: '/Products/Hero/image3.JPG' },
+        { type: 'image', src: '/Products/Hero/image4.JPG' },
+
+        // { type: 'image', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/daylight.avif?updatedAt=1746725477420' },
+        // { type: 'video', src: 'https://ik.imagekit.io/99y1fc9mh/HashMint/capped-1080p%20(1).mp4?updatedAt=1746466239559' },
     ];
 
     const features = [
@@ -70,20 +73,20 @@ const Hero = () => {
                 <TopNav />
             </div>
 
-            <div className="flex flex-row relative">
+            <div className="flex xl:flex-row flex-col relative">
                 {/* Carousel section */}
-                <div className="w-[70%] h-screen relative">
+                <div className="xl:w-[70%] w-full xl:h-screen h-[700px] relative">
                     {/* Custom Arrows */}
                     <button
                         ref={prevRef}
-                        className="absolute left-4 bottom-2 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                        className="absolute left-4 bottom-3 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
                     >
                         <FaArrowLeft size={16} />
                     </button>
 
                     <button
                         ref={nextRef}
-                        className="absolute right-4 bottom-2 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                        className="absolute right-4 bottom-3 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
                     >
                         <FaArrowRight size={16} />
                     </button>
@@ -108,13 +111,13 @@ const Hero = () => {
                         {media.map((item, index) => (
                             <SwiperSlide key={index}>
                                 {item.type === "image" ? (
-                                    <div className="relative w-full h-screen">
+                                    <div className="relative w-full xl:h-screen h-[700px]">
                                         <Image
                                             src={item.src}
                                             alt={`slide-${index}`}
                                             fill
                                             className="object-cover rounded-md"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
                                         />
                                     </div>
                                 ) : (
@@ -162,12 +165,16 @@ const Hero = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="w-[30%] h-screen mt-17 p-5">
-                    <h1 className="text-4xl">Hashmint DC-1</h1>
-                    <p>
-                        The world's first human-friendly computer that your brain and eyes
-                        will actually love.
-                    </p>
+                <div className="xl:w-[30%] md: w-full xl:h-screen mt-22 p-5">
+
+                    <div className='xl:text-start text-center'>
+                        <h1 className="text-4xl">Hashmint DC-1</h1>
+                        <p className='mt-4'>
+                            The world's first human-friendly computer that your brain and eyes
+                            will actually love.
+                        </p>
+                    </div>
+
 
                     <hr
                         className="border-t border-transparent my-4"
@@ -178,13 +185,13 @@ const Hero = () => {
                         }}
                     />
 
-                    <div>
+                    <div className='xl:text-start text-center'>
                         <div>
-                        <h1>Key Features</h1>
-                       
-                            </div>
+                            <h1 >Key Features</h1>
 
-                        <div className="grid grid-cols-2 grid-rows-3 gap-4 py-2 mt-4 mx-auto max-w-xl">
+                        </div>
+
+                        <div className="grid grid-cols-2 grid-rows-3 gap-4 py-2 mt-4 mx-auto max-w-xl items-center justify-center">
                             {features.map((feature, index) => (
                                 <div key={index} className="flex items-center space-x-2">
                                     <Image
@@ -210,15 +217,15 @@ const Hero = () => {
                     />
                     <div className="relative inline-block text-left w-full">
                         <button
-                            onClick={() => setOpen(!open)}
+                            
                             className=" w-full  justify-between  px-4 py-2 text-left flex items-center justify-between cursor-pointer"
                         >
                             <span>What's Included</span>
-                            <span>{open ? '▶' : '▼'}</span>
+                           
                         </button>
 
-                        {open && (
-                            <div className="mt-2 w-full flex flex-row bg-transparent border border-gray-200 p-2">
+                     
+                            <div className="mt-2 w-full flex flex-row bg-transparent  p-2">
                                 {images.map((img, index) => (
                                     <div
                                         key={index}
@@ -235,7 +242,7 @@ const Hero = () => {
                                     </div>
                                 ))}
                             </div>
-                        )}
+                    
 
                         <hr
                             className="border-t border-transparent my-4"
@@ -255,13 +262,13 @@ const Hero = () => {
                             Order Details
                         </button> */}
                         <button
-                            onClick={() => setOpenOrder(!openOrder)}
+                         
                             className=" w-full  justify-between  px-4 py-2 text-left flex items-center justify-between cursor-pointer"
                         >
                             <span>Order Details</span>
-                            <span>{open ? '▶' : '▼'}</span>
+                       
                         </button>
-                        {openOrder && (
+                       
                             <div className="mt-4 w-full flex flex-row justify-center items-start gap-4 bg-transparent border-gray-200  ">
                                 {orderDetails.map((item, index) => (
                                     <div
@@ -270,7 +277,7 @@ const Hero = () => {
                                     >
                                         {/* Logo + Title row */}
                                         <div className="flex items-center space-x-2 mb-2">
-                                           {item.icon}
+                                            {item.icon}
                                             <h1 className="text-sm font-semibold">{item.title}</h1>
                                         </div>
 
@@ -279,7 +286,7 @@ const Hero = () => {
                                     </div>
                                 ))}
                             </div>
-                        )}
+                        
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ const Footer = () => {
     <footer className="flex flex-col w-full bg-black text-white">
       {/* Top section - Pre-footer banner */}
       <div className="relative w-full">
-        <div className="w-full h-[30vh] sm:h-[40vh] md:h-[50vh] lg:h-[70vh] relative">
+        <div className="w-full h-[40vh] sm:h-[40vh] md:h-[50vh] lg:h-[70vh] relative">
           <Image
             src="https://ik.imagekit.io/99y1fc9mh/HashMint/prefooter-product.avif?updatedAt=1746729436147"
             alt="HashMint pre-footer banner"
@@ -22,23 +22,23 @@ const Footer = () => {
             className="object-cover"
             priority
           />
-          
+
           {/* Overlay content */}
-          <div className="absolute inset-0 flex flex-col  justify-between p-4 sm:p-8 md:p-12 lg:p-16">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#f9c63b] font-semibold mb-6 md:mb-8 lg:mb-10">
+          <div className="absolute inset-0 flex flex-col md:items-start items-center  justify-between p-4 sm:p-8 md:p-12 lg:p-16">
+            <h2 className="text-6xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#f9c63b] font-bold mb-6 md:mb-8 lg:mb-10">
               HashMint
             </h2>
-            
+
             <div className="flex flex-col space-y-4 items-start justify-center">
-  <div className="w-fit">
-    <button className="md:px-46 md:py-5 px-8 py-3 text-base sm:text-lg md:text-xl lg:text-2xl w-full rounded-xl bg-[#f9c63b] hover:bg-[#f9c63bf2] text-black font-medium transition-colors duration-200">
-      Book a call
-    </button>
-    <p className="text-white text-sm sm:text-base md:text-lg font-normal md:font-semibold text-center mt-5">
-      Estimated Ship Date: <span className="font-normal">June 2025</span>
-    </p>
-  </div>
-</div>
+              <div className="w-fit">
+                <button className="md:px-46 md:py-5 px-32 whitespace-nowrap py-3 text-base sm:text-lg md:text-xl lg:text-2xl w-full rounded-xl bg-[#f9c63b] hover:bg-[#f9c63bf2] text-black font-medium transition-colors duration-200 cursor-pointer">
+                  Book a call
+                </button>
+                <p className="text-white text-sm sm:text-base md:text-lg font-normal md:font-semibold text-center mt-5">
+                  Estimated Ship Date: <span className="font-normal">June 2025</span>
+                </p>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -146,18 +146,18 @@ const Footer = () => {
 
             {/* Newsletter subscription */}
             <div className="w-full">
-  <label className="block mb-2 text-sm font-medium">Get Updates</label>
-  <div className="relative w-full max-w-md">
-    <input
-      type="email"
-      placeholder="E-Mail"
-      className="w-full p-3 pr-32 rounded-xl bg-transparent border border-gray-300 text-white"
-    />
-    <button className="absolute right-1 top-1 bottom-1 px-4 bg-[#f9c63b] text-black rounded-lg text-sm font-medium whitespace-nowrap hover:bg-[#f9c63bf2] transition-colors duration-200">
-      Book a call
-    </button>
-  </div>
-</div>
+              <label className="block mb-2 text-sm font-medium">Get Updates</label>
+              <div className="relative w-full max-w-md">
+                <input
+                  type="email"
+                  placeholder="E-Mail"
+                  className="w-full p-3 pr-32 rounded-xl bg-transparent border border-gray-300 text-white"
+                />
+                <button className="absolute right-1 top-1 bottom-1 px-4 bg-[#f9c63b] text-black rounded-lg text-sm font-medium whitespace-nowrap hover:bg-[#f9c63bf2] transition-colors duration-200">
+                  Book a call
+                </button>
+              </div>
+            </div>
 
           </div>
         </div>
