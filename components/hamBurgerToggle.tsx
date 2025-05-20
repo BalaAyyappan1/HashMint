@@ -3,7 +3,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { IoClose } from "react-icons/io5";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
 const HamburgerToggle = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -57,14 +57,15 @@ const HamburgerToggle = () => {
           {/* Close Icon */}
           <div
             className={classNames(
-              "absolute w-full h-full flex items-center justify-center transition-all duration-300  border border-[#d8d4d1] rounded-lg p-1",
+              "absolute w-full h-full flex items-center justify-between transition-all duration-300  border border-[#d8d4d1] rounded-lg p-1",
               {
                 "opacity-100 rotate-0": isOpen,
                 "opacity-0 -rotate-90": !isOpen,
               }
             )}
           >
-            <IoClose className="hover:text-gray-300 w-6 h-6" />
+           
+            <IoClose className="hover:text-gray-700 w-7 h-7 cursor-pointer " />
           </div>
         </button>
       </div>
@@ -79,18 +80,28 @@ const HamburgerToggle = () => {
           }
         )}
       >
-        <div className="p-6 flex flex-col space-y-4 text-xl mt-30">
-          <nav className="flex flex-col space-y-4 mt-6">
-            <a href="/" className="flex items-center gap-2">
-              {isActive("/") && <span className="text-lg">•</span>} Home
+        <div className="p-6 flex flex-col justify-between space-y-4 text-xl ">
+        <Image
+              src="/Hashmint_Logomark_Black_png.png"
+              alt="new"
+              width={60}
+              height={60}
+            />
+          <nav className="flex flex-col space-y-8 mt-6">
+            <a href="/" className="flex items-center gap-2 text-5xl">
+              {isActive("/") && <span className="text-2xl">•</span>} Home
             </a>
-            <a href="/product" className="flex items-center gap-2">
-              {isActive("/product") && <span className="text-lg">•</span>} Products
+            <a href="/product" className="flex items-center gap-2 text-5xl">
+              {isActive("/products") && <span className="2xl">•</span>} Products
             </a>
-            <a href="/faq" className="flex items-center gap-2">
-              {isActive("/faq") && <span className="text-lg">•</span>} FAQ
+            <a href="/faq" className="flex items-center gap-2 text-5xl">
+              {isActive("/faq") && <span className="text-2xl">•</span>} FAQ
             </a>
           </nav>
+
+          <button className=" px-8 py-3 text-base sm:text-lg md:text-xl lg:text-2xl w-full rounded-xl bg-[#f9c63b] hover:bg-[#f9c63bf2] text-black font-medium transition-colors duration-200">
+            Book a call
+          </button>
         </div>
       </div>
     </>

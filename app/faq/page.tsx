@@ -8,13 +8,12 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='bg-[#FAF5F2]'>
+    <div className="bg-[#FAF5F2]">
       <Hero />
       <Faq />
-  
-      
+      <Footer />
     </div>
-  )
+  );
 }
 
 export default page

@@ -7,24 +7,27 @@ import 'swiper/css/navigation';
 import Image from 'next/image';
 import { Navigation } from 'swiper/modules';
 import TopNav from '../TopNav';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
+import { SlReload } from "react-icons/sl";
+import { LuClock2 } from "react-icons/lu";
+import { FaArrowLeft, FaArrowRight, FaChevronRight } from "react-icons/fa6";
 
 const Hero = () => {
     const swiperRef = useRef<SwiperType | null>(null);
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
-    const [open, setOpen] = useState(false);
-    const [openOrder, setOpenOrder] = useState(false);
+    const [open, setOpen] = useState(true);
+    const [openOrder, setOpenOrder] = useState(true);
 
     const images = [
-        { src: "/DC-1.avif", name: "Image 1" },
-        { src: "/DC-1.avif", name: "Image 2" },
-        { src: "/DC-1.avif", name: "Image 3" },
+        { src: "/DC-1.avif", name: "Leaf-1 Tablet" },
+        { src: "/Products/Hero/Stylus.avif", name: "Stylus" },
+        { src: "/Products/Hero/Cable.avif", name: "Charging cable" },
     ];
 
     const orderDetails = [
-        { title: '30-Day Guarantee', Description: 'Return your DC-1 within 30 days for a full refund.', img: '/60fps.png' },
-        { title: 'Shipping Estimate', Description: 'New orders are expected to ship by June 2025.', img: '/60fps.png' }
+        { title: '30-Day Guarantee', Description: 'Return your DC-1 within 30 days for a full refund.', icon: <SlReload /> },
+        { title: 'Shipping Estimate', Description: 'New orders are expected to ship by June 2025.', icon: <LuClock2 /> }
     ];
 
     const media = [
@@ -41,23 +44,23 @@ const Hero = () => {
         },
         {
             text: "Read, write, take notes",
-            image: "/60fps.png",
+            image: "/Products/KeyFeatures/pen.avif",
         },
         {
             text: "Use your favorite apps",
-            image: "/60fps.png",
+            image: "/Products/KeyFeatures/fav-apps.avif",
         },
         {
             text: "Sunlight readable",
-            image: "/60fps.png",
+            image: "/Products/KeyFeatures/sun-black.avif",
         },
         {
             text: "Blue-light free backlight",
-            image: "/60fps.png",
+            image: "/Products/KeyFeatures/sun-black.avif",
         },
         {
             text: "Soft on the eyes",
-            image: "/60fps.png",
+            image: "/Products/KeyFeatures/eyes.avif",
         },
     ];
 
@@ -73,16 +76,16 @@ const Hero = () => {
                     {/* Custom Arrows */}
                     <button
                         ref={prevRef}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                        className="absolute left-4 bottom-2 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
                     >
-                        <FaChevronLeft size={24} />
+                        <FaArrowLeft size={16} />
                     </button>
 
                     <button
                         ref={nextRef}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                        className="absolute right-4 bottom-2 cursor-pointer transform -translate-y-1/2 z-30 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
                     >
-                        <FaChevronRight size={24} />
+                        <FaArrowRight size={16} />
                     </button>
 
                     <Swiper
@@ -159,7 +162,7 @@ const Hero = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="w-[30%] h-screen mt-40 p-5">
+                <div className="w-[30%] h-screen mt-17 p-5">
                     <h1 className="text-4xl">Hashmint DC-1</h1>
                     <p>
                         The world's first human-friendly computer that your brain and eyes
@@ -176,7 +179,10 @@ const Hero = () => {
                     />
 
                     <div>
+                        <div>
                         <h1>Key Features</h1>
+                       
+                            </div>
 
                         <div className="grid grid-cols-2 grid-rows-3 gap-4 py-2 mt-4 mx-auto max-w-xl">
                             {features.map((feature, index) => (
@@ -199,19 +205,20 @@ const Hero = () => {
                         style={{
                             borderImage:
                                 "repeating-linear-gradient(90deg, black, black 3px, transparent 3px, transparent 8px) 1",
-                            height: "1px", 
+                            height: "1px",
                         }}
                     />
                     <div className="relative inline-block text-left w-full">
                         <button
                             onClick={() => setOpen(!open)}
-                            className="bg-gray-200 w-full rounded shadow justify-between hover:bg-gray-300 px-4 py-2 text-left"
+                            className=" w-full  justify-between  px-4 py-2 text-left flex items-center justify-between cursor-pointer"
                         >
-                            What's Included ▼
+                            <span>What's Included</span>
+                            <span>{open ? '▶' : '▼'}</span>
                         </button>
 
                         {open && (
-                            <div className="mt-2 w-full flex flex-row bg-white border border-gray-200 rounded shadow-lg p-2">
+                            <div className="mt-2 w-full flex flex-row bg-transparent border border-gray-200 p-2">
                                 {images.map((img, index) => (
                                     <div
                                         key={index}
@@ -241,14 +248,21 @@ const Hero = () => {
                     </div>
 
                     <div className="relative inline-block text-left w-full">
-                        <button
+                        {/* <button
                             onClick={() => setOpenOrder(!openOrder)}
                             className="bg-gray-200 w-full rounded shadow justify-between hover:bg-gray-300 px-4 py-2 text-left"
                         >
                             Order Details
+                        </button> */}
+                        <button
+                            onClick={() => setOpenOrder(!openOrder)}
+                            className=" w-full  justify-between  px-4 py-2 text-left flex items-center justify-between cursor-pointer"
+                        >
+                            <span>Order Details</span>
+                            <span>{open ? '▶' : '▼'}</span>
                         </button>
                         {openOrder && (
-                            <div className="mt-4 w-full flex flex-row justify-center items-start gap-4 bg-white border-gray-200 rounded-lg shadow-lg p-4">
+                            <div className="mt-4 w-full flex flex-row justify-center items-start gap-4 bg-transparent border-gray-200  ">
                                 {orderDetails.map((item, index) => (
                                     <div
                                         key={index}
@@ -256,13 +270,7 @@ const Hero = () => {
                                     >
                                         {/* Logo + Title row */}
                                         <div className="flex items-center space-x-2 mb-2">
-                                            <Image
-                                                src={item.img}
-                                                alt={item.title}
-                                                width={30}
-                                                height={30}
-                                                className="object-cover rounded"
-                                            />
+                                           {item.icon}
                                             <h1 className="text-sm font-semibold">{item.title}</h1>
                                         </div>
 

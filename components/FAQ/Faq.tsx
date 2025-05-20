@@ -182,7 +182,7 @@ const Faq: React.FC = () => {
           <div className="flex flex-col">
             {item.submenu.map((sub) => (
               <div key={sub.label} className="border-t border-[#D9D0CC]">
-                <p className="text-xl font-semibold pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
+                <p className="text-xl font-regular   pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
                   {sub.label}
                 </p>
                 {sub.qna?.map((qa, qIndex) => {
@@ -219,24 +219,29 @@ const Faq: React.FC = () => {
   return (
     <div ref={scrollContainerRef} className="relative min-h-screen bg-[#E8E1DC]">
       {/* Grid background */}
-      <div className="absolute -z-10 inset-0 w-full bg-[#E8E1DC] [background-image:linear-gradient(to_right,#73737330_1px,transparent_1px),linear-gradient(to_bottom,#73737330_0px,transparent_0px)] [background-size:11px_11px]" />
+       <div className="absolute inset-0 -z-10">
+        <div className="h-full w-full" style={{
+          backgroundImage: 'linear-gradient(to bottom, #73737330 1px, transparent 1px)',
+          backgroundSize: '100% 11px'
+        }}></div>
+      </div>
 
       <div className="flex xl:flex-row flex-col px-6 lg:px-12 xl:px-20 gap-8 xl:gap-16 pt-6 xl:pt-12 justify-between">
         {/* Left sidebar */}
         <div className="xl:w-1/4 lg:w-1/3 w-full bg-white sticky top-0 self-start">
-          <div className="w-full bg-white z-10">
+          <div className="w-full bg-[#FAF4F1] z-10">
             <form onSubmit={handleSearch} className="relative">
               <FiSearch className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                className="w-full p-3 pl-10 pr-28 text-black bg-white border border-[#D9D0CC] rounded-none focus:outline-none focus:ring-1 focus:ring-gray-300"
+                className="w-full p-3 pl-10 pr-28 text-black bg-[#FAF4F1] border border-[#D9D0CC] rounded-none focus:outline-none focus:ring-1 focus:ring-gray-300"
                 placeholder="Search FAQs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button 
                 type="submit"
-                className="absolute top-1/2 right-0 h-full px-6 bg-[#DED6D0] text-black text-sm whitespace-nowrap border border-[#D9D0CC] -translate-y-1/2 hover:bg-[#D9D0CC] transition-colors"
+                className="absolute top-1/2 right-0 h-full px-6 bg-[#DED6D0] text-black text-sm whitespace-nowrap border border-[#D9D0CC] -translate-y-1/2 hover:bg-[#D9D0CC] transition-colors font-regular"
               >
                 Search
               </button>
@@ -247,7 +252,7 @@ const Faq: React.FC = () => {
           {searchQuery.trim() !== "" && (
             <button
               onClick={() => setSearchQuery("")}
-              className="w-full bg-[#DED6D0] text-black text-sm py-2 px-6 border border-[#D9D0CC] hover:bg-[#D9D0CC] transition-colors mb-2"
+              className="w-full bg-[#FAF4F1] text-black text-sm py-2 px-6 border border-[#D9D0CC] hover:bg-[#D9D0CC] transition-colors mb-2"
             >
               Clear Search
             </button>
@@ -257,24 +262,25 @@ const Faq: React.FC = () => {
           {menuItems.map((item, index) => (
             <div
               key={item.label}
-              className="flex flex-col bg-white border border-[#D9D0CC] py-2"
+              className="flex flex-col bg-[#FAF4F1] border border-[#D9D0CC] py-2 hidden sm:block md:block"
             >
-              <button
-                onClick={() => handleClick(index)}
-                className="flex items-center justify-between px-2 text-black font-medium py-2 text-xl cursor-pointer"
-              >
-                <span>{item.label}</span>
-                <IoMdArrowDropright
-                  className={`ml-2 h-5 w-5 transition-transform duration-200 ${
-                    openIndex === index ? "rotate-90" : ""
-                  }`}
-                />
-              </button>
+             <button
+  onClick={() => handleClick(index)}
+  className="w-full flex items-center justify-between px-4 py-2 text-xl text-black font-medium cursor-pointer"
+>
+  <span className="truncate">{item.label}</span>
+  <IoMdArrowDropright
+    className={`h-5 w-5 transition-transform duration-200 ${
+      openIndex === index ? "rotate-90" : ""
+    }`}
+  />
+</button>
+
 
               {openIndex === index && (
                 <div className="flex flex-col bg-[#f6f0ec] rounded-md">
                   {item.submenu.map((sub, i) => (
-                    <div key={i} className="px-4 py-2 cursor-pointer text-sm">
+                    <div key={i} className="px-4 py-2 cursor-pointer text-sm font-regular">
                       {sub}
                     </div>
                   ))}

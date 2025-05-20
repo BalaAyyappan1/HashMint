@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Icon1 from '@/public/app-icon-9.avif'; // Replace with your actual icon
+import Icon1 from '@/public/app-icon-9.avif'; 
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -12,7 +12,7 @@ const Clientele = () => {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Sample logos (use more or different ones as needed)
+
   const logos = new Array(20).fill({ logo: Icon1 });
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Clientele = () => {
     const container = containerRef.current;
     if (!marquee || !container) return;
 
-    const totalWidth = marquee.scrollWidth / 2; // width of one full set of logos
+    const totalWidth = marquee.scrollWidth / 2;
 
     gsap.set(marquee, { x: 0 });
 
