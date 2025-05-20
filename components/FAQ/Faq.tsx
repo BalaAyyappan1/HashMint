@@ -1,124 +1,54 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaChevronDown } from 'react-icons/fa';
 import { IoMdArrowDropright } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
-import { menuItems, menuItems2 } from './Contents';
 
-// Register GSAP plugins once outside component
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
+// Define TypeScript interfaces
+interface QnA {
+  question: string;
+  answer: string;
 }
 
-const Faq = () => {
-  const [openIndex, setOpenIndex] = useState(null);
-  const [openAnswers, setOpenAnswers] = useState({});
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+interface Subcategory {
+  label: string;
+  qna?: QnA[];
+}
+
+interface Category {
+  label: string;
+  submenu: Subcategory[];
+}
+
+interface MenuItem {
+  label: string;
+  submenu: string[];
+}
+
+interface SearchResult {
+  categoryLabel: string;
+  subLabel: string;
+  question: string;
+  answer: string;
+  key: string;
+}
+
+// Import your actual data here
+import { menuItems, menuItems2 } from './Contents';
+
+const Faq: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openAnswers, setOpenAnswers] = useState<Record<string, boolean>>({});
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   
   // Refs
-  const contentRef = useRef(null);
-  const sectionRef = useRef(null);
-  const contentEndMarkerRef = useRef(null);
-  const contentContainerRef = useRef(null);
-  const spacerRef = useRef(null);
-  const scrollTriggerRef = useRef(null);
-  const resizeObserverRef = useRef(null);
-
-  // Update heights and refresh ScrollTrigger when content changes
-  const updateHeights = useCallback(() => {
-    if (!contentRef.current || !contentContainerRef.current || !spacerRef.current) return;
-    
-    // Calculate heights
-    const contentHeight = contentRef.current.scrollHeight;
-    const visibleHeight = contentRef.current.clientHeight;
-    const scrollableHeight = contentHeight - visibleHeight;
-    
-    // Update container height
-    contentContainerRef.current.style.height = `${contentHeight}px`;
-    
-    // Update spacer height
-    spacerRef.current.style.height = `${scrollableHeight}px`;
-    
-    // Force ScrollTrigger to recalculate
-    if (scrollTriggerRef.current) {
-      scrollTriggerRef.current.refresh();
-    } else {
-      ScrollTrigger.refresh(true);
-    }
-  }, []);
-
-  // Set up ScrollTrigger
-  useEffect(() => {
-    if (!contentRef.current || !sectionRef.current || !contentEndMarkerRef.current) return;
-    
-    // Initial height update
-    updateHeights();
-    
-    // Create ScrollTrigger
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: () => `+=${contentRef.current?.scrollHeight || 0}`,
-      pin: true,
-      pinSpacing: false,
-      onUpdate: (self) => {
-        if (!contentRef.current || !self.isActive) return;
-        
-        // Update scroll position based on progress
-        const totalScrollHeight = contentRef.current.scrollHeight - contentRef.current.clientHeight;
-        contentRef.current.scrollTop = totalScrollHeight * self.progress;
-        
-        // Update spacer height as we scroll
-        if (spacerRef.current) {
-          const remainingHeight = totalScrollHeight * (1 - self.progress);
-          spacerRef.current.style.height = `${remainingHeight}px`;
-        }
-      },
-      onLeaveBack: () => {
-        // Reset scroll position when scrolling back up
-        if (contentRef.current) {
-          contentRef.current.scrollTop = 0;
-        }
-        
-        // Reset spacer height
-        updateHeights();
-      },
-      markers: false
-    });
-    
-    // Set up ResizeObserver for more efficient resize handling
-    resizeObserverRef.current = new ResizeObserver(updateHeights);
-    if (contentRef.current) {
-      resizeObserverRef.current.observe(contentRef.current);
-    }
-    
-    // Clean up
-    return () => {
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-      }
-      if (resizeObserverRef.current) {
-        resizeObserverRef.current.disconnect();
-      }
-    };
-  }, [updateHeights]);
-
-  // Handle content changes
-  useEffect(() => {
-    // Use requestAnimationFrame for smoother updates
-    const rafId = requestAnimationFrame(() => {
-      updateHeights();
-    });
-    
-    return () => cancelAnimationFrame(rafId);
-  }, [openAnswers, openIndex, searchResults, updateHeights]);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Toggle answer visibility
-  const toggleAnswer = useCallback((key) => {
+  const toggleAnswer = useCallback((key: string) => {
     setOpenAnswers((prev) => ({
       ...prev,
       [key]: !prev[key],
@@ -126,7 +56,7 @@ const Faq = () => {
   }, []);
 
   // Toggle menu expansion
-  const handleClick = useCallback((index) => {
+  const handleClick = useCallback((index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   }, []);
 
@@ -138,7 +68,7 @@ const Faq = () => {
     }
 
     const query = searchQuery.toLowerCase();
-    const results = [];
+    const results: SearchResult[] = [];
 
     // Search through all data
     menuItems2.forEach((category) => {
@@ -168,7 +98,7 @@ const Faq = () => {
     
     // Auto-expand search results
     if (results.length > 0) {
-      const newOpenAnswers = { ...openAnswers };
+      const newOpenAnswers: Record<string, boolean> = { ...openAnswers };
       results.forEach(result => {
         newOpenAnswers[result.key] = true;
       });
@@ -177,9 +107,19 @@ const Faq = () => {
   }, [searchQuery, openAnswers]);
 
   // Handle search form submission
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  // Implement smooth scrolling with native browser APIs
+  useEffect(() => {
+    const handleScroll = () => {
+      // This is where you can add scroll-based behavior if needed
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Search results view
   const renderSearchResults = () => (
@@ -277,14 +217,11 @@ const Faq = () => {
   );
 
   return (
-    <>
-      <div 
-        ref={sectionRef}
-        className="relative h-screen flex xl:flex-row flex-col px-6 lg:px-12 xl:px-20 gap-8 xl:gap-16 pt-6 xl:pt-12 justify-between"
-      >
-        {/* Grid background */}
-        <div className="absolute -z-10 inset-0 w-full bg-[#E8E1DC] [background-image:linear-gradient(to_right,#73737330_1px,transparent_1px),linear-gradient(to_bottom,#73737330_0px,transparent_0px)] [background-size:11px_11px]" />
+    <div ref={scrollContainerRef} className="relative min-h-screen bg-[#E8E1DC]">
+      {/* Grid background */}
+      <div className="absolute -z-10 inset-0 w-full bg-[#E8E1DC] [background-image:linear-gradient(to_right,#73737330_1px,transparent_1px),linear-gradient(to_bottom,#73737330_0px,transparent_0px)] [background-size:11px_11px]" />
 
+      <div className="flex xl:flex-row flex-col px-6 lg:px-12 xl:px-20 gap-8 xl:gap-16 pt-6 xl:pt-12 justify-between">
         {/* Left sidebar */}
         <div className="xl:w-1/4 lg:w-1/3 w-full bg-white sticky top-0 self-start">
           <div className="w-full bg-white z-10">
@@ -347,33 +284,17 @@ const Faq = () => {
           ))}
         </div>
 
-        {/* Content container */}
-        <div 
-          ref={contentContainerRef}
-          className="xl:w-3/4 lg:w-2/3 w-full relative"
-        >
-          {/* FAQ content */}
+        {/* Content container - simplified from the original implementation */}
+        <div className="xl:w-3/4 lg:w-2/3 w-full">
           <div 
             ref={contentRef}
-            className="h-[80vh] overflow-hidden"
+            className="overflow-y-auto"
           >
             {searchQuery.trim() !== "" ? renderSearchResults() : renderDefaultContent()}
           </div>
-          
-          {/* End marker */}
-          <div 
-            ref={contentEndMarkerRef} 
-            className="content-end-marker absolute bottom-0"
-          />
         </div>
       </div>
-      
-      {/* Spacer element */}
-      <div 
-        ref={spacerRef} 
-        className="spacer-element transition-height duration-300 ease-linear" 
-      />
-    </>
+    </div>
   );
 };
 
