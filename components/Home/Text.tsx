@@ -22,7 +22,6 @@ const HorizontalScrollAnimation: React.FC = () => {
   const people2Ref = useRef(null);
   const testimonialRef = useRef(null);
 
-
   useEffect(() => {
     if (
       !containerRef.current ||
@@ -46,7 +45,6 @@ const HorizontalScrollAnimation: React.FC = () => {
     const text2Spans = text2Ref.current.querySelectorAll('span');
     const text3Spans = text3Ref.current.querySelectorAll('span');
 
-
     // Set initial styles
     gsap.set([text1Ref.current, text2Ref.current, text3Ref.current], {
       position: 'absolute',
@@ -63,10 +61,9 @@ const HorizontalScrollAnimation: React.FC = () => {
     gsap.set(text3Spans, { opacity: 0, y: 20 });
     gsap.set(text3Ref.current, { opacity: 0 });
 
-    // Set initial state for the image - fullscreen size
     gsap.set(imageRef.current, {
       opacity: 0,
-      scale: 3.5,  // Start with a large scale for fullscreen effect
+      scale: window.innerWidth < 640 ? 2 : 3.5, // Smaller scale on mobile
       position: 'absolute',
       top: '50%',
       left: '50%',
@@ -83,56 +80,54 @@ const HorizontalScrollAnimation: React.FC = () => {
       height: '100%',
     });
 
-    // Calculate the exact width of all sections combined
+    // Calculate content width dynamically for mobile and desktop
     const calculateContentWidth = () => {
-      // Directly return the sum based on your actual sections:
-      return (
-        window.innerWidth + // First section (w-screen)
-        window.innerWidth + // Second section (w-screen)
-        1200 +             // Third section (w-[1200px])
-        1000 +             // Fourth section (w-[1000px])
-        window.innerWidth + // Fifth section (w-screen)
-        1400 +           // Sixth section (w-[1000px])
-        window.innerWidth  // Fifth section (w-screen)
-      );
+      const isMobile = window.innerWidth < 640;
+      return isMobile
+        ? window.innerWidth * 7 // Stack sections vertically on mobile
+        : (
+          window.innerWidth + // First section
+          window.innerWidth + // Second section
+          1200 +             // Third section
+          1000 +             // Fourth section
+          window.innerWidth + // Fifth section
+          1400 +             // Sixth section
+          window.innerWidth  // Seventh section
+        );
     };
 
-    // Set initial width for horizontal content
     const totalWidth = calculateContentWidth();
 
     gsap.set(horizontalContentRef.current, {
       width: totalWidth,
       display: 'flex',
+      flexDirection: window.innerWidth < 640 ? 'column' : 'row', // Stack on mobile
     });
 
-    // Create a main timeline that manages the entire animation sequence
-    // This timeline will be responsible for both the text animations and transitioning to horizontal scroll
     const mainTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=200%',  // Reduced from 300% to minimize excess vertical scrolling
+        end: window.innerWidth < 640 ? '+=100%' : '+=200%',
         scrub: 1,
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
         onLeave: () => {
-          // When leaving the horizontal scroll section, make sure the next section is visible
           gsap.to(newSectionRef.current, {
             zIndex: 100,
             duration: 0
           });
         },
-
       },
     });
 
-    // Text animations in the main timeline
+    // Text animations
     mainTl.to(text1Spans, {
       opacity: 1,
       y: 0,
       stagger: 0.05,
-      duration: 2,
+      duration: 1.5,
       ease: 'power2.out',
     });
 
@@ -142,7 +137,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         opacity: 0,
         y: -20,
         stagger: 0.05,
-        duration: 1.5,
+        duration: 1,
         ease: 'power2.in',
       },
       '+=0.5'
@@ -162,7 +157,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       opacity: 1,
       y: 0,
       stagger: 0.05,
-      duration: 2,
+      duration: 1.5,
       ease: 'power2.out',
     });
 
@@ -171,10 +166,10 @@ const HorizontalScrollAnimation: React.FC = () => {
       {
         x: '0vw',
         opacity: 1,
-        duration: 5,
+        duration: 3,
         ease: 'power2.inOut',
       },
-      '-=1.5'
+      '-=1'
     );
 
     mainTl.to(
@@ -184,18 +179,17 @@ const HorizontalScrollAnimation: React.FC = () => {
         duration: 1,
         ease: 'power1.out',
       },
-      '-=2'
+      '-=1.5'
     );
 
-    // Horizontal scrolling implemented directly within the main timeline
-    // rather than as a separate ScrollTrigger
     mainTl.to(horizontalContentRef.current, {
-      x: () => -(totalWidth - window.innerWidth),
+      x: window.innerWidth < 640 ? 0 : () => -(totalWidth - window.innerWidth),
+      y: window.innerWidth < 640 ? () => -(totalWidth - window.innerHeight) : 0,
       ease: 'none',
-      duration: 25, // Control the speed of horizontal scrolling
+      duration: window.innerWidth < 640 ? 15 : 25,
     });
 
-
+    // Image and text3 animations adjusted for mobile
     mainTl.to(
       imageRef.current,
       {
@@ -215,11 +209,8 @@ const HorizontalScrollAnimation: React.FC = () => {
       opacity: 0,
       duration: 1,
       ease: 'power2.out',
-    }, '-=3')
+    }, '-=3');
 
-
-
-    // Then bring in the text on top of the fullscreen image
     mainTl.to(
       text3Ref.current,
       {
@@ -230,19 +221,14 @@ const HorizontalScrollAnimation: React.FC = () => {
       '-=2.5'
     );
 
-
-
-
-    // Animate the text spans
     mainTl.to(text3Spans, {
       opacity: 1,
       y: 0,
       stagger: 0.05,
-      duration: 2,
+      duration: 1.5,
       ease: 'power2.out',
     });
 
-    // Fade in the image AFTER text is done
     mainTl.to(imageRef.current, {
       x: "0%",
       y: "0%",
@@ -251,45 +237,40 @@ const HorizontalScrollAnimation: React.FC = () => {
       opacity: 1,
       duration: 1,
       transformOrigin: 'center center',
-    }, '-=1'); // Starts 1s before text ends, tweak as needed
+    }, '-=1');
 
-    // Scale image to normal size (centered)
     mainTl.to(imageRef.current, {
       x: "0%",
       y: "0%",
       left: "50%",
       top: "50%",
       position: "absolute",
-      scale: 1.2,
-      duration: 2,
+      scale: window.innerWidth < 640 ? 1 : 1.2,
+      duration: 1.5,
       ease: 'power2.inOut',
       transformOrigin: 'center center',
     });
 
-    // After the image scales down, fade out the text
     mainTl.to(
       text3Spans,
       {
         opacity: 0,
-
         stagger: 0.05,
-        duration: 1.5,
+        duration: 1,
         ease: 'power2.in',
       },
-      '-=0.5' // Start slightly before the image scaling finishes
+      '-=0.5'
     );
 
-
     mainTl.to(imageRef.current, {
-      x: "-100%", // move fully to the left
+      x: window.innerWidth < 640 ? "0%" : "-100%",
       y: "0%",
-      scale: 1.2,
-      duration: 2,
+      scale: window.innerWidth < 640 ? 1 : 1.2,
+      duration: 1.5,
       ease: 'power2.inOut',
       transformOrigin: 'center center',
     }, '+=0.5');
 
-    // put this before you start your timeline…
     gsap.set(rightContentRef.current, { opacity: 0, xPercent: 60 });
     mainTl.to(rightContentRef.current, {
       opacity: 1,
@@ -298,19 +279,16 @@ const HorizontalScrollAnimation: React.FC = () => {
       ease: 'power3.out'
     }, '-=1');
 
-    // This is the key part - we're adding a "lock" at the end of the animation
-    // by essentially creating a dummy section that keeps the pin active
     mainTl.to({}, { duration: 0.5 });
 
     gsap.set(newSectionRef.current, {
-      zIndex: -1, // Initially behind the horizontal section
+      zIndex: -1,
     });
 
     ScrollTrigger.create({
       trigger: newSectionRef.current,
-      start: 'bottom top', // Start when the top of the next section hits the bottom of the viewport
+      start: 'bottom top',
       onEnter: () => {
-        // When entering the next section, bring it to the front
         gsap.to(newSectionRef.current, {
           zIndex: 100,
           duration: 0
@@ -318,23 +296,17 @@ const HorizontalScrollAnimation: React.FC = () => {
       }
     });
 
-
-
-
-
-
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: testimonialContainerRef.current,
         start: "top top",
-        end: "+=4000",
+        end: "+=2000", // Shorter scroll distance on mobile
         scrub: 1,
         pin: true,
         anticipatePin: 1,
       }
     });
 
-    // Initial title animation
     tl.from([people1Ref.current, people2Ref.current], {
       opacity: 1,
       y: 50,
@@ -343,21 +315,18 @@ const HorizontalScrollAnimation: React.FC = () => {
       ease: 'power3.out'
     });
 
-    // Card setup
     const cards = gsap.utils.toArray('.testimonial-card');
-    const cardHeight = 300;
+    const cardHeight = window.innerWidth < 640 ? 250 : 300;
     const gap = 10;
     const visibleHeight = window.innerHeight * 0.6;
     const totalScrollDistance = (cardHeight + gap) * cards.length - visibleHeight;
 
-    // Main scroll animation
     tl.to(testimonialRef.current, {
       y: -totalScrollDistance,
-      duration: cards.length * 0.8,
+      duration: cards.length * 0.6,
       ease: 'none'
     });
 
-    // Card entrances
     (cards as HTMLElement[]).forEach((card, i) => {
       tl.from(card, {
         opacity: 0,
@@ -367,30 +336,10 @@ const HorizontalScrollAnimation: React.FC = () => {
       }, i * 0.2);
     });
 
+    const exitPosition = cards.length * 0.6 * 0.8;
 
-    // Curved exit animation for titles (last 20% of scroll)
-    const exitPosition = cards.length * 0.8 * 0.8;
-
-    // people1Ref curves inward from the left
     tl.to(people1Ref.current, {
-      x: -300,       // Total horizontal movement
-      y: -80,        // Single upward bend
-      opacity: 0,
-      duration: 1.8,
-      ease: "power1.inOut",
-      motionPath: {
-        path: [
-          { x: 0, y: 0 },
-          { x: -150, y: -20 },  // Bend starts here
-          { x: -300, y: -80 }   // Curve peaks here
-        ],
-        curviness: 1.2
-      }
-    }, exitPosition);
-
-    // Animate people2Ref (right side, bends inward to center)
-    tl.to(people2Ref.current, {
-      x: 300,            // move toward center
+      x: window.innerWidth < 640 ? -150 : -300,
       y: -80,
       opacity: 0,
       duration: 1.8,
@@ -398,28 +347,48 @@ const HorizontalScrollAnimation: React.FC = () => {
       motionPath: {
         path: [
           { x: 0, y: 0 },
-          { x: 150, y: -20 },  // Bend starts here
-          { x: 300, y: -80 }   // Curve peaks here
+          { x: window.innerWidth < 640 ? -75 : -150, y: -20 },
+          { x: window.innerWidth < 640 ? -150 : -300, y: -80 }
         ],
         curviness: 1.2
       }
     }, exitPosition);
 
-
-
+    tl.to(people2Ref.current, {
+      x: window.innerWidth < 640 ? 150 : 300,
+      y: -80,
+      opacity: 0,
+      duration: 1.8,
+      ease: "power1.inOut",
+      motionPath: {
+        path: [
+          { x: 0, y: 0 },
+          { x: window.innerWidth < 640 ? 75 : 150, y: -20 },
+          { x: window.innerWidth < 640 ? 150 : 300, y: -80 }
+        ],
+        curviness: 1.2
+      }
+    }, exitPosition);
 
     const handleResize = () => {
       const width = window.innerWidth;
-      gsap.set([text1Ref.current, text2Ref.current], {
+      gsap.set([text1Ref.current, text2Ref.current, text3Ref.current], {
         fontSize:
-          width < 480 ? '1.25rem' : width < 640 ? '1.5rem' : width < 768 ? '1.75rem' : '2.25rem',
+          width < 480
+            ? '1rem'
+            : width < 640
+            ? '1.25rem'
+            : width < 768
+            ? '1.75rem'
+            : '2.25rem',
       });
 
-      // Update content width on resize and recalculate scroll distance
       const contentWidth = calculateContentWidth();
-      gsap.set(horizontalContentRef.current, { width: contentWidth });
+      gsap.set(horizontalContentRef.current, {
+        width: contentWidth,
+        flexDirection: width < 640 ? 'column' : 'row',
+      });
 
-      // Force ScrollTrigger to recalculate and refresh
       ScrollTrigger.refresh(true);
     };
 
@@ -434,7 +403,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
   const splitText = (text: string) =>
     text.split('').map((char, i) =>
-      char === ' ' ? <span key={i}>&nbsp;</span> : <span key={i}>{char}</span>
+      char === ' ' ? <span key={i}> </span> : <span key={i}>{char}</span>
     );
 
   return (
@@ -443,18 +412,17 @@ const HorizontalScrollAnimation: React.FC = () => {
         ref={containerRef}
         className="h-screen w-full relative bg-white overflow-hidden"
       >
-        {/* Text animation */}
-        <div className="w-full h-full flex items-center justify-center p-4 relative">
-          <div className="w-full  mx-auto text-center relative h-32 md:h-40">
+        <div className="w-full h-full flex items-center justify-center p-4 sm:p-6 relative">
+          <div className="w-full mx-auto text-center relative h-32 sm:h-40">
             <div
               ref={text1Ref}
-              className=" w-full font-horizona leading-tight tracking-tighter text-3xl md:text-5xl  whitespace-nowrap "
+              className="w-full font-horizona leading-tight tracking-tighter text-2xl sm:text-3xl md:text-5xl whitespace-nowrap"
             >
               {splitText("We choose calm over chaos, clarity over distraction")}
             </div>
             <div
               ref={text2Ref}
-              className=" w-full font-horizona leading-tight tracking-tighter text-3xl md:text-5xl whitespace-nowrap"
+              className="w-full font-horizona leading-tight tracking-tighter text-2xl sm:text-3xl md:text-5xl whitespace-nowrap"
             >
               {splitText(
                 "Introducing Leaf 1 - a gentler, more mindful focus device."
@@ -463,19 +431,16 @@ const HorizontalScrollAnimation: React.FC = () => {
           </div>
         </div>
 
-        {/* Horizontal scroll section */}
         <div
           ref={horizontalContainerRef}
           className="w-full h-full flex items-center overflow-hidden"
         >
           <div
             ref={horizontalContentRef}
-            className="flex h-full items-center flex-nowrap"
+            className="flex h-full items-center flex-nowrap sm:flex-row flex-col"
           >
-            {/* Horizontal sections */}
-
-            {/*Exp the first paper */}
-            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-5  bg-transparent flex items-center justify-center text-xl font-bold">
+            {/* First Section: Video */}
+            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold">
               <section className="video-section sticky top-0 h-[95vh] w-full overflow-hidden">
                 <video
                   autoPlay
@@ -490,7 +455,6 @@ const HorizontalScrollAnimation: React.FC = () => {
                     transform: "translateZ(0)",
                     willChange: "transform",
                     objectFit: "cover",
-
                     transition: "transform 0.1s ease-out",
                   }}
                 >
@@ -502,17 +466,16 @@ const HorizontalScrollAnimation: React.FC = () => {
                   Your browser does not support the video tag.
                 </video>
 
-                <div className=' absolute flex gap-20 bottom-0 px-10 py-6'>
-
-                  <div className=" z-20 w-1/2">
-                    <h1 className="text-5xl text-start text-white leading-tight tracking-tighter font-horizona">
+                <div className="absolute flex flex-col sm:flex-row gap-8 sm:gap-[5%] bottom-4 sm:bottom-0 px-6 sm:px-10 py-6">
+                  <div className="z-20 w-full sm:w-1/2">
+                    <h1 className="mt-6 sm:mt-0 text-xl sm:text-2xl md:text-5xl text-start text-white leading-tight tracking-tighter font-horizona">
                       Experience the first paper-like <br />
                       display with real-time speed.
                     </h1>
                   </div>
 
-                  <div className="  z-20 w-1/2">
-                    <div className="flex flex-row gap-3">
+                  <div className="z-20 w-full sm:w-1/2">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       {contents.map((item, index) => (
                         <div
                           key={index}
@@ -524,8 +487,8 @@ const HorizontalScrollAnimation: React.FC = () => {
                             width={30}
                             height={30}
                           />
-                          <h2 className="text-white text-base tracking-tighter leading-tight font-bold">{item.title}</h2>
-                          <p className="text-white text-sm font-regular ">
+                          <h2 className="text-white text-sm sm:text-base tracking-tighter leading-tight font-bold">{item.title}</h2>
+                          <p className="text-white text-xs sm:text-sm font-regular">
                             {item.description}
                           </p>
                         </div>
@@ -533,15 +496,12 @@ const HorizontalScrollAnimation: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
-
-
               </section>
             </section>
 
-            {/*Three image */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-5  flex flex-col justify-between text-xl pt-14  pb-15 bg-[#faf7f6]">
-              <div className="grid grid-cols-3 gap-4 py-2 mt-4 w-full max-w-none">
+            {/* Second Section: Three Images */}
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-4 sm:p-5 flex flex-col justify-between text-lg sm:text-xl pt-10 sm:pt-14 pb-10 sm:pb-15 bg-[#faf7f6]">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-2 mt-4 w-full max-w-none">
                 {images.map((feature, index) => (
                   <div
                     key={index}
@@ -552,13 +512,13 @@ const HorizontalScrollAnimation: React.FC = () => {
                       alt={feature.title}
                       width={500}
                       height={500}
-                      className="object-cover rounded-2xl aspect-video"
+                      className="object-cover rounded-2xl aspect-video w-full"
                       quality={100}
                     />
 
-                    <div className="flex flex-row space-x-2 w-full  items-start leading-tight tracking-tighter justify-between text-start">
-                      <p className="text-base font-semibold text-[#17190f] opacity-90">{feature.title}</p>
-                      <p className="text-base  w-80 text-start opacity-70">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full items-start leading-tight tracking-tighter justify-between text-start">
+                      <p className="text-sm sm:text-base font-semibold text-[#17190f] opacity-90">{feature.title}</p>
+                      <p className="text-sm sm:text-base w-full sm:w-80 text-start opacity-70">
                         {feature.description}
                       </p>
                     </div>
@@ -566,16 +526,14 @@ const HorizontalScrollAnimation: React.FC = () => {
                 ))}
               </div>
 
-              <div className="flex flex-row justify-between  mt-10 w-full">
-
-                <h1 className="text-5xl leading-tight tracking-tighter font-horizona text-[#17190f]">
-                  A focused, serene space that fosters <br /> focus &
-                  productivity.
+              <div className="flex flex-col sm:flex-row justify-between mt-6 sm:mt-10 w-full">
+                <h1 className="text-3xl sm:text-5xl leading-tight tracking-tighter font-horizona text-[#17190f]">
+                  A focused, serene space that fosters <br /> focus & productivity.
                 </h1>
 
-                <div className="flex flex-col w-[30%] leading-tight tracking-tighter pt-4">
-                  <h1 className="text-lg font-semibold text-[#17190f] opacity-70">Lume Paper Display</h1>
-                  <p className="text-base opacity-70">
+                <div className="flex flex-col w-full sm:w-[30%] leading-tight tracking-tighter pt-4">
+                  <h1 className="text-base sm:text-lg font-semibold text-[#17190f] opacity-70">Lume Paper Display</h1>
+                  <p className="text-sm sm:text-base opacity-70">
                     Introducing the Lume Paper Display - a new kind of screen
                     that feels like paper but runs at 60fps. With Lume, enjoy
                     fluid work without distractions.
@@ -584,29 +542,28 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-            {/*Image */}
-            <section className="horizontal-section w-[1200px] bg-transparent  h-screen flex-shrink-0 p-5 flex items-center justify-center ">
+            {/* Third Section: Single Image */}
+            <section className="horizontal-section w-screen sm:w-[1200px] bg-transparent h-screen flexed-shrink-0 p-4 sm:p-5 flex items-center justify-center">
               <Image
                 src="/DSC04014.png"
                 alt="Lume Paper Display"
                 width={1000}
                 height={1000}
-                className="h-screen w-[900px] object-cover"
+                className="h-screen w-full sm:w-[900px] object-cover"
               />
             </section>
 
-            {/*Rotating Image */}
-            <section className="horizontal-section w-[1000px]  h-screen  flex-shrink-0 pt-5 bg-transparent flex flex-col  items-center justify-between ">
-
+            {/* Fourth Section: Rotating Image */}
+            <section className="horizontal-section w-screen sm:w-[1000px] h-screen flex-shrink-0 pt-4 sm:pt-5 bg-transparent flex flex-col items-center justify-between">
               <Image
                 src="/image.png"
                 alt="Lume Paper Display"
-                width={400}
-                height={400}
-                className="object-cover animate-[spin_20s_linear_infinite]"
+                width={300}
+                height={300}
+                className="object-cover animate-[spin_20s_linear_infinite] w-3/4 sm:w-[400px]"
               />
 
-              <div className="text-center text-lg font-horizona leading-tight tracking-tighter text-[#17190f]">
+              <div className="text-center text-base sm:text-lg font-horizona leading-tight tracking-tighter text-[#17190f]">
                 The vision behind the Hashmint is to create a healthier, more
                 <br />
                 human-centered digital environment - designed to protect your
@@ -615,9 +572,8 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-            {/* Built for open skies */}
+            {/* Fifth Section: Built for Open Skies */}
             <section className="horizontal-section w-screen h-screen flex-shrink-0 relative">
-              {/* Background Image */}
               <Image
                 src="/DSC04014.png"
                 alt="Lume Paper Display"
@@ -625,53 +581,51 @@ const HorizontalScrollAnimation: React.FC = () => {
                 className="object-cover z-0"
               />
 
-              <div className=' absolute flex gap-[30%] w-full px-10 top-34'>
-                {/* Overlay Text */}
-                <div className="  flex flex-col items-start justify-center z-10 text-white text-center px-4 mt-20">
-                  <h1 className="text-6xl  mb-4 font-horizona leading-tight tracking-tighter ">
-                    Built for <span className='italic'>open skies</span>
+              <div className="absolute flex flex-col sm:flex-row gap-4 sm:gap-[30%] w-full px-6 sm:px-10 top-20 sm:top-34">
+                <div className="flex flex-col items-start justify-center z-10 text-white text-center px-4 mt-10 sm:mt-20">
+                  <h1 className="text-4xl sm:text-6xl mb-4 font-horizona leading-tight tracking-tighter">
+                    Built for <span className="italic">open skies</span>
                   </h1>
-                  <p className="text-xl leading-tight tracking-tighter">A focus device made for the outdoors</p>
+                  <p className="text-base sm:text-xl leading-tight tracking-tighter">A focus device made for the outdoors</p>
                 </div>
 
-                <div className=" flex flex-col items-start justify-center z-10 text-white text-start px-4 text-xl leading-tight tracking-tighter">
-                  Leaf 1 shines in sunlight - a display that stays <br /> crisp
-                  and clear, even under open sky.
+                <div className="flex flex-col items-start justify-center z-10 text-white text-start px-4 text-base sm:text-xl leading-tight tracking-tighter">
+                  Leaf 1 shines in sunlight - a display that stays <br />
+                  crisp and clear, even under open sky.
                 </div>
               </div>
-
             </section>
 
-            {/*Image */}
-            <section className="horizontal-section w-[1400px] h-screen flex-shrink-0 justify-between items-center bg-black">
+            {/* Sixth Section: Image with Features */}
+            <section className="horizontal-section w-screen sm:w-[1400px] h-screen flex-shrink-0 justify-between items-center bg-black">
               <div className="flex flex-col items-center justify-center">
                 <Image
                   src="/DSC04014.png"
                   alt="Lume Paper Display"
                   width={1000}
                   height={1000}
-                  className=" w-[900px] h-[700px] object-cover"
+                  className="w-full sm:w-[900px] h-[500px] sm:h-[700px] object-cover"
                 />
 
                 <div>
-                  <div className="flex flex-row gap-5 items-center justify-center mt-20 ml-30">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center mt-10 sm:mt-20 ml-0 sm:ml-30">
                     {section6Contents.map((item, index) => (
                       <div
                         key={index}
-                        className="horizontal-section flex flex-col items-start justify-center gap-4 w-80"
+                        className="horizontal-section flex flex-col items-start justify-center gap-4 w-full sm:w-80"
                       >
                         <Image
                           src={item.image}
                           alt={item.title}
-                          className="h-12 w-12"
+                          className="h-10 w-10 sm:h-12 sm:w-12"
                           width={80}
                           height={80}
                         />
                         <div>
-                          <h2 className="text-black font-bold ">
+                          <h2 className="text-black text-sm sm:text-base font-bold">
                             {item.title}
                           </h2>
-                          <p className="text-black font-medium">
+                          <p className="text-black text-xs sm:text-sm font-medium">
                             {item.description}
                           </p>
                         </div>
@@ -682,11 +636,11 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-            {/* Tablet image come animation */}
+            {/* Seventh Section: Tablet Animation */}
             <section className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-black relative">
               <div
                 ref={text3Ref}
-                className="absolute w-full px-4 text-white opacity-90 whitespace-pre-wrap z-20 text-4xl font-horizona leading-tight tracking-tighter"
+                className="absolute w-full px-4 text-white opacity-90 whitespace-pre-wrap z-20 text-2xl sm:text-4xl font-horizona leading-tight tracking-tighter"
               >
                 {splitText(
                   "Lights off, amber on - for an \n softer night time experience"
@@ -703,42 +657,42 @@ const HorizontalScrollAnimation: React.FC = () => {
                   }}
                   src="/new.png"
                   alt="Lume Paper Display"
-                  width={1000}
-                  height={1000}
-                  className="object-cover rounded-2xl"
+                  width={800}
+                  height={800}
+                  className="object-cover rounded-2xl w-3/4 sm:w-full"
                 />
               </div>
 
               <div
                 ref={rightContentRef}
-                className="absolute top-80 text-white opacity-90 right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-2xl"
+                className="absolute top-64 sm:top-80 text-white opacity-90 right-4 sm:right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-lg sm:max-w-2xl"
               >
-                <h1 className="text-5xl whitespace-nowrap font-horizona leading-tight tracking-tighter">
+                <h1 className="text-3xl sm:text-5xl whitespace-nowrap font-horizona leading-tight tracking-tighter">
                   Blue Light Blocked
                 </h1>
-                <p className="text-lg leading-tight tracking-tighter">
+                <p className="text-base sm:text-lg leading-tight tracking-tighter">
                   Devices that emit blue light, affects our visionary senses <br />
                   even during the night, Leaf 1 doesn't
                 </p>
 
-                <div className="flex flex-row gap-5 items-center justify-center mt-20">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center mt-10 sm:mt-20">
                   {RightSectionContents.map((item, index) => (
                     <div
                       key={index}
-                      className="horizontal-section flex flex-col items-start justify-center gap-4 w-80"
+                      className="horizontal-section flex flex-col items-start justify-center gap-4 w-full sm:w-80"
                     >
                       <Image
                         src={item.image}
                         alt={item.title}
-                        className="h-12 w-12"
+                        className="h-10 w-10 sm:h-12 sm:w-12"
                         width={80}
                         height={80}
                       />
                       <div>
-                        <h2 className="text-white font-bold opacity-70">
+                        <h2 className="text-white text-sm sm:text-base font-bold opacity-70">
                           {item.title}
                         </h2>
-                        <p className="text-white font-medium opacity-70">
+                        <p className="text-white text-xs sm:text-sm font-medium opacity-70">
                           {item.description}
                         </p>
                       </div>
@@ -751,21 +705,18 @@ const HorizontalScrollAnimation: React.FC = () => {
         </div>
       </section>
 
-
-      <section ref={newSectionRef} className=" bg-[#18190F]">
-
-        {/* Delve into leaf 1 */}
-        <div className="flex flex-row justify-between md:px-40 items-center pt-50 mb-5 w-full">
-
-          <div className="flex flex-col space-y-15 font-horizona leading-tight tracking-tighter w-[40%]">
-            <h1 className="text-white text-6xl ">Delve into <br /> Leaf 1</h1>
-            <p className="text-white text-lg font-regular leading-tight tracking-tighter">
+      <section ref={newSectionRef} className="bg-[#18190F]">
+        {/* Delve into Leaf 1 */}
+        <div className="flex flex-col sm:flex-row justify-between px-6 sm:px-40 items-center pt-20 sm:pt-50 mb-5 w-full">
+          <div className="flex flex-col space-y-6 sm:space-y-15 font-horizona leading-tight tracking-tighter w-full sm:w-[40%]">
+            <h1 className="text-white text-4xl sm:text-6xl">Delve into <br /> Leaf 1</h1>
+            <p className="text-white text-base sm:text-lg font-regular leading-tight tracking-tighter">
               Explore every aspect of Leaf 1 and discover <br /> your thoughts!
             </p>
           </div>
 
-          <div className=" w-[60%]">
-            <div className="flex flex-row space-x-4">
+          <div className="w-full sm:w-[60%] mt-6 sm:mt-0">
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               {NewSectionContent.map((item, index) => (
                 <div
                   key={index}
@@ -777,10 +728,10 @@ const HorizontalScrollAnimation: React.FC = () => {
                       alt={item.title}
                       width={250}
                       height={250}
-                      className="new-section-image  h-auto rounded group-hover:scale-105"
+                      className="new-section-image h-auto rounded group-hover:scale-105 w-full"
                     />
                   </div>
-                  <h3 className="bg-[#45453d] p-4 font-medium rounded-b-xl w-full text-white text-center transition-colors duration-300 text-sm">
+                  <h3 className="bg-[#45453d] p-4 font-medium rounded-b-xl w-full text-white text-center transition-colors duration-300 text-xs sm:text-sm">
                     {item.title} →
                   </h3>
                 </div>
@@ -792,130 +743,117 @@ const HorizontalScrollAnimation: React.FC = () => {
         {/* Testimonials */}
         <section
           ref={testimonialContainerRef}
-          className="relative flex h-screen w-full flex-col  justify-center overflow-hidden bg-[#18190F] px-4  md:px-20"
+          className="relative flex h-screen w-full flex-col justify-center overflow-hidden bg-[#18190F] px-4 sm:px-20"
         >
-          {/* Title section */}
-          <div className="flex w-full flex-col items-start justify-between md:flex-row ">
+          <div className="flex w-full flex-col sm:flex-row items-start justify-between">
             <h1
               ref={people1Ref}
-              className="text-6xl font-horizona leading-tight tracking-tighter text-white md:text-8xl lg:text-9xl"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-horizona leading-tight tracking-tighter text-white"
             >
               What People
             </h1>
             <h1
               ref={people2Ref}
-              className="mt-10 text-6xl font-horizona leading-tight tracking-tighter text-white md:mt-30 md:text-8xl lg:text-9xl"
+              className="mt-6 sm:mt-10 text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-horizona leading-tight tracking-tighter text-white"
             >
               are saying
             </h1>
           </div>
 
-          {/* Testimonials container */}
           <div
             ref={testimonialRef}
-            className="absolute left-1/2  top-150 w-full max-w-2xl -translate-x-1/2 space-y-8"
+            className="absolute left-1/2 top-32 sm:top-150 w-full max-w-lg sm:max-w-2xl -translate-x-1/2 space-y-8"
           >
             {TestimonialContents.map((item, index) => (
               <div
                 key={index}
-                className="testimonial-card flex h-[300px] w-full max-w-[600px] flex-col justify-between rounded-md bg-[#515438] p-6 mx-auto"
+                className="testimonial-card flex h-[250px] sm:h-[300px] w-full max-w-[500px] sm:max-w-[600px] flex-col justify-between rounded-md bg-[#515438] p-6 mx-auto"
               >
-                <div
-                  className={`flex items-center gap-4`}
-                >
+                <div className="flex items-center gap-4">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-12 w-12 rounded-full bg-amber-400 p-2 object-cover"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-amber-400 p-2 object-cover"
                   />
                   <div>
-                    <h3 className="text-lg leading-tight tracking-tighter text-white">{item.name}</h3>
-                    <p className="text-white opacity-80 leading-tight tracking-tighter">{item.role}</p>
+                    <h3 className="text-base sm:text-lg leading-tight tracking-tighter text-white">{item.name}</h3>
+                    <p className="text-white opacity-80 text-sm sm:text-base leading-tight tracking-tighter">{item.role}</p>
                   </div>
                 </div>
                 <div
-                  className={`text-lg ${index % 2 === 0 ? 'text-left' : 'text-right'
-                    }`}
+                  className={`text-base sm:text-lg ${index % 2 === 0 ? 'text-left' : 'text-right'}`}
                 >
-                  <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-xl">{item.testi}</p>
-                  <span className="text-white underline text-base leading-tight tracking-tighter">{item.time}</span>
+                  <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.testi}</p>
+                  <span className="text-white underline text-xs sm:text-base leading-tight tracking-tighter">{item.time}</span>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* Know About Us */}
+        <div className="flex flex-col gap-8 sm:gap-10 text-center justify-center text-white mt-10 leading-tight">
+          <h1 className="opacity-40 text-sm sm:text-base">know more about us:</h1>
 
-        {/* know about us */}
-        <div className="flex flex-col gap-10 text-center justify-center text-white  mt-10  leading-tight">
-          <h1 className=' opacity-40 text-base'>know more about us:</h1>
-
-          <div className="flex flex-row gap-10 items-center justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 items-center justify-center">
             {KnowImages.map((image, index) => (
               <Image
                 key={index}
                 src={image.image}
                 alt={image.image || `Knowledge Image ${index + 1}`}
-                width={190} // Default width if not specified
-                height={200} // Default height if not specified
-                className="knowledge-image"
+                width={150}
+                height={160}
+                className="knowledge-image w-32 sm:w-48"
               />
             ))}
           </div>
         </div>
 
-        {/* about us */}
-        <section className="bg-[#18190F] h-[80vh] max-w-4xl gap-20 flex flex-row justify-between mx-auto items-start pt-20">
+        {/* About Us */}
+        <section className="bg-[#18190F] h-auto sm:h-[80vh] max-w-4xl gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-20">
           <Image
             src="/sun.avif"
             alt="sun"
             width={1000}
             height={800}
-            className="sun-image"
+            className="sun-image w-full sm:w-1/2 object-cover"
           />
-          <div className="flex flex-col space-y-6  ">
-            <h1 className="text-6xl text-white font-horizona leading-tight tracking-tighter">About Us</h1>
-            <p className=" text-white opacity-60 font-horizona leading-tight tracking-tighter text-lg">
+          <div className="flex flex-col space-y-6 px-4 sm:px-0">
+            <h1 className="text-4xl sm:text-6xl text-white font-horizona leading-tight tracking-tighter">About Us</h1>
+            <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
               We have been students most of our lives surrounded by notebooks,
-              books, paper bundles and know the problem first hand. <br />
-
+              books, paper bundles and know the problem first hand.
             </p>
-            <p className=" text-white opacity-60 font-horizona leading-tight tracking-tighter text-lg">
+            <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
               Notebooks with traditional note taking processes are critical in a student's
               life but they are not at all optimized for the current day needs
               with the current day tech. We want to solve this problem, build a
               beautiful and innovative product, and cater to millions of
               students.
-
             </p>
-            <p className="font-horizona leading-tight tracking-tighter text-lg italic text-white opacity-60">
+            <p className="font-horizona leading-tight tracking-tighter text-base sm:text-lg italic text-white opacity-60">
               Arvind Mohan,
               <br /> Yaswanth Rayapati Founders
             </p>
           </div>
         </section>
 
-        {/* glance */}
-        <div className="flex flex-col gap-10 text-center justify-center  mt-40 pb-50">
+        {/* Glance */}
+        <div className="flex flex-col gap-8 sm:gap-10 text-center justify-center mt-20 sm:mt-40 pb-20 sm:pb-50">
           <div className="flex flex-row gap-2 items-center justify-center">
-            <h1 className='bg-white rounded-md text-black font-medium px-2 '>DC-1</h1>
-            <h1 className='text-white text-xl uppercase'>At A GLANCE</h1>
+            <h1 className="bg-white rounded-md text-black font-medium px-2 text-sm sm:text-base">DC-1</h1>
+            <h1 className="text-white text-lg sm:text-xl uppercase">At A GLANCE</h1>
           </div>
 
-          <div className='flex flex-row justify-center items-center gap-9 '>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-9">
             {Glance.map((item, index) => (
               <div key={index} className="flex flex-col gap-2 items-center">
-                <img src={item.image} alt={item.title} className="w-10 h-auto " />
-                <h3 className="mt-2 text-center font-medium tracking-tighter text-[#B7B7B4]">{item.title}</h3>
+                <img src={item.image} alt={item.title} className="w-8 sm:w-10 h-auto" />
+                <h3 className="mt-2 text-center font-medium tracking-tighter text-[#B7B7B4] text-sm sm:text-base">{item.title}</h3>
               </div>
             ))}
-
           </div>
-
-
         </div>
-
-
       </section>
     </>
   );
