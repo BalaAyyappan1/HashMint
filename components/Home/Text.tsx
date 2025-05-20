@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { contents, Glance, images, KnowImages, NewSectionContent, section6Contents, TestimonialContents } from "./contents";
+import { contents, Glance, images, KnowImages, NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
 import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -198,9 +198,14 @@ const HorizontalScrollAnimation: React.FC = () => {
     mainTl.to(
       imageRef.current,
       {
+        x: "-50%",
+        y: "-50%",
+        left: "50%",
+        top: "50%",
         opacity: 0,
         duration: 1,
-        ease: 'power2.out',
+        ease: 'power2.out', 
+        transformOrigin: 'center center',
       },
       '-=3'
     );
@@ -236,9 +241,14 @@ const HorizontalScrollAnimation: React.FC = () => {
 
     // Fade in the image AFTER text is done
     mainTl.to(imageRef.current, {
+      x: "-50%",
+      y: "-50%",
+      left: "50%",
+      top: "50%",
       opacity: 1,
       duration: 1,
       ease: 'power2.out',
+      transformOrigin: 'center center',
     }, '-=1'); // Starts 1s before text ends, tweak as needed
 
     // Scale image to normal size (centered)
@@ -346,7 +356,7 @@ const HorizontalScrollAnimation: React.FC = () => {
     });
 
     // Card entrances
-    cards.forEach((card, i) => {
+    (cards as HTMLElement[]).forEach((card, i) => {
       tl.from(card, {
         opacity: 0,
         y: 80,
@@ -354,6 +364,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         ease: 'back.out(1)'
       }, i * 0.2);
     });
+
 
     // Curved exit animation for titles (last 20% of scroll)
     const exitPosition = cards.length * 0.8 * 0.8;
@@ -585,7 +596,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                 attention, health and autonomy
               </div>
             </section>
-            <section className="horizontal-section w-screen h-screen flex-shrink-0  relative">
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 relative">
               {/* Background Image */}
               <Image
                 src="/DSC04014.png"
@@ -627,9 +638,9 @@ const HorizontalScrollAnimation: React.FC = () => {
                         <Image
                           src={item.image}
                           alt={item.title}
-                          className="h-16 w-16"
-                          width={100}
-                          height={100}
+                          className="h-12 w-12"
+                          width={80}
+                          height={80}
                         />
                         <div>
                           <h2 className="text-black font-bold ">
@@ -682,6 +693,33 @@ const HorizontalScrollAnimation: React.FC = () => {
                   Devices that emit blue light, affects our visionary senses
                   even during the night, Leaf 1 doesn't
                 </p>
+
+
+                <div className="flex flex-row gap-5 items-center justify-center mt-20 ml-30">
+                    {RightSectionContents.map((item, index) => (
+                      <div
+                        key={index}
+                        className="horizontal-section flex flex-col items-start justify-center gap-4 w-80"
+                      >
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          className="h-12 w-12"
+                          width={80}
+                          height={80}
+                        />
+                        <div>
+                          <h2 className="text-black font-bold ">
+                            {item.title}
+                          </h2>
+                          <p className="text-black font-medium">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                
               </div>
             </section>
           </div>
@@ -818,17 +856,17 @@ const HorizontalScrollAnimation: React.FC = () => {
             <h1 className='text-white text-2xl'>At A GLANCE</h1>
           </div>
 
-<div className='flex flex-row justify-center items-center gap-7'>
-{Glance.map((item, index) => (
-  <div key={index} className="flex flex-col items-center">
-    <img src={item.image} alt={item.title} className="max-w-full h-auto " />
-    <h3 className="mt-2 text-center text-[#B7B7B4]">{item.title}</h3>
-  </div>
-))}
+          <div className='flex flex-row justify-center items-center gap-9 mt-10'>
+            {Glance.map((item, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <img src={item.image} alt={item.title} className="w-10 h-auto " />
+                <h3 className="mt-2 text-center text-[#B7B7B4]">{item.title}</h3>
+              </div>
+            ))}
 
-</div>
-       
-          
+          </div>
+
+
         </div>
       </section>
     </>

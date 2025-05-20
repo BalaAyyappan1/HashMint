@@ -21,7 +21,7 @@ const LenisScrollProvider: FC<LenisScrollProviderProps> = ({ children }) => {
         gestureOrientation: "vertical",
       }}
     >
-      {children as any} {/* Temporary type assertion */}
+      {children as any} 
     </ReactLenis>
   );
 };

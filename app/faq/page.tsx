@@ -13,7 +13,7 @@ const page = () => {
       <Hero />
       <Faq />
   <New />
-      <Footer />
+      
     </div>
   )
 }
