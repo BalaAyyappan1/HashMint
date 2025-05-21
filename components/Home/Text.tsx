@@ -4,11 +4,13 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { contents, Glance, images, KnowImages, NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
 import Image from 'next/image';
+import Hero from './Hero';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HorizontalScrollAnimation: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
   const text1Ref = useRef<HTMLDivElement | null>(null);
   const text2Ref = useRef<HTMLDivElement | null>(null);
   const text3Ref = useRef<HTMLDivElement | null>(null);
@@ -21,10 +23,12 @@ const HorizontalScrollAnimation: React.FC = () => {
   const people1Ref = useRef(null);
   const people2Ref = useRef(null);
   const testimonialRef = useRef(null);
+  const pinRef = useRef(null);
 
   useEffect(() => {
     if (
       !containerRef.current ||
+      !heroRef.current ||
       !text1Ref.current ||
       !text2Ref.current ||
       !text3Ref.current ||
@@ -36,6 +40,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       !people1Ref.current ||
       !people2Ref.current ||
       !horizontalContainerRef.current ||
+      !pinRef.current ||
       !horizontalContentRef.current
     ) {
       return;
@@ -84,7 +89,7 @@ const HorizontalScrollAnimation: React.FC = () => {
     const calculateContentWidth = () => {
       const isMobile = window.innerWidth < 640;
       return isMobile
-        ? window.innerWidth * 7 // Stack sections vertically on mobile
+        ? window.innerWidth * 14 // Stack sections vertically on mobile
         : (
           window.innerWidth + // First section
           window.innerWidth + // Second section
@@ -108,11 +113,12 @@ const HorizontalScrollAnimation: React.FC = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: window.innerWidth < 640 ? '+=100%' : '+=200%',
+        end: window.innerWidth < 640 ? '+=100%' : '+=800%',
         scrub: 1,
         pin: true,
+    
         pinSpacing: true,
-        anticipatePin: 1,
+        anticipatePin: 0,
         onLeave: () => {
           gsap.to(newSectionRef.current, {
             zIndex: 100,
@@ -121,6 +127,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         },
       },
     });
+
 
     // Text animations
     mainTl.to(text1Spans, {
@@ -157,8 +164,8 @@ const HorizontalScrollAnimation: React.FC = () => {
       opacity: 1,
       y: 0,
       stagger: 0.05,
-      duration: 1.5,
-      ease: 'power2.out',
+      duration: 0.5,
+   
     });
 
     mainTl.to(
@@ -166,10 +173,10 @@ const HorizontalScrollAnimation: React.FC = () => {
       {
         x: '0vw',
         opacity: 1,
-        duration: 3,
+        duration: 5,
         ease: 'power2.inOut',
       },
-      '-=1'
+      
     );
 
     mainTl.to(
@@ -186,7 +193,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       x: window.innerWidth < 640 ? 0 : () => -(totalWidth - window.innerWidth),
       y: window.innerWidth < 640 ? () => -(totalWidth - window.innerHeight) : 0,
       ease: 'none',
-      duration: window.innerWidth < 640 ? 15 : 25,
+      duration: window.innerWidth < 640 ? 30 : 50,
     });
 
     // Image and text3 animations adjusted for mobile
@@ -225,7 +232,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       opacity: 1,
       y: 0,
       stagger: 0.05,
-      duration: 1.5,
+      duration: 2,
       ease: 'power2.out',
     });
 
@@ -235,7 +242,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       left: "50%",
       top: "50%",
       opacity: 1,
-      duration: 1,
+      duration: 2,
       transformOrigin: 'center center',
     }, '-=1');
 
@@ -246,7 +253,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       top: "50%",
       position: "absolute",
       scale: window.innerWidth < 640 ? 1 : 1.2,
-      duration: 1.5,
+      duration: 2,
       ease: 'power2.inOut',
       transformOrigin: 'center center',
     });
@@ -256,7 +263,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       {
         opacity: 0,
         stagger: 0.05,
-        duration: 1,
+        duration: 2,
         ease: 'power2.in',
       },
       '-=0.5'
@@ -266,7 +273,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       x: window.innerWidth < 640 ? "0%" : "-100%",
       y: "0%",
       scale: window.innerWidth < 640 ? 1 : 1.2,
-      duration: 1.5,
+      duration: 2,
       ease: 'power2.inOut',
       transformOrigin: 'center center',
     }, '+=0.5');
@@ -275,11 +282,20 @@ const HorizontalScrollAnimation: React.FC = () => {
     mainTl.to(rightContentRef.current, {
       opacity: 1,
       xPercent: 0,
-      duration: 1,
+      duration: 3,
       ease: 'power3.out'
     }, '-=1');
 
     mainTl.to({}, { duration: 0.5 });
+    // pin effec
+    mainTl.to(pinRef.current, {
+
+      scrub: 1,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 0,
+
+    }, '+=1')
 
     gsap.set(newSectionRef.current, {
       zIndex: -1,
@@ -300,7 +316,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       scrollTrigger: {
         trigger: testimonialContainerRef.current,
         start: "top top",
-        end: "+=2000", // Shorter scroll distance on mobile
+        end: "+=3000", // Shorter scroll distance on mobile
         scrub: 1,
         pin: true,
         anticipatePin: 1,
@@ -323,14 +339,14 @@ const HorizontalScrollAnimation: React.FC = () => {
 
     tl.to(testimonialRef.current, {
       y: -totalScrollDistance,
-      duration: cards.length * 0.6,
+      duration: cards.length * 0.3,
       ease: 'none'
     });
 
     (cards as HTMLElement[]).forEach((card, i) => {
       tl.from(card, {
         opacity: 0,
-        y: 80,
+        y: 100,
         duration: 0.6,
         ease: 'back.out(1)'
       }, i * 0.2);
@@ -377,10 +393,10 @@ const HorizontalScrollAnimation: React.FC = () => {
           width < 480
             ? '1rem'
             : width < 640
-            ? '1.25rem'
-            : width < 768
-            ? '1.75rem'
-            : '2.25rem',
+              ? '1.25rem'
+              : width < 768
+                ? '1.75rem'
+                : '2.25rem',
       });
 
       const contentWidth = calculateContentWidth();
@@ -410,9 +426,18 @@ const HorizontalScrollAnimation: React.FC = () => {
     <>
       <section
         ref={containerRef}
-        className="h-screen w-full relative bg-white overflow-hidden"
+        className="h-screen w-full relative  overflow-hidden"
       >
+        <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" />
+
         <div className="w-full h-full flex items-center justify-center p-4 sm:p-6 relative">
+
+          <div ref={heroRef} className=''>
+
+
+          </div>
+
+
           <div className="w-full mx-auto text-center relative h-32 sm:h-40">
             <div
               ref={text1Ref}
@@ -440,7 +465,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             className="flex h-full items-center flex-nowrap sm:flex-row flex-col"
           >
             {/* First Section: Video */}
-            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold">
+            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold sm:hidden md:hidden">
               <section className="video-section sticky top-0 h-[95vh] w-full overflow-hidden">
                 <video
                   autoPlay
@@ -458,9 +483,9 @@ const HorizontalScrollAnimation: React.FC = () => {
                     transition: "transform 0.1s ease-out",
                   }}
                 >
-                  <source src="/hashmintBanner.webm" type="video/webm" />
+
                   <source
-                    src="/hashmintBanner_converted.mp4"
+                    src="https://ik.imagekit.io/80lxmumju/hashmint/newvid.mp4?updatedAt=1747816545781"
                     type="video/mp4"
                   />
                   Your browser does not support the video tag.
@@ -468,7 +493,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
                 <div className="absolute flex flex-col sm:flex-row gap-8 sm:gap-[5%] bottom-4 sm:bottom-0 px-6 sm:px-10 py-6">
                   <div className="z-20 w-full sm:w-1/2">
-                    <h1 className="mt-6 sm:mt-0 text-xl sm:text-2xl md:text-5xl text-start text-white leading-tight tracking-tighter font-horizona">
+                    <h1 className="mt-6 sm:mt-0 text-xl sm:text-2xl md:text-5xl text-start text-white leading-tight tracking-tighter font-sans">
                       Experience the first paper-like <br />
                       display with real-time speed.
                     </h1>
@@ -500,7 +525,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             </section>
 
             {/* Second Section: Three Images */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-4 sm:p-5 flex flex-col justify-between text-lg sm:text-xl pt-10 sm:pt-14 pb-10 sm:pb-15 bg-[#faf7f6]">
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-4 sm:p-5 flex flex-col justify-between text-lg sm:text-xl pt-10 sm:pt-14 pb-10 sm:pb-15 bg-transparent">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-2 mt-4 w-full max-w-none">
                 {images.map((feature, index) => (
                   <div
@@ -517,7 +542,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                     />
 
                     <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full items-start leading-tight tracking-tighter justify-between text-start">
-                      <p className="text-sm sm:text-base font-semibold text-[#17190f] opacity-90">{feature.title}</p>
+                      <p className="text-sm sm:text-base font-semibold text-[#17190f] opacity-90 whitespace-nowrap">{feature.title}</p>
                       <p className="text-sm sm:text-base w-full sm:w-80 text-start opacity-70">
                         {feature.description}
                       </p>
@@ -543,9 +568,9 @@ const HorizontalScrollAnimation: React.FC = () => {
             </section>
 
             {/* Third Section: Single Image */}
-            <section className="horizontal-section w-screen sm:w-[1200px] bg-transparent h-screen flexed-shrink-0 p-4 sm:p-5 flex items-center justify-center">
+            <section className="horizontal-section w-screen sm:w-[1200px] bg-transparent h-screen flexed-shrink-0 p-4 ml-10 sm:p-5 flex items-center justify-center">
               <Image
-                src="/DSC04014.png"
+                src="https://ik.imagekit.io/80lxmumju/hashmint/DSC04657%20(2).jpg?updatedAt=1747817052725"
                 alt="Lume Paper Display"
                 width={1000}
                 height={1000}
@@ -554,7 +579,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             </section>
 
             {/* Fourth Section: Rotating Image */}
-            <section className="horizontal-section w-screen sm:w-[1000px] h-screen flex-shrink-0 pt-4 sm:pt-5 bg-transparent flex flex-col items-center justify-between">
+            <section className="horizontal-section w-screen sm:w-[1000px] h-screen flex-shrink-0 pt-4 sm:pt-5 bg-transparent flex flex-col items-center mr-15 justify-between py-20">
               <Image
                 src="/image.png"
                 alt="Lume Paper Display"
@@ -562,8 +587,9 @@ const HorizontalScrollAnimation: React.FC = () => {
                 height={300}
                 className="object-cover animate-[spin_20s_linear_infinite] w-3/4 sm:w-[400px]"
               />
+              <svg width="44" height="12" viewBox="0 0 44 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-50"><g><path d="M5.99871 12C9.31279 12 11.9994 9.31371 11.9994 6C11.9994 2.68629 9.31279 0 5.99871 0C2.68464 0 -0.00195312 2.68629 -0.00195312 6C-0.00195312 9.31371 2.68464 12 5.99871 12Z" fill="currentColor"></path><path d="M22.3459 0V6.3452H16C16.1808 9.50137 18.7948 12 21.9924 12C25.1901 12 28.0013 9.31233 28.0013 5.99178C28.0013 2.67123 25.5024 0.180822 22.3459 0Z" fill="currentColor"></path><path d="M40.212 0V8.21111H32C32.9583 10.436 35.1725 12 37.7501 12C41.2034 12 44.0013 9.20239 44.0013 5.74943C44.0013 3.1721 42.4427 0.958238 40.212 0Z" fill="currentColor"></path></g></svg>
 
-              <div className="text-center text-base sm:text-lg font-horizona leading-tight tracking-tighter text-[#17190f]">
+              <div className="text-center text-base sm:text-xl font-horizona leading-tight tracking-tighter text-[#17190f]">
                 The vision behind the Hashmint is to create a healthier, more
                 <br />
                 human-centered digital environment - designed to protect your
@@ -580,6 +606,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                 fill
                 className="object-cover z-0"
               />
+
 
               <div className="absolute flex flex-col sm:flex-row gap-4 sm:gap-[30%] w-full px-6 sm:px-10 top-20 sm:top-34">
                 <div className="flex flex-col items-start justify-center z-10 text-white text-center px-4 mt-10 sm:mt-20">
@@ -604,7 +631,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                   alt="Lume Paper Display"
                   width={1000}
                   height={1000}
-                  className="w-full sm:w-[900px] h-[500px] sm:h-[700px] object-cover"
+                  className="w-full sm:w-[900px] h-[500px] sm:h-[600px] object-cover"
                 />
 
                 <div>
@@ -617,15 +644,15 @@ const HorizontalScrollAnimation: React.FC = () => {
                         <Image
                           src={item.image}
                           alt={item.title}
-                          className="h-10 w-10 sm:h-12 sm:w-12"
+                          className="h-10 w-10 sm:h-12 sm:w-12 "
                           width={80}
                           height={80}
                         />
                         <div>
-                          <h2 className="text-black text-sm sm:text-base font-bold">
+                          <h2 className="text-white text-sm sm:text-base font-bold">
                             {item.title}
                           </h2>
-                          <p className="text-black text-xs sm:text-sm font-medium">
+                          <p className="text-white text-xs sm:text-sm font-medium">
                             {item.description}
                           </p>
                         </div>
@@ -637,7 +664,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             </section>
 
             {/* Seventh Section: Tablet Animation */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-black relative">
+            <section ref={pinRef} className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-black relative">
               <div
                 ref={text3Ref}
                 className="absolute w-full px-4 text-white opacity-90 whitespace-pre-wrap z-20 text-2xl sm:text-4xl font-horizona leading-tight tracking-tighter"
@@ -665,7 +692,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
               <div
                 ref={rightContentRef}
-                className="absolute top-64 sm:top-80 text-white opacity-90 right-4 sm:right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-lg sm:max-w-2xl"
+                className="absolute top-74 sm:top-100 text-white opacity-90 right-4 sm:right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-lg sm:max-w-2xl"
               >
                 <h1 className="text-3xl sm:text-5xl whitespace-nowrap font-horizona leading-tight tracking-tighter">
                   Blue Light Blocked
@@ -762,29 +789,31 @@ const HorizontalScrollAnimation: React.FC = () => {
 
           <div
             ref={testimonialRef}
-            className="absolute left-1/2 top-32 sm:top-150 w-full max-w-lg sm:max-w-2xl -translate-x-1/2 space-y-8"
+            className="absolute left-1/2 top-32 sm:top-150 w-full max-w-lg sm:max-w-3xl -translate-x-1/2 space-y-8"
           >
             {TestimonialContents.map((item, index) => (
               <div
                 key={index}
-                className="testimonial-card flex h-[250px] sm:h-[300px] w-full max-w-[500px] sm:max-w-[600px] flex-col justify-between rounded-md bg-[#515438] p-6 mx-auto"
+                className={`flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
               >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-amber-400 p-2 object-cover"
-                  />
-                  <div>
-                    <h3 className="text-base sm:text-lg leading-tight tracking-tighter text-white">{item.name}</h3>
-                    <p className="text-white opacity-80 text-sm sm:text-base leading-tight tracking-tighter">{item.role}</p>
-                  </div>
-                </div>
                 <div
-                  className={`text-base sm:text-lg ${index % 2 === 0 ? 'text-left' : 'text-right'}`}
+                  className="testimonial-card flex h-[250px] sm:h-[300px] w-full max-w-[500px] sm:max-w-[600px] flex-col justify-between rounded-md bg-[#515438] p-6"
                 >
-                  <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.testi}</p>
-                  <span className="text-white underline text-xs sm:text-base leading-tight tracking-tighter">{item.time}</span>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-amber-400 p-2 object-cover"
+                    />
+                    <div>
+                      <h3 className="text-base sm:text-lg leading-tight tracking-tighter text-white">{item.name}</h3>
+                      <p className="text-white opacity-80 text-sm sm:text-base leading-tight tracking-tighter">{item.role}</p>
+                    </div>
+                  </div>
+                  <div className={`text-base sm:text-lg ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>
+                    <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.testi}</p>
+                    <span className="text-white underline text-xs sm:text-base leading-tight tracking-tighter">{item.time}</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -810,7 +839,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         </div>
 
         {/* About Us */}
-        <section className="bg-[#18190F] h-auto sm:h-[80vh] max-w-4xl gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-20">
+        <section className="bg-[#18190F] h-auto sm:h-[60vh] max-w-4xl gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-20">
           <Image
             src="/sun.avif"
             alt="sun"

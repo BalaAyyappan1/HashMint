@@ -21,6 +21,8 @@
 
 body {
   overflow: hidden;
+  padding: 0;
+  margin:0;
   font-family: var(--font-poppins);
 }
 
@@ -77,6 +79,12 @@ body {
 .font-horizona {
   font-family: var(--font-horizona);
 }
+
+.font-sans {
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
 
 
 
@@ -147,4 +155,6 @@ body {
   height: 100%;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
+
+
 

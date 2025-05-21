@@ -29,13 +29,13 @@ export const images = [
     image:'/DSC04014.png'
 },
 {
-    title:'Capture your Thoughts',
+    title:'Capture',
     description:'Write, draw, and annotate on a fast, paper-inspired surface.',
     image:'/DSC04014.png'
 },
 {
-    title:'Stay Connected',
-    description:'Stay connected to your friends and loved ones with a seamless experience.',
+    title:'Writing',
+    description:'Your sanctuary for focused writing, away from distractions',
     image:'/DSC04014.png'
 },
 
@@ -45,9 +45,9 @@ export const images = [
 
 
 export const section6Contents = [
-    {image:'/eye-dark.avif',title:'Gentle on the eyes',description:'Flicker Free display designed for long, comfortable reading sessions'},
-    {image:'/battery-dark.avif',title:'Long Lasting Battery',description:'Enjoy extended use with a battery that keeps up one charge, many days. '},
-    {image:'/reflection-dark.avif',title:'Focus Mode',description:'Read with complete focus, no distractions. '}
+    {image:'/Home/eyes.png',title:'Gentle on the eyes',description:'Flicker Free display designed for long, comfortable reading sessions'},
+    {image:'/Home/battery.png',title:'Long Lasting Battery',description:'Enjoy extended use with a battery that keeps up one charge, many days. '},
+    {image:'/Home/apps.png',title:'Focus Mode',description:'Read with complete focus, no distractions. '}
 ]
 
 
@@ -66,10 +66,8 @@ export const NewSectionContent = [
 
 export const RightSectionContents = [
     {image:'/fps-light.avif', title:'Better sleep', description:'In sync with your circadium rhythm '},
-    {image:'/60fps.png', title:'Flicker-free', description:'PWM-free display means no eye strain'},
+    {image:'/flicker free.avif', title:'Flicker-free', description:'PWM-free display means no eye strain'},
     {image:'/campfire-light.avif', title:'Pure amber', description:'Campfire spectrum with zero blue light'},
-
-
 ]
 
 

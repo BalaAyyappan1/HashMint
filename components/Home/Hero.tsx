@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import TopNav from '../TopNav';
 import VideoHoverPlayer from '../VideoHoverPlayer';
+import Image from 'next/image';
 
 const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -237,19 +238,23 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="relative">
+      {/* <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover fixed top-0 left-0 " /> */}
+
       <div className="fixed top-0 left-0 w-full z-50  pt-5">
         <TopNav />
       </div>
+      
       <div
         ref={containerRef}
         className="relative will-change-transform p-5 "
       >
-        <div className="absolute z-90 top-[6%] left-[4%] p-5">
+
+        <div className="absolute z-90 top-[8%] left-[3%] p-5">
           <h1 className="text-white text-3xl md:text-6xl tracking-tighter leading-tight font-horizona ">
             The Focus, Re-Imagined.
           </h1>
-          <p className="text-white text-lg md:text-2xl mt-5 leading-tight tracking-tighter  font-regular">
+          <p className="text-white text-xl md:text-3xl mt-5 leading-tight tracking-tighter  font-regular">
             Meet Leaf 1 - designed for deep focus, <br /> not distractions.
           </p>
         </div>
@@ -278,7 +283,7 @@ const Hero: React.FC = () => {
 
           <div className="hidden md:block absolute bottom-8 right-8 z-10">
             <button
-              className="px-20 py-4 text-sm rounded-xl bg-[#f9c63b] font-medium 
+              className="px-20 py-4 text-sm rounded-xl bg-[#f9c63b] font-medium cursor-pointer 
                   hover:shadow-[0_0_15px_1px_rgba(249,198,59,0.7)] 
                   transition-all duration-300 ease-in-out"
             >
@@ -298,7 +303,7 @@ const Hero: React.FC = () => {
         </section>
 
       </div>
-    </>
+    </div>
   );
 };
 

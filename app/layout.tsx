@@ -13,11 +13,24 @@ const poppins = Poppins({
 const horizona = localFont({
   src: [
     { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "400", style: "normal" },
-    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "500", style: "normal" },
-    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "700", style: "normal" },
+    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "500", style: "medium" },
+    { path: "../fonts/ABCArizonaFlareVariable.ttf", weight: "700", style: "bold" },
+    
+
   ],
   variable: "--font-horizona",
 });
+
+const sans = localFont({
+  src: [
+    { path: "../fonts/sans2.woff", weight: "400", style: "normal" },
+
+ 
+
+  ],
+  variable: "--font-sans",
+});
+
 
 export const metadata: Metadata = {
   title: "Hashmint",
@@ -34,7 +47,8 @@ export default function RootLayout({
       <body
         className={`
           ${poppins.variable}   
-          ${horizona.variable}      
+          ${horizona.variable}  
+          ${sans.variable}    
           antialiased
         `}
       >
