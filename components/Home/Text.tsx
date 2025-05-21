@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { contents, Glance, images, KnowImages, NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
+import { contents, Glance, images,  NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
 import Image from 'next/image';
 import Hero from './Hero';
 
@@ -821,7 +821,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         </section>
 
         {/* Know About Us */}
-        <div className="flex flex-col gap-8 sm:gap-10 text-center justify-center text-white mt-10 leading-tight">
+        {/* <div className="flex flex-col gap-8 sm:gap-10 text-center justify-center text-white mt-10 leading-tight">
           <h1 className="opacity-40 text-sm sm:text-base">know more about us:</h1>
 
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 items-center justify-center">
@@ -836,7 +836,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* About Us */}
         <section className="bg-[#18190F] h-auto sm:h-[60vh] max-w-4xl gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-20">

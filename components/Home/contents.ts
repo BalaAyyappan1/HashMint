@@ -26,17 +26,17 @@ export const images = [
 {
     title:'Reading',
     description:'Transform the way you read notes and PDFs with effortless clarity',
-    image:'/DSC04014.png'
+    image:'/reading.jpg'
 },
 {
     title:'Capture Thoughts',
     description:'Write, draw, and annotate on a fast, paper-inspired surface.',
-    image:'/DSC04014.png'
+    image:'/capture2.JPG'
 },
 {
     title:'Writing',
     description:'Your sanctuary for focused writing, away from distractions',
-    image:'/DSC04014.png'
+    image:'/writing.jpg'
 },
 
 
@@ -85,14 +85,14 @@ export const TestimonialContents = [
 
 
 
-export const KnowImages = [
-    {image:'/verge.svg'},
-    {image:'/fireball.avif'},
-    {image:'/techradar.svg'},
-    {image:'/wired.svg'},
+// export const KnowImages = [
+//     {image:'/verge.svg'},
+//     {image:'/fireball.avif'},
+//     {image:'/techradar.svg'},
+//     {image:'/wired.svg'},
 
 
-]
+// ]
 
 
 
