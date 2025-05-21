@@ -89,7 +89,7 @@ const HorizontalScrollAnimation: React.FC = () => {
     const calculateContentWidth = () => {
       const isMobile = window.innerWidth < 640;
       return isMobile
-        ? window.innerWidth * 14 // Stack sections vertically on mobile
+        ? window.innerWidth * 7 // Stack sections vertically on mobile
         : (
           window.innerWidth + // First section
           window.innerWidth + // Second section
@@ -465,7 +465,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             className="flex h-full items-center flex-nowrap sm:flex-row flex-col"
           >
             {/* First Section: Video */}
-            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold sm:hidden md:hidden">
+            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold">
               <section className="video-section sticky top-0 h-[95vh] w-full overflow-hidden">
                 <video
                   autoPlay

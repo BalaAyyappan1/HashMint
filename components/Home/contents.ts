@@ -29,7 +29,7 @@ export const images = [
     image:'/DSC04014.png'
 },
 {
-    title:'Capture',
+    title:'Capture Thoughts',
     description:'Write, draw, and annotate on a fast, paper-inspired surface.',
     image:'/DSC04014.png'
 },
