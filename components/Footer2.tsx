@@ -30,7 +30,7 @@ export const Footer2 = () => {
 
 
   return (
-    <footer className="flex flex-col w-full h-[120vh] bg-[#000000]  text-white">
+    <footer className="flex flex-col w-full  pb-15 bg-[#000000]  text-white">
       {/* topsection */}
       <div className="relative w-full">
         <Image
@@ -46,7 +46,7 @@ export const Footer2 = () => {
         </div>
 
         <div className="absolute top-100 left-40 ">
-          <button className="px-50 py-4 text-[30px] rounded-xl bg-[#f9c63b] cursor-pointer ">
+          <button className="px-50 py-4 text-[30px] rounded-xl bg-[#f9c63b]">
             Book a call
           </button>
           <p className="text-white text-[20px] font-semibold absolute mt-7  left-35 ">
@@ -57,8 +57,8 @@ export const Footer2 = () => {
       </div>
 
       {/* bottomsection */}
-      <div className="flex flex-row justify-center space-x-60 items-center w-full mx-auto max-w-9xl px-10 ">
-        <div className="flex flex-col space-y-50 items-start ">
+      <div className="flex flex-row justify-between items-center w-full mx-auto w-full px-35 ">
+        <div className="flex flex-col space-y-65 items-center">
           <div className="flex flex-row items-center space-x-10">
           <Image
                 src={HashmintLogo}
@@ -71,11 +71,14 @@ export const Footer2 = () => {
           </div>
 
           <div className=" text-[15px] font-semibold">
-           
-            <Link href="https://www.theinternetcompany.one/"  className=" cursor-pointer">
-             Designed & Developed by <span className='underline'>TIC Global</span> 
+            © MMXXV • Hashmint Co. • Hashmint is a Public Benefit Co. <br />
+            <Link href="#" className="hover:underline cursor-pointer">
+              Privacy Policy
+            </Link>{" "}
+            •{" "}
+            <Link href="#" className="hover:underline">
+              Terms of service
             </Link>
-            
           </div>
         </div>
 
@@ -130,7 +133,7 @@ export const Footer2 = () => {
                 className="w-full p-3 pr-28 rounded-2xl bg-transparent border border-gray-300 text-white"
               />
               <button
-                className="absolute top-1/2 right-2 -translate-y-1/2 px-4.5 py-2 bg-[#f9c63b] text-black rounded-xl text-sm whitespace-nowrap cursor-pointer"
+                className="absolute top-1/2 right-2 -translate-y-1/2 px-4.5 py-2 bg-[#f9c63b] text-black rounded-xl text-sm whitespace-nowrap"
               >
                 Book a call
               </button>

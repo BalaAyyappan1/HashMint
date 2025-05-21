@@ -42,15 +42,15 @@ const Footer = () => {
           {/* Bottom gradient (transparent to black) */}
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black to-transparent" />
         </div>
-        <div className="absolute top-4 sm:top-8 md:top-12 left-4 sm:left-8 md:left-12 lg:left-16 justify-between">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400">
+        <div className="absolute top-4 sm:top-8 md:top-12 left-10 sm:left-8 md:left-12 lg:left-36 justify-between space-y-[35%] items-center">
+          <h1 className="text-5xl sm:text-4xl md:text-5xl lg:text-[120px] font-bold text-yellow-400">
             HashMint
           </h1>
-          <div className="mt-4 sm:mt-6 md:mt-8">
-            <button className="px-4 sm:px-6 py-2 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors">
+          <div className="mt-4 sm:mt-6 md:mt-8 items-start justify-center ">
+            <button className="px-25 sm:px-59  py-4 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors">
               Book a call
             </button>
-            <p className="text-sm sm:text-base font-semibold mt-2 sm:mt-4">
+            <p className="text-sm sm:text-base font-semibold mt-8 md:pl-40 pl-6 ">
               Estimated Ship Date: <span className="font-normal">June 2025</span>
             </p>
           </div>
@@ -61,7 +61,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column */}
-          <div className="flex flex-col items-center md:items-start space-y-6">
+          <div className="flex flex-col items-center md:items-start justify-between">
             <Link href="/" className="flex items-center space-x-3">
               <Image
                 src={HashmintLogo}
@@ -72,8 +72,8 @@ const Footer = () => {
               />
               <span className="text-2xl sm:text-3xl font-bold">HashMint</span>
             </Link>
-            <div className="text-xs sm:text-sm text-center md:text-left">
-              © {new Date().getFullYear()} • Hashmint Co. • Hashmint is a Public Benefit Co.
+            <div className="text-sm sm:text-sm text-center md:text-left md:mt-0 mt-7">
+              © {new Date().getFullYear()} • Hashmint Co. • Designed & developed by <Link href={'https://www.theinternetcompany.one/'} className='underline'>TIC Global</Link>
               <br />
               <Link href="#" className="hover:underline">
                 Privacy Policy
@@ -86,7 +86,7 @@ const Footer = () => {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-8">
+          <div className="space-y-18 flex flex-col justify-between">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {/* Navigation */}
               <div>
@@ -139,10 +139,10 @@ const Footer = () => {
 
             {/* Newsletter */}
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Get Updates
+              <label className="block text-sm font-medium mb-2 cursor-pointer">
+                Book a call 
               </label>
-              <div className="relative max-w-md">
+              <div className="relative max-w-xl">
                 <input
                   type="email"
                   placeholder="Enter your email"
@@ -150,7 +150,7 @@ const Footer = () => {
                   aria-label="Email address"
                 />
                 <button
-                  className="absolute top-1/2 right-2 -translate-y-1/2 px-4 py-2 bg-yellow-400 text-black rounded-lg text-sm font-semibold hover:bg-yellow-500 transition-colors"
+                  className="cursor-pointer absolute top-1/2 right-2 -translate-y-1/2 px-4 py-2 bg-yellow-400 text-black rounded-lg text-sm font-semibold hover:bg-yellow-500 transition-colors"
                 >
                   Book a call
                 </button>
