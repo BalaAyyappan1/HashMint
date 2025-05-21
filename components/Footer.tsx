@@ -42,7 +42,7 @@ const Footer = () => {
           {/* Bottom gradient (transparent to black) */}
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black to-transparent" />
         </div>
-        <div className="absolute top-4 sm:top-8 md:top-12 left-4 sm:left-8 md:left-12 lg:left-16">
+        <div className="absolute top-4 sm:top-8 md:top-12 left-4 sm:left-8 md:left-12 lg:left-16 justify-between">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-yellow-400">
             HashMint
           </h1>

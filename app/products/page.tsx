@@ -4,6 +4,7 @@ import React from 'react'
 import ImageCarousel from '@/components/Products/ImageCarousel'
 
 import Specs from '@/components/Products/Specs'
+import { Footer2 } from '@/components/Footer2'
 
 
 
@@ -18,7 +19,7 @@ const page = () => {
 
             {/* <Clientele /> */}
           <Specs />
-  <Footer />
+  <Footer2 />
         </div>
     )
 }

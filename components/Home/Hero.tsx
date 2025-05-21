@@ -239,16 +239,20 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative">
-      {/* <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover fixed top-0 left-0 " /> */}
-
-      <div className="fixed top-0 left-0 w-full z-50  pt-5">
+      <div className="fixed top-0 left-0 w-full z-50  pt-5 ">
         <TopNav />
       </div>
-      
+
+      <Image src="/bghero.jpg" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" />
+
+
       <div
         ref={containerRef}
-        className="relative will-change-transform p-5 "
+        className="relative will-change-transform p-5  h-screen"
+       
       >
+
+
 
         <div className="absolute z-90 top-[8%] left-[3%] p-5">
           <h1 className="text-white text-3xl md:text-6xl tracking-tighter leading-tight font-horizona ">
@@ -274,7 +278,7 @@ const Hero: React.FC = () => {
               transform: "translateZ(0)",
               willChange: "transform",
               objectFit: isMobile ? "cover" : "cover",
-              transition: "transform 0.1s ease-out"
+              transition: "transform 0.1s ease-out",
             }}
           >
             {getVideoSources()}
@@ -301,7 +305,6 @@ const Hero: React.FC = () => {
             </div>
           )}
         </section>
-
       </div>
     </div>
   );

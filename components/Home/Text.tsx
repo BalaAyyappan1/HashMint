@@ -426,9 +426,11 @@ const HorizontalScrollAnimation: React.FC = () => {
     <>
       <section
         ref={containerRef}
-        className="h-screen w-full relative  overflow-hidden"
-      >
+        className="h-screen w-full relative  overflow-hidden "
+      >     
         <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" />
+       {/* <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent pointer-events-none" /> */}
+
 
         <div className="w-full h-full flex items-center justify-center p-4 sm:p-6 relative">
 
@@ -458,14 +460,14 @@ const HorizontalScrollAnimation: React.FC = () => {
 
         <div
           ref={horizontalContainerRef}
-          className="w-full h-full flex items-center overflow-hidden"
+          className="w-full h-full flex items-center overflow-hidden "
         >
           <div
             ref={horizontalContentRef}
-            className="flex h-full items-center flex-nowrap sm:flex-row flex-col"
+            className="flex h-full items-center flex-nowrap sm:flex-row flex-col "
           >
             {/* First Section: Video */}
-            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold">
+            <section className="horizontal-section w-screen flex-shrink-0 h-screen p-4 sm:p Remittance-5 bg-transparent flex items-center justify-center text-lg sm:text-xl font-bold ">
               <section className="video-section sticky top-0 h-[95vh] w-full overflow-hidden">
                 <video
                   autoPlay
@@ -598,8 +600,10 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
+<section className='bg-black'>
+
             {/* Fifth Section: Built for Open Skies */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 relative">
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 relative bg-black">
               <Image
                 src="/pragya.jpg"
                 alt="Lume Paper Display"
@@ -623,6 +627,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
+          
             {/* Sixth Section: Image with Features */}
             <section className="horizontal-section w-screen sm:w-[1400px] h-screen flex-shrink-0 justify-between items-center bg-black">
               <div className="flex flex-col items-center justify-center">
@@ -727,6 +732,10 @@ const HorizontalScrollAnimation: React.FC = () => {
                   ))}
                 </div>
               </div>
+            </section>
+
+
+
             </section>
           </div>
         </div>
