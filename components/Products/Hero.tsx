@@ -43,7 +43,7 @@ const Hero = () => {
     const features = [
         {
             text: "Fast, paper-like display",
-            image: "/60fps.png",
+            image: "/fps.avif",
         },
         {
             text: "Read, write, take notes",

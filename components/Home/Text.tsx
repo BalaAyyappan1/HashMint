@@ -601,7 +601,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             {/* Fifth Section: Built for Open Skies */}
             <section className="horizontal-section w-screen h-screen flex-shrink-0 relative">
               <Image
-                src="/DSC04014.png"
+                src="/pragya.jpg"
                 alt="Lume Paper Display"
                 fill
                 className="object-cover z-0"
@@ -627,7 +627,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             <section className="horizontal-section w-screen sm:w-[1400px] h-screen flex-shrink-0 justify-between items-center bg-black">
               <div className="flex flex-col items-center justify-center">
                 <Image
-                  src="/DSC04014.png"
+                  src="/darkmode.JPG"
                   alt="Lume Paper Display"
                   width={1000}
                   height={1000}
