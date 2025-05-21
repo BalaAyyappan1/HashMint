@@ -222,16 +222,16 @@ const Hero: React.FC = () => {
     if (isMobile) {
       return (
         <>
-          <source src="/hashmintBanner.webm" type="video/webm" />
-          <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
+          <source src="/banner_new.webm" type="video/webm" />
+          <source src="/banner_new.mp4" type="video/mp4" />
         </>
       );
     }
 
     return (
       <>
-        <source src="/hashmintBanner.webm" type="video/webm" />
-        <source src="/hashmintBanner_converted.mp4" type="video/mp4" />
+        <source src="/banner_new.webm" type="video/webm" />
+        <source src="/banner_new.mp4" type="video/mp4" />
       </>
     );
   };

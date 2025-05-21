@@ -44,11 +44,13 @@ const Faq: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [stickyHeadersInfo, setStickyHeadersInfo] = useState<Record<string, boolean>>({});
+  const [stickySubHeaders, setStickySubHeaders] = useState<Record<string, boolean>>({});
 
   // Refs
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const categoryRefs = useRef<Record<string, HTMLDivElement>>({});
+  const subcategoryRefs = useRef<Record<string, HTMLDivElement>>({});
 
   // Toggle answer visibility
   const toggleAnswer = useCallback((key: string) => {
@@ -82,13 +84,15 @@ const Faq: React.FC = () => {
 
       // Loop through all category sections to determine which headers should be sticky
       const newStickyHeadersInfo: Record<string, boolean> = {};
+      const newStickySubHeaders: Record<string, boolean> = {};
       
+      // Check which category headers should be sticky
       Object.keys(categoryRefs.current).forEach(categoryLabel => {
         const element = categoryRefs.current[categoryLabel];
         if (!element) return;
         
         const rect = element.getBoundingClientRect();
-        const headerHeight = 60; // Approximate height of the header
+        const headerHeight = 70; // Approximate height of the header
         
         // Make header sticky when its top is at or above the viewport top,
         // and the bottom of its section is below the viewport top + header height
@@ -101,7 +105,29 @@ const Faq: React.FC = () => {
         }
       });
       
+      // Check which subcategory headers should be sticky
+      Object.keys(subcategoryRefs.current).forEach(subKey => {
+        const element = subcategoryRefs.current[subKey];
+        if (!element) return;
+        
+        const rect = element.getBoundingClientRect();
+        const headerHeight = 70; // Approximate height of the header
+        const subHeaderHeight = 50; // Approximate height of the subheader
+        const categoryLabel = subKey.split('||')[0];
+        
+        // Make subheader sticky when its parent category is sticky,
+        // its top is at or below the category header height, 
+        // and the bottom of its section is below the viewport top + both header heights
+        const subHeaderShouldBeSticky = 
+          newStickyHeadersInfo[categoryLabel] && 
+          rect.top <= headerHeight &&
+          rect.bottom > (headerHeight + subHeaderHeight);
+        
+        newStickySubHeaders[subKey] = subHeaderShouldBeSticky;
+      });
+      
       setStickyHeadersInfo(newStickyHeadersInfo);
+      setStickySubHeaders(newStickySubHeaders);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -163,7 +189,7 @@ const Faq: React.FC = () => {
   const renderSearchResults = () => (
     <div className="w-full max-w-4xl">
       <div className="flex flex-col border border-[#D9D0CC] mb-6 qna-group">
-        <div className="flex items-center justify-between px-5 text-black font-medium py-3 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl">
+        <div className="flex items-center justify-between px-5 text-black font-medium py-3 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl sticky top-0 z-30">
           <span>Search Results</span>
         </div>
 
@@ -171,7 +197,7 @@ const Faq: React.FC = () => {
           <div className="flex flex-col">
             {searchResults.map((result, index) => (
               <div key={`search-${index}`} className="border-t border-[#D9D0CC]">
-                <p className="text-xl font-semibold pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
+                <p className="text-xl font-semibold pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC] sticky top-16 z-20">
                   {result.subLabel} <span className="text-sm font-normal">({result.categoryLabel})</span>
                 </p>
                 <div className="flex flex-col border border-[#D9D0CC]">
@@ -218,15 +244,24 @@ const Faq: React.FC = () => {
         >
           <div 
             className={`flex items-center justify-between px-5 text-black py-4 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl
-              ${stickyHeadersInfo[item.label] ? 'sticky top-0 z-20' : ''}`}
+              ${stickyHeadersInfo[item.label] ? 'sticky top-0 z-30' : ''}`}
           >
             <span>{item.label}</span>
           </div>
 
           <div className="flex flex-col">
             {item.submenu.map((sub) => (
-              <div key={sub.label} className="border-t border-[#D9D0CC]">
-                <p className="text-xl font-medium pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
+              <div 
+                key={sub.label}
+                ref={el => {
+                  if (el) subcategoryRefs.current[`${item.label}||${sub.label}`] = el;
+                }}
+                className="border-t border-[#D9D0CC] relative"
+              >
+                <p 
+                  className={`text-xl font-medium pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]
+                    ${stickySubHeaders[`${item.label}||${sub.label}`] ? 'sticky top-16 z-20' : ''}`}
+                >
                   {sub.label}
                 </p>
                 {sub.qna?.map((qa, qIndex) => {
