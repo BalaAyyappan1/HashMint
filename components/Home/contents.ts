@@ -45,8 +45,8 @@ export const images = [
 
 
 export const section6Contents = [
-    {image:'/Home/eyes.png',title:'Gentle on the eyes',description:'Flicker Free display designed for long, comfortable reading sessions'},
-    {image:'/Home/battery.png',title:'Long Lasting Battery',description:'Enjoy extended use with a battery that keeps up one charge, many days. '},
+    {image:'/Home/eyes.png',title:'Gentle on the eyes',description:'Flicker Free display designed for long'},
+    {image:'/Home/battery.png',title:'Long Lasting Battery',description:'Keeps up one charge, many days. '},
     {image:'/Home/apps.png',title:'Focus Mode',description:'Read with complete focus, no distractions. '}
 ]
 

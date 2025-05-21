@@ -25,7 +25,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="relative bg-black text-white">
       {/* Top Section */}
       <div className="relative w-full">
         <div className="relative">

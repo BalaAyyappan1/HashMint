@@ -7,7 +7,7 @@ import HorizontalScrollAnimation from '@/components/Home/Text';
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
-      <Hero />
+      {/* <Hero /> */}
       <HorizontalScrollAnimation />
       <Footer />
     </div>

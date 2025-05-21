@@ -238,12 +238,12 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <div className="fixed top-0 left-0 w-full z-50  pt-5 ">
         <TopNav />
       </div>
 
-      <Image src="/bghero.jpg" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" />
+      {/* <Image src="/bghero.jpg" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" /> */}
 
 
       <div

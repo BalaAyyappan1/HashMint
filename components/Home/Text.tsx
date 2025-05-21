@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { contents, Glance, images,  NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
+import { contents, Glance, images, NewSectionContent, RightSectionContents, section6Contents, TestimonialContents } from "./contents";
 import Image from 'next/image';
 import Hero from './Hero';
 
@@ -116,7 +116,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         end: window.innerWidth < 640 ? '+=100%' : '+=800%',
         scrub: 1,
         pin: true,
-    
+
         pinSpacing: true,
         anticipatePin: 0,
         onLeave: () => {
@@ -165,7 +165,7 @@ const HorizontalScrollAnimation: React.FC = () => {
       y: 0,
       stagger: 0.05,
       duration: 0.5,
-   
+
     });
 
     mainTl.to(
@@ -176,7 +176,7 @@ const HorizontalScrollAnimation: React.FC = () => {
         duration: 5,
         ease: 'power2.inOut',
       },
-      
+
     );
 
     mainTl.to(
@@ -424,20 +424,21 @@ const HorizontalScrollAnimation: React.FC = () => {
 
   return (
     <>
+      <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover fixed top-0 left-0 " />
+      <div ref={heroRef} className=''>
+        <Hero />
+      </div>
       <section
         ref={containerRef}
         className="h-screen w-full relative  overflow-hidden "
-      >     
-        <Image src="/Home/shadow.png" alt="banner" width={1000} height={1000} className="w-full h-full object-cover absolute top-0 left-0" />
-       {/* <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent pointer-events-none" /> */}
+      >
+
+        {/* <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent pointer-events-none" /> */}
 
 
         <div className="w-full h-full flex items-center justify-center p-4 sm:p-6 relative">
 
-          <div ref={heroRef} className=''>
 
-
-          </div>
 
 
           <div className="w-full mx-auto text-center relative h-32 sm:h-40">
@@ -527,7 +528,7 @@ const HorizontalScrollAnimation: React.FC = () => {
             </section>
 
             {/* Second Section: Three Images */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-4 sm:p-5 flex flex-col justify-between text-lg sm:text-xl pt-10 sm:pt-14 pb-10 sm:pb-15 bg-transparent">
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 p-4 sm:p-5 flex flex-col justify-between text-lg sm:text-xl pt-10 sm:pt-24 pb-10 sm:pb-15 bg-transparent">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-2 mt-4 w-full max-w-none">
                 {images.map((feature, index) => (
                   <div
@@ -543,7 +544,7 @@ const HorizontalScrollAnimation: React.FC = () => {
                       quality={100}
                     />
 
-                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full items-start leading-tight tracking-tighter justify-between text-start">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full items-start leading-tight tracking-tighter gap-6 justify-between text-start">
                       <p className="text-sm sm:text-base font-semibold text-[#17190f] opacity-90 whitespace-nowrap">{feature.title}</p>
                       <p className="text-sm sm:text-base w-full sm:w-80 text-start opacity-70">
                         {feature.description}
@@ -600,10 +601,8 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-
-
             {/* Fifth Section: Built for Open Skies */}
-            <section className="horizontal-section w-screen h-screen flex-shrink-0 relative bg-black">
+            <section className="horizontal-section w-screen h-screen flex-shrink-0 relative bg-transparent">
               <Image
                 src="/pragya.jpg"
                 alt="Lume Paper Display"
@@ -627,21 +626,89 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-          
-            {/* Sixth Section: Image with Features */}
-            <section className="horizontal-section w-screen sm:w-[1400px] h-screen flex-shrink-0 justify-between items-center bg-black">
-              <div className="flex flex-col items-center justify-center">
-                <Image
-                  src="/darkmode.JPG"
-                  alt="Lume Paper Display"
-                  width={1000}
-                  height={1000}
-                  className="w-full sm:w-[900px] h-[500px] sm:h-[600px] object-cover"
-                />
+            <section className='   h-screen flex   justify-between items-center bg-black'>
 
-                <div>
-                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center mt-10 sm:mt-20 ml-0 sm:ml-30">
-                    {section6Contents.map((item, index) => (
+              {/* Sixth Section: Image with Features */}
+              <section className="horizontal-section w-screen  h-screen flex-shrink-0 justify-between items-center bg-black">
+                <div className="flex flex-col items-center justify-center ">
+                  <Image
+                    src="/darkmode.JPG"
+                    alt="Lume Paper Display"
+                    width={500}
+                    height={500}
+                    className="w-[40%] rounded-b-lg "
+                  />
+
+                  <div className=' w-[40%] mt-[6%]'>
+                    <div className=" w-full  flex flex-col sm:flex-row gap-[4%]  items-center justify-center ">
+                      {section6Contents.map((item, index) => (
+                        <div
+                          key={index}
+                          className="horizontal-section flex flex-col items-start justify-center gap-6 w-full sm:w-80"
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            className="h-10 w-10 sm:h-12 sm:w-12 "
+                            width={80}
+                            height={80}
+                          />
+                          <div>
+                            <h2 className="text-white text-sm sm:text-lg font-semibold leading-tight tracking-tighter">
+                              {item.title}
+                            </h2>
+                            <p className="text-white text-xs sm:text-base  mt-3 leading-tight tracking-tighter">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Seventh Section: Tablet Animation */}
+              <section ref={pinRef} className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-black relative">
+                <div
+                  ref={text3Ref}
+                  className="absolute w-full px-4 text-white opacity-90 whitespace-pre-wrap z-20 text-2xl sm:text-4xl font-horizona leading-tight tracking-tighter"
+                >
+                  {splitText(
+                    "Lights off, amber on - for an \n softer night time experience"
+                  )}
+                </div>
+
+                <div
+                  ref={imageRef}
+                  className="absolute inset-0 flex items-center justify-center z-10"
+                >
+                  <Image
+                    style={{
+                      transformOrigin: "center center",
+                    }}
+                    src="/new.png"
+                    alt="Lume Paper Display"
+                    width={800}
+                    height={800}
+                    className="object-cover rounded-2xl w-3/4 sm:w-full"
+                  />
+                </div>
+
+                <div
+                  ref={rightContentRef}
+                  className="absolute top-80 text-white opacity-90 right-4 sm:right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-lg sm:max-w-2xl"
+                >
+                  <h1 className="text-3xl sm:text-5xl whitespace-nowrap font-horizona leading-tight tracking-tighter">
+                    Blue Light Blocked
+                  </h1>
+                  <p className="text-base sm:text-lg leading-tight tracking-tighter">
+                    Devices that emit blue light, affects our visionary senses <br />
+                    even during the night, Leaf 1 doesn't
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center mt-10 sm:mt-20">
+                    {RightSectionContents.map((item, index) => (
                       <div
                         key={index}
                         className="horizontal-section flex flex-col items-start justify-center gap-4 w-full sm:w-80"
@@ -649,15 +716,15 @@ const HorizontalScrollAnimation: React.FC = () => {
                         <Image
                           src={item.image}
                           alt={item.title}
-                          className="h-10 w-10 sm:h-12 sm:w-12 "
+                          className="h-10 w-10 sm:h-12 sm:w-12"
                           width={80}
                           height={80}
                         />
                         <div>
-                          <h2 className="text-white text-sm sm:text-base font-bold">
+                          <h2 className="text-white text-sm sm:text-base font-bold opacity-70">
                             {item.title}
                           </h2>
-                          <p className="text-white text-xs sm:text-sm font-medium">
+                          <p className="text-white text-xs sm:text-sm font-medium opacity-70">
                             {item.description}
                           </p>
                         </div>
@@ -665,74 +732,10 @@ const HorizontalScrollAnimation: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </section>
+
             </section>
 
-            {/* Seventh Section: Tablet Animation */}
-            <section ref={pinRef} className="horizontal-section w-screen h-screen flex-shrink-0 flex items-center justify-center bg-black relative">
-              <div
-                ref={text3Ref}
-                className="absolute w-full px-4 text-white opacity-90 whitespace-pre-wrap z-20 text-2xl sm:text-4xl font-horizona leading-tight tracking-tighter"
-              >
-                {splitText(
-                  "Lights off, amber on - for an \n softer night time experience"
-                )}
-              </div>
-
-              <div
-                ref={imageRef}
-                className="absolute inset-0 flex items-center justify-center z-10"
-              >
-                <Image
-                  style={{
-                    transformOrigin: "center center",
-                  }}
-                  src="/new.png"
-                  alt="Lume Paper Display"
-                  width={800}
-                  height={800}
-                  className="object-cover rounded-2xl w-3/4 sm:w-full"
-                />
-              </div>
-
-              <div
-                ref={rightContentRef}
-                className="absolute top-74 sm:top-100 text-white opacity-90 right-4 sm:right-8 transform -translate-y-1/2 flex flex-col gap-4 max-w-lg sm:max-w-2xl"
-              >
-                <h1 className="text-3xl sm:text-5xl whitespace-nowrap font-horizona leading-tight tracking-tighter">
-                  Blue Light Blocked
-                </h1>
-                <p className="text-base sm:text-lg leading-tight tracking-tighter">
-                  Devices that emit blue light, affects our visionary senses <br />
-                  even during the night, Leaf 1 doesn't
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center mt-10 sm:mt-20">
-                  {RightSectionContents.map((item, index) => (
-                    <div
-                      key={index}
-                      className="horizontal-section flex flex-col items-start justify-center gap-4 w-full sm:w-80"
-                    >
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        className="h-10 w-10 sm:h-12 sm:w-12"
-                        width={80}
-                        height={80}
-                      />
-                      <div>
-                        <h2 className="text-white text-sm sm:text-base font-bold opacity-70">
-                          {item.title}
-                        </h2>
-                        <p className="text-white text-xs sm:text-sm font-medium opacity-70">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
 
 
 
@@ -743,7 +746,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
       <section ref={newSectionRef} className="bg-[#18190F]">
         {/* Delve into Leaf 1 */}
-        <div className="flex flex-col sm:flex-row justify-between px-6 sm:px-40 items-center pt-20 sm:pt-50 mb-5 w-full">
+        <div className=" relative bg-[#18190F] flex flex-col sm:flex-row justify-between px-6  sm:px-40 items-center pt-20 sm:pt-50 pb-5 w-full z-50">
           <div className="flex flex-col space-y-6 sm:space-y-15 font-horizona leading-tight tracking-tighter w-full sm:w-[40%]">
             <h1 className="text-white text-4xl sm:text-6xl">Delve into <br /> Leaf 1</h1>
             <p className="text-white text-base sm:text-lg font-regular leading-tight tracking-tighter">
@@ -848,36 +851,39 @@ const HorizontalScrollAnimation: React.FC = () => {
         </div> */}
 
         {/* About Us */}
-        <section className="bg-[#18190F] h-auto sm:h-[60vh] max-w-4xl gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-20">
-          <Image
-            src="/sun.avif"
-            alt="sun"
-            width={1000}
-            height={800}
-            className="sun-image w-full sm:w-1/2 object-cover"
-          />
-          <div className="flex flex-col space-y-6 px-4 sm:px-0">
-            <h1 className="text-4xl sm:text-6xl text-white font-horizona leading-tight tracking-tighter">About Us</h1>
-            <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
-              We have been students most of our lives surrounded by notebooks,
-              books, paper bundles and know the problem first hand.
-            </p>
-            <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
-              Notebooks with traditional note taking processes are critical in a student's
-              life but they are not at all optimized for the current day needs
-              with the current day tech. We want to solve this problem, build a
-              beautiful and innovative product, and cater to millions of
-              students.
-            </p>
-            <p className="font-horizona leading-tight tracking-tighter text-base sm:text-lg italic text-white opacity-60">
-              Arvind Mohan,
-              <br /> Yaswanth Rayapati Founders
-            </p>
+        <section className="bg-[#18190F] relative h-auto w-full gap-10 sm:gap-20 flex flex-col sm:flex-row justify-between mx-auto items-start pt-10 sm:pt-30">
+          <div className=' max-w-4xl flex justify-between mx-auto gap-20'>
+
+            <Image
+              src="/sun.avif"
+              alt="sun"
+              width={1000}
+              height={800}
+              className="sun-image w-full sm:w-1/2 object-cover"
+            />
+            <div className="flex flex-col space-y-6 px-4 sm:px-0">
+              <h1 className="text-4xl sm:text-6xl text-white font-horizona leading-tight tracking-tighter">About Us</h1>
+              <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
+                We have been students most of our lives surrounded by notebooks,
+                books, paper bundles and know the problem first hand.
+              </p>
+              <p className="text-white opacity-60 font-horizona leading-tight tracking-tighter text-base sm:text-lg">
+                Notebooks with traditional note taking processes are critical in a student's
+                life but they are not at all optimized for the current day needs
+                with the current day tech. We want to solve this problem, build a
+                beautiful and innovative product, and cater to millions of
+                students.
+              </p>
+              <p className="font-horizona leading-tight tracking-tighter text-base sm:text-lg italic text-white opacity-60">
+                Arvind Mohan,
+                <br /> Yaswanth Rayapati Founders
+              </p>
+            </div>
           </div>
         </section>
 
         {/* Glance */}
-        <div className="flex flex-col gap-8 sm:gap-10 text-center justify-center mt-20 sm:mt-40 pb-20 sm:pb-50">
+        <div className=" relative bg-[#18190F] flex flex-col gap-8 sm:gap-10 text-center justify-center pt-20 sm:pt-40 pb-20 sm:pb-50">
           <div className="flex flex-row gap-2 items-center justify-center">
             <h1 className="bg-white rounded-md text-black font-medium px-2 text-sm sm:text-base">DC-1</h1>
             <h1 className="text-white text-lg sm:text-xl uppercase">At A GLANCE</h1>
