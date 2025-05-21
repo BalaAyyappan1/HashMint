@@ -42,10 +42,13 @@ const Faq: React.FC = () => {
   const [openAnswers, setOpenAnswers] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [stickyHeadersInfo, setStickyHeadersInfo] = useState<Record<string, boolean>>({});
 
   // Refs
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const categoryRefs = useRef<Record<string, HTMLDivElement>>({});
 
   // Toggle answer visibility
   const toggleAnswer = useCallback((key: string) => {
@@ -55,9 +58,54 @@ const Faq: React.FC = () => {
     }));
   }, []);
 
-  // Toggle menu expansion
-  const handleClick = useCallback((index: number) => {
+  // Scroll to category when clicked from sidebar
+  const scrollToCategory = useCallback((categoryLabel: string) => {
+    const element = categoryRefs.current[categoryLabel];
+    if (element) {
+      const yOffset = -20; // Offset to account for sticky headers
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      setActiveCategory(categoryLabel);
+    }
+  }, []);
+
+  // Toggle menu expansion and scroll to category
+  const handleClick = useCallback((index: number, categoryLabel: string) => {
     setOpenIndex((prev) => (prev === index ? null : index));
+    scrollToCategory(categoryLabel);
+  }, [scrollToCategory]);
+
+  // Handle scroll events to manage sticky headers
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!contentRef.current) return;
+
+      // Loop through all category sections to determine which headers should be sticky
+      const newStickyHeadersInfo: Record<string, boolean> = {};
+      
+      Object.keys(categoryRefs.current).forEach(categoryLabel => {
+        const element = categoryRefs.current[categoryLabel];
+        if (!element) return;
+        
+        const rect = element.getBoundingClientRect();
+        const headerHeight = 60; // Approximate height of the header
+        
+        // Make header sticky when its top is at or above the viewport top,
+        // and the bottom of its section is below the viewport top + header height
+        const headerShouldBeSticky = rect.top <= 0 && rect.bottom > headerHeight;
+        newStickyHeadersInfo[categoryLabel] = headerShouldBeSticky;
+        
+        // Set active category based on scroll position
+        if (rect.top <= headerHeight && rect.bottom >= headerHeight) {
+          setActiveCategory(categoryLabel);
+        }
+      });
+      
+      setStickyHeadersInfo(newStickyHeadersInfo);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Perform search
@@ -111,26 +159,16 @@ const Faq: React.FC = () => {
     e.preventDefault();
   };
 
-  // Implement smooth scrolling with native browser APIs
-  useEffect(() => {
-    const handleScroll = () => {
-      // This is where you can add scroll-based behavior if needed
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   // Search results view
   const renderSearchResults = () => (
-    <div className="w-full max-w-4xl ">
+    <div className="w-full max-w-4xl">
       <div className="flex flex-col border border-[#D9D0CC] mb-6 qna-group">
         <div className="flex items-center justify-between px-5 text-black font-medium py-3 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl">
           <span>Search Results</span>
         </div>
 
         {searchResults.length > 0 ? (
-          <div className="flex flex-col ">
+          <div className="flex flex-col">
             {searchResults.map((result, index) => (
               <div key={`search-${index}`} className="border-t border-[#D9D0CC]">
                 <p className="text-xl font-semibold pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
@@ -168,20 +206,27 @@ const Faq: React.FC = () => {
 
   // Default content view
   const renderDefaultContent = () => (
-    <div className="w-full max-w-4xl  z-90 ">
+    <div className="w-full max-w-3xl ml-10 z-90">
       {menuItems2.map((item) => (
         <div
           key={item.label}
-          className="flex flex-col border border-[#D9D0CC] mb-6 qna-group"
+          ref={el => {
+            if (el) categoryRefs.current[item.label] = el;
+          }}
+          className="flex flex-col border border-[#D9D0CC] mb-6 qna-group relative"
+          id={`category-${item.label.replace(/\s+/g, '-').toLowerCase()}`}
         >
-          <div className="flex items-center justify-between px-5 text-black  py-4 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl">
+          <div 
+            className={`flex items-center justify-between px-5 text-black py-4 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl
+              ${stickyHeadersInfo[item.label] ? 'sticky top-0 z-20' : ''}`}
+          >
             <span>{item.label}</span>
           </div>
 
           <div className="flex flex-col">
             {item.submenu.map((sub) => (
               <div key={sub.label} className="border-t border-[#D9D0CC]">
-                <p className="text-xl font-medium   pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
+                <p className="text-xl font-medium pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]">
                   {sub.label}
                 </p>
                 {sub.qna?.map((qa, qIndex) => {
@@ -190,7 +235,7 @@ const Faq: React.FC = () => {
                     <div key={key} className="flex flex-col border border-[#D9D0CC]">
                       <button
                         onClick={() => toggleAnswer(key)}
-                        className="flex items-center justify-between py-5 w-full text-left px-8 text-lg md:text-xl font-medium bg-[#FAF5F2] cursor-pointer"
+                        className="flex items-center justify-between py-8 w-full text-left px-8 text-lg md:text-xl font-medium bg-[#FAF5F2] cursor-pointer"
                       >
                         <span className='text-[#817F79]'>{qa.question}</span>
                         <IoMdArrowDropright
@@ -199,7 +244,7 @@ const Faq: React.FC = () => {
                         />
                       </button>
                       {openAnswers[key] && (
-                        <div className="px-6 py-4 bg-[#FAF5F2] text-sm md:text-lg text-[#817F79] ">
+                        <div className="px-6 py-4 bg-[#FAF5F2] text-sm md:text-lg text-[#817F79]">
                           {qa.answer}
                         </div>
                       )}
@@ -215,20 +260,19 @@ const Faq: React.FC = () => {
   );
 
   return (
-    <div ref={scrollContainerRef} className="relative min-h-screen bg-[#E8E1DC] pb-30 pt-20 ">
+    <div ref={scrollContainerRef} className="relative min-h-screen bg-[#E8E1DC] pb-30 pt-20 pl-17">
       {/* Grid background */}
       <div className="absolute inset-0 z-10">
-  <div
-    className="h-full w-full"
-    style={{
-      backgroundImage: 'linear-gradient(to right, #73737330 1px, transparent 1px)',
-      backgroundSize: '11px 100%',
-    }}
-  ></div>
-</div>
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: 'linear-gradient(to right, #73737330 1px, transparent 1px)',
+            backgroundSize: '11px 100%',
+          }}
+        ></div>
+      </div>
 
-
-      <div className="flex xl:flex-row flex-col  px-6 lg:px-12 xl:px-20 gap-8 xl:gap-16 pt-6 xl:pt-12  justify-between ">
+      <div className="flex xl:flex-row flex-col px-6 lg:px-12 xl:px-20 gap-8 xl:gap-16 pt-6 xl:pt-12 justify-between">
         {/* Left sidebar */}
         <div className="xl:w-1/4 lg:w-1/3 w-full bg-white sticky top-0 self-start z-90">
           <div className="w-full bg-[#FAF4F1] z-10">
@@ -267,8 +311,9 @@ const Faq: React.FC = () => {
               className="flex flex-col bg-[#FAF4F1] border border-[#D9D0CC] py-2 hidden sm:block md:block"
             >
               <button
-                onClick={() => handleClick(index)}
-                className="w-full flex items-center justify-between px-4 py-2 text-xl text-black font-medium cursor-pointer"
+                onClick={() => handleClick(index, item.label)}
+                className={`w-full flex items-center justify-between px-4 py-2 text-xl font-medium cursor-pointer
+                  ${activeCategory === item.label ? 'text-black bg-[#f6f0ec]' : 'text-black'}`}
               >
                 <span className="truncate">{item.label}</span>
                 <IoMdArrowDropright
@@ -276,7 +321,6 @@ const Faq: React.FC = () => {
                     }`}
                 />
               </button>
-
 
               {openIndex === index && (
                 <div className="flex flex-col bg-[#f6f0ec] rounded-md">
@@ -291,8 +335,8 @@ const Faq: React.FC = () => {
           ))}
         </div>
 
-        {/* Content container - simplified from the original implementation */}
-        <div className="xl:w-3/4 lg:w-2/3 w-full z-90 " >
+        {/* Content container */}
+        <div className="xl:w-3/4 lg:w-2/3 w-full z-90">
           <div
             ref={contentRef}
             className="overflow-y-auto"
