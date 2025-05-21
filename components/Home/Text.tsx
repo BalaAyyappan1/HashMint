@@ -600,7 +600,7 @@ const HorizontalScrollAnimation: React.FC = () => {
               </div>
             </section>
 
-<section className='bg-black'>
+
 
             {/* Fifth Section: Built for Open Skies */}
             <section className="horizontal-section w-screen h-screen flex-shrink-0 relative bg-black">
@@ -736,7 +736,7 @@ const HorizontalScrollAnimation: React.FC = () => {
 
 
 
-            </section>
+
           </div>
         </div>
       </section>
