@@ -25,7 +25,12 @@ const HorizontalScrollAnimation: React.FC = () => {
   const testimonialRef = useRef(null);
   const pinRef = useRef(null);
 
-  const isMobile = window.innerWidth < 640;
+  //window type bug 
+  let isMobile = false;
+  if (typeof window !== 'undefined') {
+    isMobile = window.innerWidth < 640;
+  }
+  
 
   useEffect(() => {
     if (
