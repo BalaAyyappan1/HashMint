@@ -98,7 +98,6 @@ export const Footer2 = () => {
               ))}
             </div>
 
-            {/* WHO WE ARE Section */}
             <div className="flex flex-col">
               <h1 className="text-lg font-bold mb-2">WHO WE ARE</h1>
               <p className="text-[15px] font-medium">
