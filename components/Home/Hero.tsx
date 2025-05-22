@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
     });
   }, []);
 
-  // Initialize scroll trigger once video is ready
+  // Initialize scroll trigger once video ready
   useEffect(() => {
     if (typeof window === 'undefined' || !isReady || !videoLoaded || !viewportHeight) return;
 
