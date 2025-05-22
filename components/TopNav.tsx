@@ -16,7 +16,7 @@ const TopNav = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between relative z-50 items-center w-full px-10 bg-transparent mt-5">
+    <div className="flex flex-row justify-between relative z-[100] items-center w-full px-10 bg-transparent mt-5">
       {/* LOGO */}
       <Link href="/">
         <div className="bg-[#FAF5F2] rounded-xl  px-1">

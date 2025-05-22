@@ -61,7 +61,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column */}
-          <div className="flex flex-col items-center md:items-start justify-between">
+          <div className="flex flex-col items-start md:items-start justify-between">
             <Link href="/" className="flex items-center space-x-3">
               <Image
                 src={HashmintLogo}
@@ -72,7 +72,7 @@ const Footer = () => {
               />
               <span className="text-2xl sm:text-3xl font-bold">HashMint</span>
             </Link>
-            <div className="text-sm sm:text-sm text-center md:text-left md:mt-0 mt-7">
+            <div className="text-sm sm:text-sm text-left md:text-left md:mt-0 mt-7">
               © {new Date().getFullYear()} • Hashmint Co. • Designed & developed by <Link href={'https://www.theinternetcompany.one/'} className='underline'>TIC Global</Link>
               <br />
               <Link href="#" className="hover:underline">

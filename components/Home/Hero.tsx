@@ -254,7 +254,7 @@ const Hero: React.FC = () => {
 
 
 
-        <div className="absolute z-90 top-[8%] left-[3%] p-5">
+        <div className="absolute z-90 top-[10%] md:top-[8%] left-[3%] p-5">
           <h1 className="text-white text-3xl md:text-6xl tracking-tighter leading-tight font-horizona ">
             The Focus, Re-Imagined.
           </h1>
