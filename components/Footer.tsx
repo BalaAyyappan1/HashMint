@@ -42,23 +42,23 @@ const Footer = () => {
           {/* Bottom gradient (transparent to black) */}
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black to-transparent" />
         </div>
-        <div className="absolute top-4 sm:top-8 md:top-12 left-10 sm:left-8 md:left-12 lg:left-36 justify-between space-y-[35%] items-center">
-          <h1 className="text-5xl sm:text-4xl md:text-5xl lg:text-[120px] font-bold text-yellow-400">
-            HashMint
+        <div className="absolute top-4 sm:top-8 md:top-0 left-10 sm:left-8 md:left-12 lg:left-36 flex flex-col justify-center space-y-[35%] items-center">
+          <h1 className="text-7xl sm:text-4xl md:text-5xl lg:text-[120px] text-center font-bold text-yellow-400">
+            Hashmint
           </h1>
-          <div className="mt-4 sm:mt-6 md:mt-8 items-start justify-center ">
-            <button className="px-25 sm:px-59  py-4 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors">
+          <div className="mt-4 sm:mt-6 md:mt-8 items-start justify-center w-full">
+            <button className="px-25 sm:px-59  py-4 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors w-full">
               Book a call
             </button>
-            <p className="text-sm sm:text-base font-semibold mt-8 md:pl-40 pl-6 ">
-              Estimated Ship Date: <span className="font-normal">June 2025</span>
+            <p className="text-sm sm:text-base font-semibold mt-8 md:pl-40 pl-6 text-center">
+              Estimated Ship Date: <span className="font-normal">August 2025</span>
             </p>
           </div>
         </div>
       </div>
 
       {/* Bottom Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column */}
           <div className="flex flex-col items-start md:items-start justify-between">

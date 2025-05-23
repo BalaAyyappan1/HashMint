@@ -19,6 +19,24 @@ export const contents = [
     }
 ]
 
+export const mobileContents = [
+    {
+        image:'/fps.avif',
+        title:'Seamless Interaction',
+        description:'Scroll and navigate pages, all with zero lag.'
+    },
+    {
+        image:'/smile-dark.avif',
+        title:'Stay Centered',
+        description:'A calm experience that keeps you connected to yourself.'
+    },
+    {
+        image:'/heart-dark.avif',
+        title:'For your well-being',
+        description:'No more eye strain, designed for both daylight and night time.'
+    }
+]
+
 
 
 
