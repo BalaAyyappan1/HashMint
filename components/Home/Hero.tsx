@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
       window.addEventListener('resize', updateViewportHeight);
       gsap.registerPlugin(ScrollTrigger);
 
-      // Connection check for preloading strategy
+      // Connection check for preloading 
       if ('connection' in navigator) {
         const conn = navigator.connection as { saveData: boolean; effectiveType?: string };
         const shouldPreload = !conn.saveData &&
