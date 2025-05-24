@@ -639,27 +639,17 @@ const HorizontalScrollAnimation: React.FC = () => {
                 playsInline
                 webkit-playsinline="true"
                 x-webkit-airplay="allow"
-                className="w-full h-full max-w-md object-cover rounded-3xl"
-                controls={true}
+                className="w-full h-full max-w-[200px] object-cover rounded-3xl"
+                controls={false}
               >
                 <source
-                  src="https://ik.imagekit.io/czay6zcnk/Hashmint/pen_rotation.mov/ik-video.mp4?updatedAt=1748023228675"
-                  type='video/mp4; codecs="hvc1"'
-                />
-                <source
-                  src="https://ik.imagekit.io/czay6zcnk/Hashmint/pa%20r1%200001-0120.webm"
-                  type="video/webm"
+                  src={'/pen_rotation.webm'}
+                  type='video/webm'
                 />
                 Your browser does not support the video tag.
               </video>
 
-              {/* <Image
-                src="/image.png"
-                alt="Lume Paper Display"
-                width={300}
-                height={300}
-                className="object-cover animate-[spin_20s_linear_infinite] w-3/4 sm:w-[400px]"
-              /> */}
+              <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-white/80 via-white/40 to-transparent" />
 
               <svg width="44" height="12" viewBox="0 0 44 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-50"><g><path d="M5.99871 12C9.31279 12 11.9994 9.31371 11.9994 6C11.9994 2.68629 9.31279 0 5.99871 0C2.68464 0 -0.00195312 2.68629 -0.00195312 6C-0.00195312 9.31371 2.68464 12 5.99871 12Z" fill="currentColor"></path><path d="M22.3459 0V6.3452H16C16.1808 9.50137 18.7948 12 21.9924 12C25.1901 12 28.0013 9.31233 28.0013 5.99178C28.0013 2.67123 25.5024 0.180822 22.3459 0Z" fill="currentColor"></path><path d="M40.212 0V8.21111H32C32.9583 10.436 35.1725 12 37.7501 12C41.2034 12 44.0013 9.20239 44.0013 5.74943C44.0013 3.1721 42.4427 0.958238 40.212 0Z" fill="currentColor"></path></g></svg>
 
