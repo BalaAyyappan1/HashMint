@@ -902,7 +902,8 @@ const HorizontalScrollAnimation: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-base sm:text-lg text-left sm:even:text-right mt-4">
-                    <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.testi}</p>
+                    <p className="mb-2 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.testi}</p>
+                    <p className="mb-4 text-white font-horizona leading-tight tracking-tighter text-lg sm:text-xl">{item.cmt}</p>
                     <span className="text-white underline text-xs sm:text-base leading-tight tracking-tighter">{item.time}</span>
                   </div>
                 </div>

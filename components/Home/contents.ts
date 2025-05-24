@@ -91,12 +91,13 @@ export const RightSectionContents = [
 
 
 export const TestimonialContents = [
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'},
-    {image:'/image.png', name:'Wolfgang Hammer', role:'Co-President@CBSFilms', testi:'"I feel better, am more produtive, less distracted. Like it augments my brain. Not deplete it."', time:'8:28 PM • May 23, 2024'}
+    {image:'/image.png', name:'Revathy Chandrasekar', role:'Associate Director, Cognizant ', testi:'"Hashmint Leaf 1 is my go-to for strategic clarity and team alignment."',cmt: 'Helps me capture insights, plan effectively, and lead with focus—free from distractions.', time:'8:28 PM • May 23, 2024'},
+
+    {image:'/image.png', name:'Saravanan G', role:'Senior Manager, Executive Sales, Yokogawa', testi:'"Essential for managing sales performance and staying organized."',cmt: 'From tracking targets to logging insights, it keeps everything in one focused, eye-friendly space.', time:'8:28 PM • May 23, 2024'},
+
+    {image:'/image.png', name:' Kalidoss R', role:'Professor, Shiv Nadar University', testi:'"A game-changer for academic planning and research."',cmt: 'Enables seamless note-taking, PDF annotation, and multilingual handwriting conversion—all distraction-free.', time:'8:28 PM • May 23, 2024'},
+
+    {image:'/image.png', name:'G. Satish Kumar', role:'Head, Regional Training Operations - South Zone, Hyundai India', testi:'"Transforms how I manage training programs and team development."',cmt: 'Consolidates materials, tracks progress, and keeps me focused—no external apps needed.', time:'8:28 PM • May 23, 2024'},
 
 ]
 
