@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { HiMenuAlt2 as Menu } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 const HamburgerToggle = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -27,9 +28,9 @@ const HamburgerToggle = () => {
             }
           )}
         >
-          <button className="px-3 py-1 rounded-lg bg-[#f9c63b]">
-            Book a call
-          </button>
+          <Link href={'https://hashmint-frontend.onrender.com/'} target="_blank" className="px-3 py-1 rounded-lg bg-[#f9c63b]">
+            Pre-Order
+          </Link>
         </div>
 
         {/* Hamburger / Close Toggle */}

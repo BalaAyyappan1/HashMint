@@ -51,9 +51,9 @@ const TopNav = () => {
           >
             FAQ
           </Link>
-          <Link href={'https://hashmint-frontend.onrender.com/'} target='_blank' className="px-5 py-3 rounded-lg bg-[#f9c63b] hover:bg-[#f9c63bf2] text-sm cursor-pointer font-regular">
-            Pre-Order
-          </Link>
+          <button className="px-5 py-3 rounded-lg bg-[#f9c63b] hover:bg-[#f9c63bf2] text-sm cursor-pointer font-regular">
+            Book a call
+          </button>
         </div>
       </div>
 
