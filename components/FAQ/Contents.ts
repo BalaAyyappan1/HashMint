@@ -18,11 +18,11 @@ export interface MenuItem {
 
 export const menuItems = [
     { label: 'ORDER', submenu: ['PAYMENTS', 'POLICIES', 'SHIPPING'] },
-    { label: 'DEVICE', submenu: ['ACCESSORIES', 'CONNECTIVITY', 'SPECS', 'DISPLAY', 'BATTERY', 'HARDWARE', 'REPAIRABILITY', 'STYLUS'] },
-    { label: 'SOFTWARE', submenu: ['OS', 'SPECS', 'APPS', 'DEVELOPERS','KIDS','PRIVACY','READER APP'] },
-    { label: 'COMPANY', submenu: ['COMPANY', 'ABOUT US'] },
-    { label: 'HEALTH', submenu: ['HEALTH', 'BLUE LIGHT'] },
-    { label: 'WORK WITH US', submenu: ['COMPANY', 'PARTNERSHIP'] },
+    { label: 'DEVICE', submenu: ['ACCESSORIES', 'CONNECTIVITY', ] },
+    { label: 'SOFTWARE', submenu: ['DOWNLOADS', 'LICENSING',] },
+    { label: 'COMPANY', submenu: ['INVESTORS', 'ABOUT US'] },
+    { label: 'HEALTH', submenu: ['WELLNESS', 'FITNESS'] },
+    { label: 'WORK WITH US', submenu: ['CAREERS', 'INTERNSHIPS'] },
   ];
 
   export  const menuItems2: MenuItem[] = [
@@ -30,7 +30,7 @@ export const menuItems = [
       label: 'Order',
       submenu: [
         {
-          label: 'PAYMENTS',
+          label: 'Payments',
           qna: [
             { question: 'Can I pay in BTC?', answer: 'Yes, we accept Bitcoin for payment. Currently, we use the Strike plugin through Shopify, which supports Lightning Network payments only. We are working on integrating direct Bitcoin transactions on the blockchain in the future as well.' },
             { question: 'Can I get a discount code', answer: 'We currently do not have any discount codes available, but you can sign up for our newsletter to be the first to hear about upcoming promotions, releases, and other news.', subAnswer:'Sign up here: Newsletter' },
@@ -39,14 +39,14 @@ export const menuItems = [
           ],
         },
         {
-          label: 'POLICIES',
+          label: 'Policies',
           qna: [
             { question: 'What kind of warranty does the Hashmint Leaf 1 (DC-1) include?', answer: 'The Hashmint Leaf 1 is covered by a one-year warranty and also offers a 30-day return period for added peace of mind.' },
             { question: 'What’s the return policy for the Hashmint Leaf 1?', answer: 'You can return your Hashmint Leaf 1 within 30 days of purchase for a full refund.  If you have any questions or need help with a return, feel free to contact us at jimmy@hashmint.tech ' },
           ],
         },
         {
-          label: 'SHIPPING',
+          label: 'Shipping',
           qna: [
             { question: 'How long does shipping take?', answer: 'Shipping typically takes 5-7 business days.' },
             { question: 'Do you ship internationally?', answer: 'Yes, we offer international shipping.' },

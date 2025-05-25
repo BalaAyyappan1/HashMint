@@ -108,12 +108,12 @@ const ImageCarousel: React.FC = () => {
 
   return (
     <div>
-      <div className="flex flex-row justify-between xl:px-22 px-7 items-center mb-4">
-        <h1 className="md:text-6xl text-5xl text-gray-800 md:text-start text-center">
+      <div className="flex flex-row justify-between xl:px-10 px-7 items-center mb-4">
+        <h1 className="md:text-6xl text-5xl text-gray-800 md:text-start text-center tracking-tighter leading-tight font-horizona">
           Hashmint is for everyday
         </h1>
 
-        <div className="flex flex-row gap-2 items-center hidden sm:flex md:flex">
+        <div className="flex flex-row gap-2 items-center sm:flex md:flex">
           <div
             onClick={scrollLeft}
             className="bg-[#E9E0DA] rounded-full w-20 h-10 flex justify-center items-center cursor-pointer"
@@ -129,7 +129,7 @@ const ImageCarousel: React.FC = () => {
         </div>
       </div>
 
-      <div className="xl:px-10 py-10 w-[100%] xl:pl-30 pl-5 mx-auto overflow-hidden fade-mask-left">
+      <div className="xl:px-10 py-10 w-[100%] xl:pl-10 pl-5 mx-auto overflow-hidden fade-mask-left">
         <motion.div
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth"
@@ -149,28 +149,19 @@ const ImageCarousel: React.FC = () => {
                   <video 
                     src={src.video} 
                     className="object-cover rounded-xl w-full h-full"
-                    
+                    autoPlay
                     muted
                     loop
                     playsInline
-                    onMouseOver={(e) => {
-                      const videoElement = e.target as HTMLVideoElement;
-                      videoElement.play();
-                    }}
-                    onMouseOut={(e) => {
-                      const videoElement = e.target as HTMLVideoElement;
-                      videoElement.pause();
-                      videoElement.currentTime = 0;
-                    }}
                   />
                 </div>
 
                 {/* Title & Description */}
                 <div className="p-4 text-start">
-                  <h1 className="text-lg font-medium text-black">
+                  <h1 className="text-lg font-medium text-black tracking-tighter leading-tight">
                     {src.title}
                   </h1>
-                  <p className="text-sm text-gray-600 font-regular mt-1">
+                  <p className="text-sm text-gray-600 font-regular mt-1 tracking-tighter leading-tight">
                     {src.description}
                   </p>
                 </div>
@@ -178,7 +169,7 @@ const ImageCarousel: React.FC = () => {
             </motion.div>
           ))}
         </motion.div>
-        <div className="flex flex-row gap-2 mt-10 items-center justify-center block sm:hidden md:hidden">
+        <div className="flex flex-row gap-2 mt-10 items-center justify-center sm:hidden md:hidden">
           <div
             onClick={scrollLeft}
             className="bg-[#E9E0DA] rounded-full w-20 h-10 flex justify-center items-center cursor-pointer"

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
 import { IoMdArrowDropright } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
 
@@ -34,8 +33,8 @@ interface SearchResult {
   key: string;
 }
 
-// Import your actual data here
 import { menuItems, menuItems2 } from './Contents';
+import Link from 'next/link';
 
 const Faq: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -43,6 +42,7 @@ const Faq: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
   const [stickyHeadersInfo, setStickyHeadersInfo] = useState<Record<string, boolean>>({});
   const [stickySubHeaders, setStickySubHeaders] = useState<Record<string, boolean>>({});
 
@@ -60,74 +60,90 @@ const Faq: React.FC = () => {
     }));
   }, []);
 
-  // Scroll to category when clicked from sidebar
-  const scrollToCategory = useCallback((categoryLabel: string) => {
-    const element = categoryRefs.current[categoryLabel];
+  // Scroll to category or subcategory
+  const scrollToSection = useCallback((categoryLabel: string, subLabel?: string) => {
+    const key = subLabel ? `${categoryLabel}||${subLabel}` : categoryLabel;
+    const element = subLabel ? subcategoryRefs.current[key] : categoryRefs.current[categoryLabel];
     if (element) {
-      const yOffset = -20; // Offset to account for sticky headers
+      const headerHeight = 70; // Height of category header
+      const subHeaderHeight = 50; // Height of subcategory header
+      const yOffset = subLabel ? -(headerHeight + 10) : -20; // Adjust offset for subcategory
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
       setActiveCategory(categoryLabel);
+      if (subLabel) {
+        setActiveSubcategory(key);
+      } else {
+        setActiveSubcategory(null);
+      }
     }
   }, []);
 
-  // Toggle menu expansion and scroll to category
-  const handleClick = useCallback((index: number, categoryLabel: string) => {
+  // Toggle menu expansion and scroll
+  const handleCategoryClick = useCallback((index: number, categoryLabel: string) => {
     setOpenIndex((prev) => (prev === index ? null : index));
-    scrollToCategory(categoryLabel);
-  }, [scrollToCategory]);
+    scrollToSection(categoryLabel);
+  }, [scrollToSection]);
 
-  // Handle scroll events to manage sticky headers
+  // Handle subcategory click
+  const handleSubcategoryClick = useCallback((categoryLabel: string, subLabel: string, index: number) => {
+    scrollToSection(categoryLabel, subLabel);
+    setOpenIndex(index); // Keep the category expanded
+  }, [scrollToSection]);
+
+  // Handle scroll events for sticky headers and parallax effect
   useEffect(() => {
     const handleScroll = () => {
       if (!contentRef.current) return;
 
-      // Loop through all category sections to determine which headers should be sticky
       const newStickyHeadersInfo: Record<string, boolean> = {};
       const newStickySubHeaders: Record<string, boolean> = {};
-      
-      // Check which category headers should be sticky
+      let activeCat: string | null = null;
+      let activeSub: string | null = null;
+
+      // Check category headers
       Object.keys(categoryRefs.current).forEach(categoryLabel => {
         const element = categoryRefs.current[categoryLabel];
         if (!element) return;
-        
+
         const rect = element.getBoundingClientRect();
-        const headerHeight = 70; // Approximate height of the header
-        
-        // Make header sticky when its top is at or above the viewport top,
-        // and the bottom of its section is below the viewport top + header height
-        const headerShouldBeSticky = rect.top <= 0 && rect.bottom > headerHeight;
-        newStickyHeadersInfo[categoryLabel] = headerShouldBeSticky;
-        
-        // Set active category based on scroll position
+        const headerHeight = 70;
+        const isSticky = rect.top <= 0 && rect.bottom > headerHeight;
+        newStickyHeadersInfo[categoryLabel] = isSticky;
+
+        // Set active category
         if (rect.top <= headerHeight && rect.bottom >= headerHeight) {
-          setActiveCategory(categoryLabel);
+          activeCat = categoryLabel;
         }
       });
-      
-      // Check which subcategory headers should be sticky
+
+      // Check subcategory headers
       Object.keys(subcategoryRefs.current).forEach(subKey => {
         const element = subcategoryRefs.current[subKey];
         if (!element) return;
-        
+
         const rect = element.getBoundingClientRect();
-        const headerHeight = 70; // Approximate height of the header
-        const subHeaderHeight = 50; // Approximate height of the subheader
+        const headerHeight = 70;
+        const subHeaderHeight = 50;
         const categoryLabel = subKey.split('||')[0];
-        
-        // Make subheader sticky when its parent category is sticky,
-        // its top is at or below the category header height, 
-        // and the bottom of its section is below the viewport top + both header heights
-        const subHeaderShouldBeSticky = 
-          newStickyHeadersInfo[categoryLabel] && 
+
+        const subHeaderShouldBeSticky =
+          newStickyHeadersInfo[categoryLabel] &&
           rect.top <= headerHeight &&
           rect.bottom > (headerHeight + subHeaderHeight);
-        
+
         newStickySubHeaders[subKey] = subHeaderShouldBeSticky;
+
+        // Set active subcategory
+        if (rect.top <= (headerHeight + subHeaderHeight) && rect.bottom >= (headerHeight + subHeaderHeight)) {
+          activeSub = subKey;
+        }
       });
-      
+
       setStickyHeadersInfo(newStickyHeadersInfo);
       setStickySubHeaders(newStickySubHeaders);
+      setActiveCategory(activeCat);
+      setActiveSubcategory(activeSub);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -138,18 +154,17 @@ const Faq: React.FC = () => {
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setSearchResults([]);
+      setActiveSubcategory(null);
       return;
     }
 
     const query = searchQuery.toLowerCase();
     const results: SearchResult[] = [];
 
-    // Search through all data
     menuItems2.forEach((category) => {
       category.submenu.forEach((subcategory) => {
         subcategory.qna?.forEach((qa, qIndex) => {
           const key = `${category.label}-${subcategory.label}-${qIndex}`;
-
           if (
             qa.question.toLowerCase().includes(query) ||
             qa.answer.toLowerCase().includes(query) ||
@@ -170,7 +185,6 @@ const Faq: React.FC = () => {
 
     setSearchResults(results);
 
-    // Auto-expand search results
     if (results.length > 0) {
       const newOpenAnswers: Record<string, boolean> = { ...openAnswers };
       results.forEach(result => {
@@ -192,7 +206,6 @@ const Faq: React.FC = () => {
         <div className="flex items-center justify-between px-5 text-black font-medium py-3 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl sticky top-0 z-30">
           <span>Search Results</span>
         </div>
-
         {searchResults.length > 0 ? (
           <div className="flex flex-col">
             {searchResults.map((result, index) => (
@@ -207,8 +220,7 @@ const Faq: React.FC = () => {
                   >
                     <span>{result.question}</span>
                     <IoMdArrowDropright
-                      className={`ml-2 h-5 w-5 transition-transform duration-200 ${openAnswers[result.key] ? "rotate-90" : ""
-                        }`}
+                      className={`ml-2 h-5 w-5 transition-transform duration-200 ${openAnswers[result.key] ? "rotate-90" : ""}`}
                     />
                   </button>
                   {openAnswers[result.key] && (
@@ -242,25 +254,27 @@ const Faq: React.FC = () => {
           className="flex flex-col border border-[#D9D0CC] mb-6 qna-group relative"
           id={`category-${item.label.replace(/\s+/g, '-').toLowerCase()}`}
         >
-          <div 
-            className={`flex items-center justify-between px-5 text-black py-4 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl
-              ${stickyHeadersInfo[item.label] ? 'sticky top-0 z-30' : ''}`}
+          <div
+            className={`flex items-center tracking-tighter leading-tight font-horizona justify-between px-5 text-black py-4 bg-[#EFE6E1] text-3xl md:text-4xl lg:text-5xl transition-all duration-300 ${
+              stickyHeadersInfo[item.label] ? 'sticky top-0 z-30 shadow-md' : ''
+            }`}
           >
             <span>{item.label}</span>
           </div>
-
           <div className="flex flex-col">
             {item.submenu.map((sub) => (
-              <div 
+              <div
                 key={sub.label}
                 ref={el => {
                   if (el) subcategoryRefs.current[`${item.label}||${sub.label}`] = el;
                 }}
+                id={`${sub.label.replace(/\s+/g, '-').toLowerCase()}`}
                 className="border-t border-[#D9D0CC] relative"
               >
-                <p 
-                  className={`text-xl font-medium pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC]
-                    ${stickySubHeaders[`${item.label}||${sub.label}`] ? 'sticky top-16 z-20' : ''}`}
+                <p
+                  className={`text-xl tracking-tighter leading-tight font-horizona pl-7 py-4 bg-[#F6F0ED] border border-[#D9D0CC] transition-all duration-300 ${
+                    stickySubHeaders[`${item.label}||${sub.label}`] ? 'sticky top-16 z-20 shadow-sm' : ''
+                  }`}
                 >
                   {sub.label}
                 </p>
@@ -270,16 +284,15 @@ const Faq: React.FC = () => {
                     <div key={key} className="flex flex-col border border-[#D9D0CC]">
                       <button
                         onClick={() => toggleAnswer(key)}
-                        className="flex items-center justify-between py-8 w-full text-left px-8 text-lg md:text-xl font-medium bg-[#FAF5F2] cursor-pointer"
+                        className="flex items-center justify-between py-8 w-full text-left px-8 text-lg md:text-xl tracking-tighter leading-tight bg-[#FAF5F2] cursor-pointer"
                       >
-                        <span className='text-[#817F79]'>{qa.question}</span>
+                        <span className="text-[#817F79]">{qa.question}</span>
                         <IoMdArrowDropright
-                          className={`ml-2 h-5 w-5 transition-transform duration-200 ${openAnswers[key] ? "rotate-90" : ""
-                            }`}
+                          className={`ml-2 h-5 w-5 transition-transform duration-200 ${openAnswers[key] ? "rotate-90" : ""}`}
                         />
                       </button>
                       {openAnswers[key] && (
-                        <div className="px-6 py-4 bg-[#FAF5F2] text-sm md:text-lg text-[#817F79]">
+                        <div className="px-6 py-4 bg-[#FAF5F2] text-sm tracking-tighter leading-tight md:text-lg text-[#817F79]">
                           {qa.answer}
                         </div>
                       )}
@@ -329,7 +342,6 @@ const Faq: React.FC = () => {
             </form>
           </div>
 
-          {/* Clear search button */}
           {searchQuery.trim() !== "" && (
             <button
               onClick={() => setSearchQuery("")}
@@ -343,26 +355,32 @@ const Faq: React.FC = () => {
           {menuItems.map((item, index) => (
             <div
               key={item.label}
-              className="flex flex-col bg-[#FAF4F1] border border-[#D9D0CC] py-2 hidden sm:block md:block"
+              className="flex flex-col bg-[#FAF4F1] border border-[#D9D0CC] py-2"
             >
               <button
-                onClick={() => handleClick(index, item.label)}
-                className={`w-full flex items-center justify-between px-4 py-2 text-xl font-medium cursor-pointer
-                  ${activeCategory === item.label ? 'text-black bg-[#f6f0ec]' : 'text-black'}`}
+                onClick={() => handleCategoryClick(index, item.label)}
+                className={`w-full flex items-center justify-between px-4 py-2 text-xl font-medium cursor-pointer transition-colors ${
+                  activeCategory === item.label ? 'text-black bg-[#f6f0ec]' : 'text-black'
+                }`}
               >
-                <span className="truncate">{item.label}</span>
+                <span className="truncate tracking-tighter leading-tight font-horizona">{item.label}</span>
                 <IoMdArrowDropright
-                  className={`h-5 w-5 transition-transform duration-200 ${openIndex === index ? "rotate-90" : ""
-                    }`}
+                  className={`h-5 w-5 transition-transform duration-200 ${openIndex === index ? "rotate-90" : ""}`}
                 />
               </button>
-
               {openIndex === index && (
                 <div className="flex flex-col bg-[#f6f0ec] rounded-md">
                   {item.submenu.map((sub, i) => (
-                    <div key={i} className="px-4 py-2 cursor-pointer text-sm font-regular">
+                    <Link
+                      key={i}
+                      href={`#${sub.replace(/\s+/g, '-').toLowerCase()}`}
+                      onClick={() => handleSubcategoryClick(item.label, sub, index)}
+                      className={`px-4 py-2 text-sm font-regular cursor-pointer text-left transition-colors ${
+                        activeSubcategory === `${item.label}||${sub}` ? 'text-black bg-[#EFE6E1]' : 'text-gray-700 hover:bg-[#EFE6E1]'
+                      }`}
+                    >
                       {sub}
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -372,10 +390,7 @@ const Faq: React.FC = () => {
 
         {/* Content container */}
         <div className="xl:w-3/4 lg:w-2/3 w-full z-90">
-          <div
-            ref={contentRef}
-            className="overflow-y-auto"
-          >
+          <div ref={contentRef} className="overflow-y-auto">
             {searchQuery.trim() !== "" ? renderSearchResults() : renderDefaultContent()}
           </div>
         </div>

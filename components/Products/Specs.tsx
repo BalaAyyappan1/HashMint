@@ -80,8 +80,8 @@ const Specs = () => {
   return (
     <div className='bg-[#E7DED8] py-20'>
       {/* Header */}
-      <div className='bg-black py-6 max-w-7xl mx-auto rounded-xl px-5'>
-        <h1 className='text-white text-5xl text-left'>Product Specs</h1>
+      <div className='bg-black py-3 max-w-7xl mx-auto rounded-xl px-5'>
+        <h1 className='text-white text-5xl text-left tracking-tighter leading-tight font-horizona'>Product Specs</h1>
       </div>
 
       {/* Grid Cards */}
@@ -105,7 +105,7 @@ const Specs = () => {
                 </div>
 
                 <div className="p-4 text-start">
-                  <h1 className="text-lg font-medium text-gray-800">
+                  <h1 className="text-lg font-medium text-gray-800 tracking-tighter leading-tight font-horizona">
                     {src.title}
                   </h1>
                   <p className="text-sm text-gray-600 mt-1 font-regular">{src.description}</p>
@@ -127,13 +127,13 @@ const Specs = () => {
             className={` p-6 rounded-xl ${index >= 3 ? 'lg:col-span-1 md:col-span-1' : ''
               }`}
           >
-            <h2 className="text-5xl  mb-4 text-gray-800">
+            <h2 className="text-5xl  mb-4 text-gray-800 tracking-tighter leading-tight font-horizona">
               {section.title}
             </h2>
             <div className="space-y-4 mt-4">
               {section.contents.map((content, idx) => (
                 <div key={idx}>
-                  <p className="text-gray-700 text-xl">{content}</p>
+                  <p className=" text-xl tracking-tighter leading-tight text-[#18190f] opacity-50">{content}</p>
                   <hr className="border-t border-dotted border-gray-400 mt-2" />
                 </div>
               ))}
