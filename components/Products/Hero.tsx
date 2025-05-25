@@ -263,7 +263,7 @@ const Hero = () => {
                         </button> */}
                         <button
                          
-                            className=" w-full  justify-between  px-4 py-2 text-left flex items-center justify-between cursor-pointer"
+                            className=" w-full   px-4 py-2 text-left flex items-center justify-between cursor-pointer"
                         >
                             <span>Order Details</span>
                        

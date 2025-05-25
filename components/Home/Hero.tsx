@@ -182,8 +182,8 @@ const Hero: React.FC = () => {
   const getVideoSources = () => {
     return (
       <>
-        <source src="/banner_new.webm" type="video/webm" />
-        <source src="/banner_new.mp4" type="video/mp4" />
+        {/* <source src="/banner_new.webm" type="video/webm" /> */}
+        <source src="/transistion.mp4" type="video/mp4" />
       </>
     );
   };

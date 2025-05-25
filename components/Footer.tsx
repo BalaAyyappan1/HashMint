@@ -47,9 +47,9 @@ const Footer = () => {
             Hashmint
           </h1>
           <div className="mt-4 sm:mt-6 md:mt-8 items-start justify-center w-full">
-            <button className="px-25 sm:px-59  py-4 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors w-full">
-              Book a call
-            </button>
+            <Link href={'https://hashmint-frontend.onrender.com/'} target='_blank' className="px-25 sm:px-59  py-4 sm:py-3 bg-yellow-400 text-black rounded-xl text-sm sm:text-base font-semibold hover:bg-yellow-500 transition-colors w-full">
+              Pre-Order
+            </Link>
             <p className="text-sm sm:text-base font-semibold mt-8 md:pl-40 pl-6 text-center">
               Estimated Ship Date: <span className="font-normal">August 2025</span>
             </p>
@@ -58,8 +58,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
+        <div className="flex w-full justify-between gap-8 lg:gap-12">
           {/* Left Column */}
           <div className="flex flex-col items-start md:items-start justify-between">
             <Link href="/" className="flex items-center space-x-3">
@@ -72,17 +72,7 @@ const Footer = () => {
               />
               <span className="text-2xl sm:text-3xl font-bold">HashMint</span>
             </Link>
-            <div className="text-sm sm:text-sm text-left md:text-left md:mt-0 mt-7">
-              © {new Date().getFullYear()} • Hashmint Co. • Designed & developed by <Link href={'https://www.theinternetcompany.one/'} className='underline'>TIC Global</Link>
-              <br />
-              <Link href="#" className="hover:underline">
-                Privacy Policy
-              </Link>
-              {' • '}
-              <Link href="#" className="hover:underline">
-                Terms of Service
-              </Link>
-            </div>
+
           </div>
 
           {/* Right Column */}
@@ -136,27 +126,18 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-
-            {/* Newsletter */}
-            <div>
-              <label className="block text-sm font-medium mb-2 cursor-pointer">
-                Book a call 
-              </label>
-              <div className="relative max-w-xl">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full p-3 pr-28 rounded-xl bg-transparent border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  aria-label="Email address"
-                />
-                <button
-                  className="cursor-pointer absolute top-1/2 right-2 -translate-y-1/2 px-4 py-2 bg-yellow-400 text-black rounded-lg text-sm font-semibold hover:bg-yellow-500 transition-colors"
-                >
-                  Book a call
-                </button>
-              </div>
-            </div>
           </div>
+        </div>
+        <div className="text-sm sm:text-sm text-left md:text-left md:mt-0 mt-7">
+          © {new Date().getFullYear()} • Hashmint Co. • Designed & developed by <Link href={'https://www.theinternetcompany.one/'} className='underline'>TIC Global</Link>
+          <br />
+          <Link href="#" className="hover:underline">
+            Privacy Policy
+          </Link>
+          {' • '}
+          <Link href="#" className="hover:underline">
+            Terms of Service
+          </Link>
         </div>
       </div>
 
